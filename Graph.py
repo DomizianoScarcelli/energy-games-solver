@@ -1,5 +1,11 @@
 from __future__ import annotations
 from typing import List, Set
+import networkx as nx
+import matplotlib.pyplot as plt
+import plotly.graph_objs as go
+from plotly.offline import plot
+
+from plot_graph import plot_graph
 
 
 class Node:
@@ -39,10 +45,12 @@ class Node:
         return hash(self.name)
 
     def __str__(self):
-        return f"({self.name})_p{self.player.name}"
+        # return f"({self.name})_p{self.player.name}"
+        return f"{self.name}"
 
     def __repr__(self):
-        return f"({self.name})_p{self.player.name}"
+        # return f"({self.name})_p{self.player.name}"
+        return f"{self.name}"
 
 
 class Edge:
