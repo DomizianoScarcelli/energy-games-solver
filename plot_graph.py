@@ -65,7 +65,8 @@ def plot_graph(arena):
     for node in G.nodes():
         node_adjacencies.append(len(list(G.neighbors(node))))
         node_text.append(
-            f'Player: {node.player.name}<br>Adjacent Nodes: {len(list(G.neighbors(node)))}')
+            f"Node: {node.name}<br>Player: {node.player.name}<br>Energy: {node.player.energy}<br>Adjacent Nodes: {len(list(G.neighbors(node)))}<br>Outgoing Edges: {len(node.get_neighbours_with_edges())}"
+        )
 
     node_trace.text = node_text
 
