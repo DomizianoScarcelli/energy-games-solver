@@ -4,7 +4,7 @@ from tqdm import tqdm
 import random
 import numpy as np
 
-from plot_graph import plot_graph
+from plot_graph import plot_graph, plot_3D_graph, plot_2D_graph
 
 
 class Node:
@@ -54,11 +54,9 @@ class Node:
         return hash(self.name)
 
     def __str__(self):
-        # return f"({self.name})_p{self.player.name}"
         return f"{self.name}"
 
     def __repr__(self):
-        # return f"({self.name})_p{self.player.name}"
         return f"{self.name}"
 
 
@@ -127,17 +125,22 @@ class GraphGenerator:
             nodes.add(Node(random.randint(1, self.num_nodes),
                       Player(random.randint(1, 2))))
         nodes: List[Node] = list(nodes)
+
         edges = []
 
-        for i in tqdm(range(self.num_nodes), desc="Generating edges"):
-            for j in range(i + 1, self.num_nodes):
-                # Generate a random number from a uniform distribution and check if it's less than the edge probability
-                if random.random() < self.edge_probability and len(edges) < self.num_nodes - 1:
-                    # Adjust the weight range as needed
+        for origin in tqdm(nodes, desc="Generating edges"):
+            for dest in nodes:
+                if random.random() < self.edge_probability:
                     weight = random.uniform(*self.weight_range)
-                    edge = Edge(nodes[i], nodes[j], weight)
-                    nodes[i].add_edge(edge)
-                    nodes[j].add_edge(edge)
+                    edge = Edge(origin, dest, weight)
+                    origin.add_edge(edge)
+                    dest.add_edge(edge)
+                    edges.append(edge)
+                if random.random() < self.edge_probability:
+                    weight = random.uniform(*self.weight_range)
+                    edge = Edge(dest, origin, weight)
+                    origin.add_edge(edge)
+                    dest.add_edge(edge)
                     edges.append(edge)
 
         return nodes, edges
@@ -168,12 +171,12 @@ class Arena:
 
         def Q(node: Node):
             outgoing_edges = node.get_neighbours_with_edges()
-            print(f"Node {node} has outgoing edges {outgoing_edges}")
+            # print(f"Node {node} has outgoing edges {outgoing_edges}")
             values = [delta(node.value, edge.weight)
                       for node, edge in outgoing_edges.items()]
             if values == []:
                 return 0
-            print(f"Q({node}) = {values}")
+            # print(f"Q({node}) = {values}")
 
             if node.player.name == 1:  # max
                 return max(values)
@@ -181,27 +184,33 @@ class Arena:
                 return min(values)
 
         converged = {node: False for node in self.nodes}
-        print(f"Converged dict is: {converged}")
         threshold = 0.0001
         steps = 0
+        max_steps = 100_000
+        pbar = tqdm(total=max_steps, desc="Value iteration")
         while not all(converged.values()):
             steps += 1
+            if steps > max_steps:
+                break
+            pbar.update(1)
             for node in self.nodes:
                 old_value = node.value
                 node.value = Q(node)
-                print(
-                    f"At step {steps}, node {node} has old value {old_value} and new value {node.value}")
                 if abs(node.value - old_value) < threshold:
                     converged[node] = True
-        print(f"Converged after {steps} steps")
+        pbar.close()
+        if steps > max_steps:
+            print(f"Did not converge after {steps} steps")
+        else:
+            print(f"Converged after {steps} steps")
         return self.nodes
 
 
 if __name__ == "__main__":
-    graph_generator = GraphGenerator(10, 1)
+    graph_generator = GraphGenerator(3, 1)
     nodes, edges = graph_generator.generate_graph()
     arena = Arena(nodes, edges)
-    plot_graph(arena)
+    plot_2D_graph(arena)
     arena.value_iteration()
     value_dict = {node: node.value for node in arena.nodes}
     print(f"Final state: {value_dict}")
