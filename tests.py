@@ -1,32 +1,44 @@
+from unittest import TestCase
 
-from Graph import Node, Edge
+from Graph import Node, Edge, GraphGenerator, Arena
 
 
-def test_graph():
-    node1 = Node("A")
-    node2 = Node("A")
-    node2alt = Node("A")
-    node3 = Node("C")
+class GraphGeneratorTest(TestCase):
+    def test_remove_negative_cycles(self):
+        nodes = [Node(1), Node(2), Node(3), Node(4)]
+        edges = [Edge(Node(1), Node(2), 1.5),
+                 Edge(Node(2), Node(3), 12),
+                 Edge(Node(3), Node(4), 9),
+                 Edge(Node(4), Node(1), -20),
+                 Edge(Node(3), Node(1), -15)]
+        arena = Arena(nodes, edges)
+        print(f"Initial arena is {arena}")
 
-    node_set = set()
-    node_set.add(node1)
-    node_set.add(node2)
-    node_set.add(node2alt)
-    node_set.add(node3)
+        for edge in edges:
+            edge.node1.add_edge(edge)
 
-    print(node_set)
+        self.assertTrue(arena._check_negative_cycles(nodes[0]))
 
-    edge1 = Edge(node3, node2, 1)
-    edge2 = Edge(node2, node3, 2)
-    edge3 = Edge(node3, node1, 1)
+        for node in nodes:
+            arena.remove_negative_cycles(node)
 
-    edge_set = set()
-    edge_set.add(edge1)
-    edge_set.add(edge2)
-    edge_set.add(edge3)
+        print(f"Final arena is {arena}")
+        for node in nodes:
+            self.assertFalse(arena._check_negative_cycles(node))
 
-    print(edge_set)
+    def test_graph_generation(self):
+        graph_generator = GraphGenerator(
+            num_nodes=10, edge_probability=0.3)
+        nodes, edges = graph_generator.generate_mean_payoff_graph()
+        arena = Arena(nodes, edges)
 
-    edge1alt = Edge(node3, node2, 1)
+        print(f"Initial arena is {arena}")
 
-    print(edge1 == edge1alt)
+        self.assertTrue(arena._check_negative_cycles(nodes[0]))
+
+        for node in nodes:
+            arena.remove_negative_cycles(node)
+
+        print(f"Final arena is {arena}")
+        for node in nodes:
+            self.assertFalse(arena._check_negative_cycles(node))

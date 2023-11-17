@@ -10,17 +10,19 @@ from plot_graph import plot_graph, plot_3D_graph, plot_2D_graph
 class Node:
     _nodes = {}
 
-    def __new__(cls, name: int, player: Player):
+    def __new__(cls, name: int, player: Player = None):
         if name in cls._nodes:
             return cls._nodes[name]
         else:
             cls._nodes[name] = super(Node, cls).__new__(cls)
             return cls._nodes[name]
 
-    def __init__(self, name: int, player: Player):
+    def __init__(self, name: int, player: Player = None):
         self.name = name
         self.edges: List[Edge] = []
         self.visited: bool = False
+        if player is None:
+            self.player = Player(1)
         self.player = player
         self.value: int = 0
 
@@ -113,11 +115,15 @@ class Player:
 
 
 class GraphGenerator:
-    def __init__(self, num_nodes, edge_probability=0.01):
+    def __init__(self, num_nodes: int,
+                 edge_probability: float = 0.01,
+                 seed: int or None = None):
         self.num_nodes = num_nodes
         self.edge_probability = edge_probability
         self.max_weight = 10
         self.weight_range = (-self.max_weight, self.max_weight)
+        if seed is not None:
+            random.seed(seed)
 
     def generate_graph(self):
         nodes: Set[Node] = set()
@@ -128,7 +134,7 @@ class GraphGenerator:
 
         edges = []
 
-        for origin in tqdm(nodes, desc="Generating edges"):
+        for origin in tqdm(nodes, desc="Creating graph"):
             for dest in nodes:
                 if random.random() < self.edge_probability:
                     weight = random.uniform(*self.weight_range)
@@ -147,10 +153,11 @@ class GraphGenerator:
 
 
 class Arena:
-    def __init__(self, nodes, edges):
+    def __init__(self, nodes: List[Node], edges: List[Edge]):
         self.nodes: List[Node] = nodes
         self.edges: List[Edge] = edges
         self.players: List[Player] = [Player(1), Player(2)]
+        self.max_weight = 10
 
     def __repr__(self):
         return f"{self.nodes}\n{self.edges}"
@@ -158,12 +165,126 @@ class Arena:
     def __str__(self):
         return f"{self.nodes}\n{self.edges}"
 
+    def get_edge(self, node1: Node, node2: Node) -> Edge:
+        for edge in self.edges:
+            if edge.node1 == node1 and edge.node2 == node2:
+                return edge
+        return None
+
     def find_min_energy(self):
         """
         For each player, finds the minimum amount of energy needed in order to keep it positive for an infinite amount of steps.
         (Energy is lost when a player moves to a node whose edge has negative weight, and gained when it moves to a node whose edge has a positive weight.)
         """
         pass
+
+    def check_arena_conditions(self):
+        """
+        Let us say that a cycle in G is non-negative if the sum of its weights is nonnegative. We consider the following properties:
+        (i) G satisfies MeanPayoff− ≥ 0.
+        (ii) All cycles in G are non-negative.
+        (iii) G satisfies Energy < ∞
+        """
+        # Checkign if sum of weights is non negative and if there are both negative and positive weights
+
+        weight_sum = sum([edge.weight for edge in self.edges])
+        num_positive_weights = len(
+            [edge for edge in self.edges if edge.weight > 0])
+        num_negative_weights = len(
+            [edge for edge in self.edges if edge.weight < 0])
+        print(f"Sum is non negative: {weight_sum}")
+        print(
+            f"There are {num_positive_weights} positive weights and {num_negative_weights} negative weights")
+
+        for node in self.nodes:
+            assert not self._check_negative_cycles(node)
+
+    def generate_mean_payoff_arena(self):
+        # Remove negative loops:
+        for edge in self.edges:
+            if edge.node1 == edge.node2:
+                edge.weight = random.uniform(0, self.max_weight)
+        # while any(self._check_negative_cycles(node) for node in self.nodes):
+        number_of_negative_cycles = sum(
+            self._check_negative_cycles(node) for node in self.nodes)
+        print(f"There are {number_of_negative_cycles} negative cycles")
+        for node in tqdm(self.nodes, desc="Removing negative cycles"):
+            self.remove_negative_cycles(source_node=node,
+                                        visited=[node],
+                                        curr_sum=0)
+            number_of_negative_cycles = sum(
+                self._check_negative_cycles(node) for node in self.nodes)
+            print(f"There are {number_of_negative_cycles} negative cycles")
+            if number_of_negative_cycles == 0:
+                break
+
+        return self.nodes, self.edges
+
+    def remove_negative_cycles(self,
+                               source_node: Node,
+                               visited: List[Node] = [],
+                               curr_sum: int = 0):
+        """
+        Remove all the negative cycles from the graph from the source node
+        """
+        successors = source_node.get_neighbours_with_edges()
+        for succ, edge in successors.items():
+            updated_sum = curr_sum + edge.weight
+            # print(
+            # f"Current situation: {source_node} -> {succ} (edge weight {edge.weight}) (visited: {visited}) curr_sum is {updated_sum}, old sum was {curr_sum}")
+            if updated_sum < 0:
+                old_weight = edge.weight
+                edge.weight = old_weight + abs(updated_sum)
+
+                if succ in visited:
+                    return self.edges
+
+                self.remove_negative_cycles(source_node=succ,
+                                            visited=visited + [source_node],
+                                            curr_sum=updated_sum)
+            else:
+                # print(f"Is succ in visited? {succ in visited}")
+                if succ in visited:
+                    return self.edges
+
+                self.remove_negative_cycles(source_node=succ,
+                                            visited=visited + [source_node],
+                                            curr_sum=updated_sum)
+
+        return self
+
+    def _check_negative_cycles(self, node: Node):
+        """
+        Check if the graph has any negative cycle and print the negative cycle path if it exists.
+        """
+        distances = {node: 0}
+        predecessors = {node: None}
+
+        # Relax edges repeatedly
+        for i in range(len(self.nodes) - 1):
+            for edge in self.edges:
+                if edge.node1 in distances:
+                    if edge.node2 not in distances or distances[edge.node2] > distances[edge.node1] + edge.weight:
+                        distances[edge.node2] = distances[edge.node1] + \
+                            edge.weight
+                        predecessors[edge.node2] = edge.node1
+
+        # Check for negative cycles
+        for edge in self.edges:
+            if edge.node1 in distances and distances[edge.node1] + edge.weight < distances.get(edge.node2, float('inf')):
+                # Negative cycle found
+                cycle = [edge.node2]
+                node = edge.node1
+                while node not in cycle:
+                    cycle.append(node)
+                    node = predecessors[node]
+                cycle.append(node)
+                cycle.reverse()
+                # print(
+                # f"Negative cycle found: {cycle} with edges {[self.get_edge(cycle[i], cycle[i+1]) for i in range(len(cycle)-1)]}")
+                return True
+
+        return False
 
     def value_iteration(self):
 
@@ -186,7 +307,7 @@ class Arena:
         converged = {node: False for node in self.nodes}
         threshold = 0.0001
         steps = 0
-        max_steps = 100_000
+        max_steps = 50_000
         pbar = tqdm(total=max_steps, desc="Value iteration")
         while not all(converged.values()):
             steps += 1
@@ -207,10 +328,13 @@ class Arena:
 
 
 if __name__ == "__main__":
-    graph_generator = GraphGenerator(3, 1)
+    graph_generator = GraphGenerator(
+        num_nodes=15, edge_probability=0.2)
     nodes, edges = graph_generator.generate_graph()
     arena = Arena(nodes, edges)
-    plot_2D_graph(arena)
+    arena.generate_mean_payoff_arena()
+    # plot_2D_graph(arena)
+    arena.check_arena_conditions()
     arena.value_iteration()
-    value_dict = {node: node.value for node in arena.nodes}
+    value_dict = {node: round(node.value, 2) for node in arena.nodes}
     print(f"Final state: {value_dict}")

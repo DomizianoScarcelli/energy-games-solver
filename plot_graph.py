@@ -195,7 +195,8 @@ def plot_2D_graph(arena):
     nx.draw_networkx_labels(G, pos)
 
     # Draw edge labels (weights)
-    edge_labels = {(edge[0], edge[1]): edge[2] for edge in separate_edges}
+    edge_labels = {(edge[0], edge[1]): round(edge[2], 2)
+                   for edge in separate_edges}
     nx.draw_networkx_edge_labels(
         G, pos, edge_labels=edge_labels, font_color='black', font_size=8)
 
