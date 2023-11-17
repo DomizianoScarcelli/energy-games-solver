@@ -171,13 +171,6 @@ class Arena:
                 return edge
         return None
 
-    def find_min_energy(self):
-        """
-        For each player, finds the minimum amount of energy needed in order to keep it positive for an infinite amount of steps.
-        (Energy is lost when a player moves to a node whose edge has negative weight, and gained when it moves to a node whose edge has a positive weight.)
-        """
-        pass
-
     def check_arena_conditions(self):
         """
         Let us say that a cycle in G is non-negative if the sum of its weights is nonnegative. We consider the following properties:
@@ -200,20 +193,28 @@ class Arena:
             assert not self._check_negative_cycles(node)
 
     def generate_mean_payoff_arena(self):
-        # Remove negative loops:
-        for edge in self.edges:
+        # Remove negative self loops:
+        for edge in tqdm(self.edges, desc="Removing negative self loops"):
             if edge.node1 == edge.node2:
                 edge.weight = random.uniform(0, self.max_weight)
         # while any(self._check_negative_cycles(node) for node in self.nodes):
-        number_of_negative_cycles = sum(
-            self._check_negative_cycles(node) for node in self.nodes)
+
+        def count_negative_cycles():
+            number_of_negative_cycles = 0
+            for node in tqdm(self.nodes, desc="Checking negative cycles"):
+                negative_cycles = self._check_negative_cycles(node)
+                if negative_cycles:
+                    number_of_negative_cycles += 1
+            return number_of_negative_cycles
+
+        number_of_negative_cycles = count_negative_cycles()
+
         print(f"There are {number_of_negative_cycles} negative cycles")
         for node in tqdm(self.nodes, desc="Removing negative cycles"):
             self.remove_negative_cycles(source_node=node,
-                                        visited=[node],
+                                        visited=set([node]),
                                         curr_sum=0)
-            number_of_negative_cycles = sum(
-                self._check_negative_cycles(node) for node in self.nodes)
+            number_of_negative_cycles = count_negative_cycles()
             print(f"There are {number_of_negative_cycles} negative cycles")
             if number_of_negative_cycles == 0:
                 break
@@ -222,7 +223,7 @@ class Arena:
 
     def remove_negative_cycles(self,
                                source_node: Node,
-                               visited: List[Node] = [],
+                               visited: Set[Node] = set(),
                                curr_sum: int = 0):
         """
         Remove all the negative cycles from the graph from the source node
@@ -230,26 +231,16 @@ class Arena:
         successors = source_node.get_neighbours_with_edges()
         for succ, edge in successors.items():
             updated_sum = curr_sum + edge.weight
-            # print(
-            # f"Current situation: {source_node} -> {succ} (edge weight {edge.weight}) (visited: {visited}) curr_sum is {updated_sum}, old sum was {curr_sum}")
             if updated_sum < 0:
-                old_weight = edge.weight
-                edge.weight = old_weight + abs(updated_sum)
+                edge.weight += abs(updated_sum)
 
-                if succ in visited:
-                    return self.edges
+            if succ in visited:
+                return self.edges
 
-                self.remove_negative_cycles(source_node=succ,
-                                            visited=visited + [source_node],
-                                            curr_sum=updated_sum)
-            else:
-                # print(f"Is succ in visited? {succ in visited}")
-                if succ in visited:
-                    return self.edges
-
-                self.remove_negative_cycles(source_node=succ,
-                                            visited=visited + [source_node],
-                                            curr_sum=updated_sum)
+            self.remove_negative_cycles(source_node=succ,
+                                        visited=visited.union(
+                                            set([source_node])),
+                                        curr_sum=updated_sum)
 
         return self
 
@@ -326,15 +317,34 @@ class Arena:
             print(f"Converged after {steps} steps")
         return self.nodes
 
+    def get_min_energy(self, round_to: int = 2):
+        """
+        For each player, finds the minimum amount of energy needed in order to keep it positive for an infinite amount of steps.
+        (Energy is lost when a player moves to a node whose edge has negative weight, and gained when it moves to a node whose edge has a positive weight.)
+        """
+        min_energy_dict = {}
+        for player in self.players:
+            # Get the nodes owned by the player
+            player_nodes = [
+                node for node in self.nodes if node.player == player]
+
+            # Find the maximum value among the player's nodes
+            max_value = max(node.value for node in player_nodes)
+
+            min_energy_dict[player.name] = round(max_value, round_to)
+        return min_energy_dict
+
 
 if __name__ == "__main__":
     graph_generator = GraphGenerator(
-        num_nodes=15, edge_probability=0.2)
+        num_nodes=100, edge_probability=0.01)
     nodes, edges = graph_generator.generate_graph()
     arena = Arena(nodes, edges)
     arena.generate_mean_payoff_arena()
-    # plot_2D_graph(arena)
+    plot_2D_graph(arena)
     arena.check_arena_conditions()
     arena.value_iteration()
     value_dict = {node: round(node.value, 2) for node in arena.nodes}
     print(f"Final state: {value_dict}")
+    min_energy_dict = arena.get_min_energy()
+    print(f"Min energy: {min_energy_dict}")
