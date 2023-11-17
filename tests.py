@@ -16,7 +16,6 @@ class GraphGeneratorTest(TestCase):
 
         for edge in edges:
             edge.node1.add_edge(edge)
-
         self.assertTrue(arena._check_negative_cycles(nodes[0]))
 
         for node in nodes:
@@ -29,13 +28,12 @@ class GraphGeneratorTest(TestCase):
     def test_graph_generation(self):
         graph_generator = GraphGenerator(
             num_nodes=10, edge_probability=0.3)
-        nodes, edges = graph_generator.generate_mean_payoff_graph()
+        nodes, edges = graph_generator.generate_graph()
         arena = Arena(nodes, edges)
-
-        print(f"Initial arena is {arena}")
 
         self.assertTrue(arena._check_negative_cycles(nodes[0]))
 
+        arena.generate_mean_payoff_arena()
         for node in nodes:
             arena.remove_negative_cycles(node)
 
