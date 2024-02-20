@@ -117,7 +117,7 @@ class Player:
 class GraphGenerator:
     def __init__(self, num_nodes: int,
                  edge_probability: float = 0.01,
-                 seed: int or None = None):
+                 seed: int | None = None):
         self.num_nodes = num_nodes
         self.edge_probability = edge_probability
         self.max_weight = 10
@@ -136,13 +136,13 @@ class GraphGenerator:
 
         for origin in tqdm(nodes, desc="Creating graph"):
             for dest in nodes:
-                if random.random() < self.edge_probability:
+                if random.random() < random.uniform(0, self.edge_probability):
                     weight = random.uniform(*self.weight_range)
                     edge = Edge(origin, dest, weight)
                     origin.add_edge(edge)
                     dest.add_edge(edge)
                     edges.append(edge)
-                if random.random() < self.edge_probability:
+                if random.random() < random.uniform(0, self.edge_probability):
                     weight = random.uniform(*self.weight_range)
                     edge = Edge(dest, origin, weight)
                     origin.add_edge(edge)
@@ -197,7 +197,6 @@ class Arena:
         for edge in tqdm(self.edges, desc="Removing negative self loops"):
             if edge.node1 == edge.node2:
                 edge.weight = random.uniform(0, self.max_weight)
-        # while any(self._check_negative_cycles(node) for node in self.nodes):
 
         def count_negative_cycles():
             number_of_negative_cycles = 0
@@ -336,12 +335,13 @@ class Arena:
 
 
 if __name__ == "__main__":
+    NUM_NODES = 30
     graph_generator = GraphGenerator(
-        num_nodes=100, edge_probability=0.01)
+        num_nodes=NUM_NODES, edge_probability=0.1)
     nodes, edges = graph_generator.generate_graph()
     arena = Arena(nodes, edges)
     arena.generate_mean_payoff_arena()
-    plot_2D_graph(arena)
+    # plot_2D_graph(arena)
     arena.check_arena_conditions()
     arena.value_iteration()
     value_dict = {node: round(node.value, 2) for node in arena.nodes}
