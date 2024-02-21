@@ -1,61 +1,53 @@
 import pytest
-from Graph import Node, Edge, GraphGenerator, Arena
+from Graph import Node, Edge, Player
 
 
-def test_remove_negative_cycles(monkeypatch):
+def test_safe_update(monkeypatch):
     """
-    Test that the negative cycles are correctly removed from a given graph
+    Test that the safe update function works as expected
     """
-    monkeypatch.setattr('builtins.print', lambda x: None)
+    # monkeypatch.setattr('builtins.print', lambda x: None)
+    player_1 = Player(1)
+    player_2 = Player(2)
+    node_1 = Node(1, player_1)
+    node_2 = Node(2, player_2)
+    node_3 = Node(3, player_2)
+    node_4 = Node(4, player_1)
+    edge_12 = Edge(node_1, node_2, 4)
+    edge_23 = Edge(node_2, node_3, -2)
+    edge_34 = Edge(node_3, node_4, -5)
+    edge_41 = Edge(node_4, node_1, -1)
 
-    nodes = [Node(1), Node(2), Node(3), Node(4)]
-    edges = [Edge(Node(1), Node(2), 1.5),
-             Edge(Node(2), Node(3), 12),
-             Edge(Node(3), Node(4), 9),
-             Edge(Node(4), Node(1), -20),
-             Edge(Node(3), Node(1), -15)]
-    arena = Arena(nodes, edges)
-    print(f"Initial arena is {arena}")
+    node_1.safely_update(edge_12)
+    node_2.safely_update(edge_23)
+    node_3.safely_update(edge_34)
+    node_4.safely_update(edge_41)
 
-    for edge in edges:
-        edge.node1.add_edge(edge)
+    # node_1.update(edge_12)
+    # node_2.update(edge_23)
+    # node_3.update(edge_34)
+    # node_4.update(edge_41)
 
-    for node in nodes:
-        assert arena._check_negative_cycles(node)
+    print(
+        f"""
+        Final setting is:
+        node_1.reaches = {node_1.reaches}
+        node_1.parents = {node_1.parents}
+        ---
+        node_2.reaches = {node_2.reaches}
+        node_2.parents = {node_2.parents}
+        ---
+        node_3.reaches = {node_3.reaches}
+        node_3.parents = {node_3.parents}
+        ---
+        node_4.reaches = {node_4.reaches}
+        node_4.parents = {node_4.parents}
+        """
+    )
 
-    # for node in nodes:
-    #     arena.remove_negative_cycles(node)
+    print(f"Node 1 has a cycle? {node_1._check_cycle()}, is it negative? {node_1.check_negative_cycle()}")
+    print(f"Node 2 has a cycle? {node_2._check_cycle()}, is it negative? {node_2.check_negative_cycle()}")
+    print(f"Node 3 has a cycle? {node_3._check_cycle()}, is it negative? {node_3.check_negative_cycle()}")
+    print(f"Node 4 has a cycle? {node_4._check_cycle()}, is it negative? {node_4.check_negative_cycle()}")
 
-    print(f"Final arena is {arena}")
-    for node in nodes:
-        assert not arena._check_negative_cycles(node)
-
-@pytest.mark.skip(reason="No way of currently testing this")
-def test_graph_generation(monkeypatch):
-    """
-    Test that the negative cycles are correctly removed from a generated graph
-    """
-    def count_cycles():
-        cycles = 0
-        for node in nodes:
-            if arena._check_negative_cycles(node):
-                cycles += 1
-        return cycles
-
-    num_cycles = 0
-    while num_cycles == 0:
-        graph_generator = GraphGenerator(
-            num_nodes=10, edge_probability=0.3)
-        nodes, edges = graph_generator.generate_graph()
-        arena = Arena(nodes, edges)
-        num_cycles = count_cycles()
-
-    for node in nodes:
-        assert arena._check_negative_cycles(node)
-
-    arena.generate_mean_payoff_arena()
-    for node in nodes:
-        arena.remove_negative_cycles(node)
-
-    for node in nodes:
-        assert not arena._check_negative_cycles(node)
+   

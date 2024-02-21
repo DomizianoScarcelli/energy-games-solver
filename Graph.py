@@ -2,7 +2,6 @@ from __future__ import annotations
 from typing import Dict, List, Set, Tuple
 from tqdm import tqdm
 import random
-import numpy as np
 from collections import deque
 
 from plot_graph import plot_graph, plot_3D_graph, plot_2D_graph
@@ -36,22 +35,42 @@ class Node:
         Update the `reaches` list of the node with the new edge.
         Also update the reaches list of the self's parent nodes of the same player with the new edge.
         """
+        print(f"Updating edge {edge} for node {self}")
+        old_reaches = self.reaches.copy()
         self.reaches.add(edge)
-        _, dest = edge.node1, edge.node2
+        self.reaches = self.reaches.union(edge.node2.reaches)
+
+        old_parents = self.parents.copy()
+        dest = edge.node2
         dest.parents.add(edge)
 
+        if self.reaches == old_reaches and old_parents == self.parents:
+            # Avoid max recursion depth
+            return
+
         for p_edge in self.parents:
-                p_origin = p_edge.node1
-                p_origin.update(edge)
+            p_origin = p_edge.node1
+            p_origin.update(edge)
+        
+        print(f"""
+        Node: {self}
+        Edge: {edge}
+        Reaches: {self.reaches}
+        Parent: {self.parents}
+              """)
 
     def backtrack(self, edge: Edge):
         """
         Remove the edge from the `reaches` list of the node.
         Also remove the edge from the reaches list of the self's parent nodes of the same player.
         """
-        #TODO: Check if this is correct
+        print(f"Backtracking edge {edge} for node {self}")
+        if edge not in self.reaches:
+            return
         self.reaches.remove(edge)
-        _, dest = edge.node1, edge.node2
+        dest = edge.node2
+        if edge not in dest.parents:
+            return
         dest.parents.remove(edge)
 
         for p_edge in self.parents:
@@ -67,14 +86,20 @@ class Node:
         for edge in self.reaches:
             if edge.node2 == self:
                 return True
+        return False
 
     def check_negative_cycle(self):
         """
         Returns true if the node is part of a negative cycle.
         """
-        #TODO: Check if this is correct
         if self._check_cycle():
-            return sum([edge.weight for edge in self.reaches if edge.node1.player == self.player]) < 0  
+            weight_sum_player_1 = sum(
+                [edge.weight for edge in self.reaches if edge.node1.player.name == 1])
+            weight_sum_player_2 = sum(
+                [edge.weight for edge in self.reaches if edge.node1.player.name == 2])
+            
+            return weight_sum_player_1 < 0 or weight_sum_player_2 < 0
+        return False
 
     def safely_update(self, next_edge: Edge):
         """
@@ -82,7 +107,13 @@ class Node:
         """
         self.update(next_edge)
         if self.check_negative_cycle():
+            print(f"Negative cycle detected for node {self} with edge {next_edge}")
             self.backtrack(next_edge)
+            
+        # for d_edge in self.reaches.copy():
+        #     d_origin, d_dest = d_edge.node1, d_edge.node2
+        #     if d_dest.check_negative_cycle():
+        #         d_dest.backtrack(d_edge)
 
     def get_neighbours(self) -> Set[Node]:
         neigh = set()
