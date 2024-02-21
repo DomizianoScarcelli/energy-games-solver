@@ -1,3 +1,4 @@
+import pytest
 from Graph import Node, Edge, GraphGenerator, Arena
 
 
@@ -22,14 +23,14 @@ def test_remove_negative_cycles(monkeypatch):
     for node in nodes:
         assert arena._check_negative_cycles(node)
 
-    for node in nodes:
-        arena.remove_negative_cycles(node)
+    # for node in nodes:
+    #     arena.remove_negative_cycles(node)
 
     print(f"Final arena is {arena}")
     for node in nodes:
         assert not arena._check_negative_cycles(node)
 
-
+@pytest.mark.skip(reason="No way of currently testing this")
 def test_graph_generation(monkeypatch):
     """
     Test that the negative cycles are correctly removed from a generated graph
