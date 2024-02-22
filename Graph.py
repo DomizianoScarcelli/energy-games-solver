@@ -30,6 +30,10 @@ class Node:
         # The list of edges regarding the same player that reach this node.
         self.parents: Set[Edge]  = set()
 
+        # A copy of the reaches and parents list before the last update.
+        self.backtracking_reaches: Set[Edge] = set()
+        self.backtracking_parents: Set[Edge] = set()
+
     def update(self, edge: Edge):
         """
         Update the `reaches` list of the node with the new edge.
@@ -44,7 +48,7 @@ class Node:
         dest = edge.node2
         dest.parents.add(edge)
 
-        if self.reaches == old_reaches and old_parents == self.parents:
+        if self.reaches == old_reaches and self.parents == old_parents:
             # Avoid max recursion depth
             return
 
@@ -56,7 +60,9 @@ class Node:
         Node: {self}
         Edge: {edge}
         Reaches: {self.reaches}
+        Backtracking Reaches: {self.backtracking_reaches}
         Parent: {self.parents}
+        Backtracking Parents: {self.backtracking_parents}
               """)
 
     def backtrack(self, edge: Edge):
@@ -64,18 +70,38 @@ class Node:
         Remove the edge from the `reaches` list of the node.
         Also remove the edge from the reaches list of the self's parent nodes of the same player.
         """
-        print(f"Backtracking edge {edge} for node {self}")
+        print(f"[Node {self}]: Backtracking edge {edge}. Reaches is {self.reaches} and parents is {self.parents}")
         if edge not in self.reaches:
+            print(f"[Node {self}]: Edge {edge} not in reaches {self.reaches}")
             return
         self.reaches.remove(edge)
-        dest = edge.node2
-        if edge not in dest.parents:
-            return
-        dest.parents.remove(edge)
+        print(f"[Node {self}]: Removed edge {edge} from reaches {self.reaches}")
 
+        #TODO: Remove also all the other edges that are not reachable anymore
         for p_edge in self.parents:
             p_origin = p_edge.node1
             p_origin.backtrack(edge) 
+    
+    def new_backtrack(self):
+        """
+        Remove the edge from the `reaches` list of the node.
+        Also remove the edge from the reaches list of the self's parent nodes of the same player.
+        """
+        old_reaches = self.reaches.copy()
+        old_parents = self.parents.copy()
+        self.reaches = self.backtracking_reaches.copy()
+        self.parents = self.backtracking_parents.copy()
+
+        if self.reaches == old_reaches and old_parents == self.parents:
+            # Nothing changed, avoid max recursion depth
+            print(f"[Node {self}], nothing changed")
+            return
+
+        # for edge in self.reaches:
+        #     edge.node2.new_backtrack()
+        for edge in self.parents:
+            edge.node1.new_backtrack()
+
         
 
     def _check_cycle(self):
@@ -101,14 +127,25 @@ class Node:
             return weight_sum_player_1 < 0 or weight_sum_player_2 < 0
         return False
 
+    def save_state(self):
+        print(f"[Node {self}] saving state")
+        self.backtracking_reaches = self.reaches.copy()
+        self.backtracking_parents = self.parents.copy()
+        for p_edge in self.parents:
+            p_origin = p_edge.node1
+            p_origin.save_state()
+
     def safely_update(self, next_edge: Edge):
         """
         Update the node with the next edge and backtrack if a negative cycle is detected.
         """
+        print(f"[Node {self}]: Safely update on edge {next_edge}")
+        self.save_state()
+
         self.update(next_edge)
         if self.check_negative_cycle():
             print(f"Negative cycle detected for node {self} with edge {next_edge}")
-            self.backtrack(next_edge)
+            self.new_backtrack()
             
         # for d_edge in self.reaches.copy():
         #     d_origin, d_dest = d_edge.node1, d_edge.node2
