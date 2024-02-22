@@ -1,10 +1,18 @@
 from __future__ import annotations
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Set
 from tqdm import tqdm
 import random
 from collections import deque
-
 from plot_graph import plot_graph, plot_3D_graph, plot_2D_graph
+import logging
+
+DEBUG = True  # Set this to False to disable debug prints
+
+# Set up logging
+if DEBUG:
+    logging.basicConfig(level=logging.DEBUG)
+else:
+    logging.basicConfig(level=logging.INFO)
 
 
 class Node:
@@ -25,6 +33,8 @@ class Node:
             self.player = Player(1)
         else:
             self.player = player
+        self.value = 0 #TODO: don't remember if this should be initialized to 0 
+
         # The list of edges regarding the same player that this node reaches.
         self.reaches: Set[Edge] = set()
         # The list of edges regarding the same player that reach this node.
@@ -39,7 +49,8 @@ class Node:
         Update the `reaches` list of the node with the new edge.
         Also update the reaches list of the self's parent nodes of the same player with the new edge.
         """
-        print(f"Updating edge {edge} for node {self}")
+        self.visited = False
+        logging.debug(f"Updating edge {edge} for node {self}")
         old_reaches = self.reaches.copy()
         self.reaches.add(edge)
         self.reaches = self.reaches.union(edge.node2.reaches)
@@ -56,7 +67,7 @@ class Node:
             p_origin = p_edge.node1
             p_origin.update(edge)
         
-        print(f"""
+        logging.debug(f"""
         Node: {self}
         Edge: {edge}
         Reaches: {self.reaches}
@@ -70,12 +81,12 @@ class Node:
         Remove the edge from the `reaches` list of the node.
         Also remove the edge from the reaches list of the self's parent nodes of the same player.
         """
-        print(f"[Node {self}]: Backtracking edge {edge}. Reaches is {self.reaches} and parents is {self.parents}")
+        logging.debug(f"[Node {self}]: Backtracking edge {edge}. Reaches is {self.reaches} and parents is {self.parents}")
         if edge not in self.reaches:
-            print(f"[Node {self}]: Edge {edge} not in reaches {self.reaches}")
+            logging.debug(f"[Node {self}]: Edge {edge} not in reaches {self.reaches}")
             return
         self.reaches.remove(edge)
-        print(f"[Node {self}]: Removed edge {edge} from reaches {self.reaches}")
+        logging.debug(f"[Node {self}]: Removed edge {edge} from reaches {self.reaches}")
 
         #TODO: Remove also all the other edges that are not reachable anymore
         for p_edge in self.parents:
@@ -94,7 +105,7 @@ class Node:
 
         if self.reaches == old_reaches and old_parents == self.parents:
             # Nothing changed, avoid max recursion depth
-            print(f"[Node {self}], nothing changed")
+            logging.debug(f"[Node {self}], nothing changed")
             return
 
         # for edge in self.reaches:
@@ -128,9 +139,14 @@ class Node:
         return False
 
     def save_state(self):
-        print(f"[Node {self}] saving state")
+        logging.debug(f"[Node {self}] saving state")
+        if self.visited:
+            return
+        self.visited = True
+
         self.backtracking_reaches = self.reaches.copy()
         self.backtracking_parents = self.parents.copy()
+
         for p_edge in self.parents:
             p_origin = p_edge.node1
             p_origin.save_state()
@@ -139,18 +155,15 @@ class Node:
         """
         Update the node with the next edge and backtrack if a negative cycle is detected.
         """
-        print(f"[Node {self}]: Safely update on edge {next_edge}")
+        logging.debug(f"[Node {self}]: Safely update on edge {next_edge}")
         self.save_state()
 
         self.update(next_edge)
         if self.check_negative_cycle():
-            print(f"Negative cycle detected for node {self} with edge {next_edge}")
+            logging.debug(f"Negative cycle detected for node {self} with edge {next_edge}")
             self.new_backtrack()
-            
-        # for d_edge in self.reaches.copy():
-        #     d_origin, d_dest = d_edge.node1, d_edge.node2
-        #     if d_dest.check_negative_cycle():
-        #         d_dest.backtrack(d_edge)
+            return False
+        return True
 
     def get_neighbours(self) -> Set[Node]:
         neigh = set()
@@ -267,19 +280,26 @@ class Arena:
             for dest in nodes:
                 if random.random() < random.uniform(0, self.edge_probability):
                     weight = random.uniform(*self.weight_range)
+                    if origin == dest and weight < 0:
+                        continue
                     edge = Edge(origin, dest, weight)
-                    origin.safely_update(edge)
+                    if not origin.safely_update(edge):
+                        continue
 
+                    #TODO: remove this add_edge and get the information from the node.reaches and node.parents
                     origin.add_edge(edge)
-                    dest.add_edge(edge)
+                    # dest.add_edge(edge)
                     edges.add(edge)
                 if random.random() < random.uniform(0, self.edge_probability):
                     weight = random.uniform(*self.weight_range)
+                    if origin == dest and weight < 0:
+                        continue
                     edge = Edge(dest, origin, weight)
-                    dest.safely_update(edge) 
+                    if not dest.safely_update(edge):
+                        continue
 
                     dest.add_edge(edge)
-                    origin.add_edge(edge)
+                    # origin.add_edge(edge)
                     edges.add(edge)
         return nodes, edges
 
@@ -311,10 +331,10 @@ class Arena:
             [edge.weight for edge in self.edges if edge.node1.player.name == 1])
         weight_sum_player_2 = sum(
             [edge.weight for edge in self.edges if edge.node1.player.name == 2])
-        print(f"Sum of weights for player 1: {weight_sum_player_1}")
-        print(f"Sum of weights for player 2: {weight_sum_player_2}")
-        print(f"Sum is non negative: {weight_sum}")
-        print(
+        logging.debug(f"Sum of weights for player 1: {weight_sum_player_1}")
+        logging.debug(f"Sum of weights for player 2: {weight_sum_player_2}")
+        logging.debug(f"Sum is non negative: {weight_sum}")
+        logging.debug(
             f"There are {num_positive_weights} positive weights and {num_negative_weights} negative weights")
 
         num_negative_cycles = len(self.detect_negative_cycles())
@@ -377,12 +397,12 @@ class Arena:
 
         def Q(node: Node):
             outgoing_edges = node.get_neighbours_with_edges()
-            # print(f"Node {node} has outgoing edges {outgoing_edges}")
+            # logging.debug(f"Node {node} has outgoing edges {outgoing_edges}")
             values = [delta(node.value, edge.weight)
                       for node, edge in outgoing_edges.items()]
             if values == []:
                 return 0
-            # print(f"Q({node}) = {values}")
+            # logging.debug(f"Q({node}) = {values}")
 
             if node.player.name == 1:  # max
                 return max(values)
@@ -406,9 +426,9 @@ class Arena:
                     converged[node] = True
         pbar.close()
         if steps > max_steps:
-            print(f"Did not converge after {steps} steps")
+            logging.debug(f"Did not converge after {steps} steps")
         else:
-            print(f"Converged after {steps} steps")
+            logging.debug(f"Converged after {steps} steps")
         return self.nodes
 
     def get_min_energy(self, round_to: int = 2):
@@ -435,16 +455,11 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1):
     arena.check_arena_conditions()
     arena.value_iteration()
     value_dict = {node: round(node.value, 2) for node in arena.nodes}
-    # print(f"Final state: {value_dict}")
+    # logging.debug(f"Final state: {value_dict}")
     min_energy_dict = arena.get_min_energy()
     return min_energy_dict
-    # print(f"Min energy: {min_energy_dict}")
+    # logging.debug(f"Min energy: {min_energy_dict}")
 
 if __name__ == "__main__":
-    # solutions = []
-    # for i in range(10):
-    #     solution = run_solver()
-    #     solutions.append(solution)
-    # print(solutions)
-    solution = run_solver(num_nodes=10)
+    solution = run_solver(num_nodes=20, edge_probability=0.1)
     print(solution)
