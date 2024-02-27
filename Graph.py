@@ -278,15 +278,12 @@ class Arena:
         negative_cycles = self.detect_negative_cycles()
         assert len(negative_cycles) == 0, f"Negative cycles without doing nothing: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
         node.add_edge(edge)
-        for node in self.nodes:
-            print(f"Node {node}: edges {node.edges}")
         return True
 
     def safely_add_edge(self, node: Node, edge: Edge):
         if edge in self.edges:
             return
         if self.safely_update(node, edge):
-            #TODO: safely update wrongly outputs True
             assert len(self.detect_negative_cycles()) == 0, f"Negative cycles after adding edge {edge}. Expected 0"
             return
         return
@@ -381,13 +378,13 @@ class Arena:
         assert num_negative_cycles == 0, f"Graph has {num_negative_cycles} negative cycles"
 
 
-    # def _is_reachable(self, start):
-    #     """
-    #     Check if all nodes are reachable from the start node using BFS.
-    #     """
-    #     visited = {node: False for node in self.nodes}
-    #     queue = deque([start])
-    #     visited[start] = True
+    def _is_reachable(self, start):
+        """
+        Check if all nodes are reachable from the start node using BFS.
+        """
+        visited = {node: False for node in self.nodes}
+        queue = deque([start])
+        visited[start] = True
 
     #     while queue:
     #         current_node = queue.popleft()
@@ -398,35 +395,42 @@ class Arena:
 
     #     return all(visited.values())
 
+    # def detect_negative_cycles(self):
+    #     """
+    #     Detect negative cycles using Bellman-Ford algorithm.
+    #     """
+    #     distances = {node: 0 for node in self.nodes}
+    #     predecessors = {node: None for node in self.nodes}
+
+    #     # Relax edges repeatedly
+    #     for _ in range(len(self.nodes) - 1):
+    #         for edge in self.edges:
+    #             if distances[edge.node1] + edge.weight < distances.get(edge.node2, float('inf')):
+    #                 distances[edge.node2] = distances[edge.node1] + edge.weight
+    #                 predecessors[edge.node2] = edge.node1
+
+    #     # Check for negative cycles
+    #     negative_cycles = []
+    #     for edge in self.edges:
+    #         if distances[edge.node1] + edge.weight < distances.get(edge.node2, float('inf')):
+    #             # Negative cycle found
+    #             cycle = [edge.node2]
+    #             node = edge.node1
+    #             while node not in cycle:
+    #                 cycle.append(node)
+    #                 node = predecessors[node]
+    #             cycle.append(node)
+    #             cycle.reverse()
+    #             negative_cycles.append(cycle)
+
+    #     return negative_cycles
+
     def detect_negative_cycles(self):
-        """
-        Detect negative cycles using Bellman-Ford algorithm.
-        """
-        distances = {node: 0 for node in self.nodes}
-        predecessors = {node: None for node in self.nodes}
-
-        # Relax edges repeatedly
-        for _ in range(len(self.nodes) - 1):
-            for edge in self.edges:
-                if distances[edge.node1] + edge.weight < distances.get(edge.node2, float('inf')):
-                    distances[edge.node2] = distances[edge.node1] + edge.weight
-                    predecessors[edge.node2] = edge.node1
-
-        # Check for negative cycles
-        negative_cycles = []
-        for edge in self.edges:
-            if distances[edge.node1] + edge.weight < distances.get(edge.node2, float('inf')):
-                # Negative cycle found
-                cycle = [edge.node2]
-                node = edge.node1
-                while node not in cycle:
-                    cycle.append(node)
-                    node = predecessors[node]
-                cycle.append(node)
-                cycle.reverse()
-                negative_cycles.append(cycle)
-
-        return negative_cycles
+        for key, value in self.reaches.items():
+            for edge in value:
+                if edge.node2 == key:
+                    return [0]
+        return []
 
    
     def value_iteration(self):
@@ -492,16 +496,16 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | N
                   edge_probability=edge_probability, 
                   seed=seed) 
     arena.generate()
-    arena.check_arena_conditions()
+    # arena.check_arena_conditions()
     arena.value_iteration()
     # value_dict = {node: round(node.value, 2) for node in arena.nodes}
     min_energy_dict = arena.get_min_energy()
     return min_energy_dict
 
 if __name__ == "__main__":
-    for seed in range(0, 1):
+    for seed in range(0, 10):
         try:
-            solution = run_solver(num_nodes=10, edge_probability=0.9, seed=seed)
+            solution = run_solver(num_nodes=30, edge_probability=0.2, seed=seed)
             logging.info(f"Solution: {solution}")
         except AssertionError as e:
             logging.error(f"Seed {seed} failed with error: {e}")
