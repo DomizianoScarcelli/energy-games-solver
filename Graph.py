@@ -6,14 +6,15 @@ from collections import deque
 from plot_graph import plot_graph, plot_3D_graph, plot_2D_graph
 import logging
 import pickle
+import sys
 
-DEBUG = True  # Set this to False to disable debug prints
+DEBUG = True# Set this to False to disable debug prints
 
 # Set up logging
 if DEBUG:
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 else:
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(lstream=sys.stdout, level=logging.INFO)
 
 
 class Node:
@@ -109,6 +110,7 @@ class Node:
             logging.debug(f"[Node {self}], nothing changed")
             return
 
+        print(f"Restoring node {self} state with reaches {self.backtracking_reaches} and parents {self.backtracking_parents}")
         # for edge in self.reaches:
         #     edge.node2.new_backtrack()
         for edge in self.parents:
@@ -144,7 +146,7 @@ class Node:
         return False
 
     def save_state(self):
-        logging.debug(f"[Node {self}] saving state")
+        # logging.debug(f"[Node {self}] saving state")
         if self.visited:
             return
         self.visited = True
@@ -162,17 +164,20 @@ class Node:
             self.add_edge(edge)
 
     def generate_temp_arena(self):
-        nodes = set()
-        def get_nodes(node: Node):
-            old_nodes = nodes
+        #TODO: this doesn't take the correct nodes
+        def get_nodes(node: Node, nodes: Set[Node] = set()):
+            if node.visited: 
+                return nodes
+            node.visited = True
             nodes.add(node)
-            if nodes == old_nodes:
-                return
             for edge in node.edges:
-                get_nodes(edge.node1)
-                get_nodes(edge.node2)
-        get_nodes(self)
+                nodes = nodes.union(get_nodes(edge.node1, set()))
+                nodes = nodes.union(get_nodes(edge.node2, set()))
+            return nodes
+
+        nodes = get_nodes(self, set())
         arena = Arena()
+        print(f"Nodes for temp arena are: {nodes}")
         arena.load_from_nodes(nodes)
         return arena
 
@@ -180,15 +185,37 @@ class Node:
         """
         Update the node with the next edge and backtrack if a negative cycle is detected.
         """
+        #TODO: arena creation just for the print below, remove it in prod
+        arena = self.generate_temp_arena()
+        print(f"Current State:")
+        for node in arena.nodes:
+            print(f"""
+            ---
+            Node: {node}
+            Reaches: {node.reaches}
+            Parents: {node.parents}
+            """)
         logging.debug(f"[Node {self}]: Safely update on edge {next_edge}")
         self.save_state()
         self.update(next_edge)
         #TODO: this is super slow
         arena = self.generate_temp_arena()
-        if arena.detect_negative_cycles():
+        print(f"Arena: {arena}")
+        negative_cycles = arena.detect_negative_cycles()
+        print(f"Negative cycles: {len(negative_cycles)}")
+        print(f"Which are {negative_cycles}")
+        if len(negative_cycles) > 0:
             logging.debug(f"Negative cycle detected for node {self} with edge {next_edge}")
             self.new_backtrack()
+            print(f"Arena: {arena}")
+            negative_cycles = arena.detect_negative_cycles()
+            print(f"Negative cycles: {len(negative_cycles)}")
+            print(f"Which are {negative_cycles}")
             return False
+        print(f"Arena: {arena}")
+        negative_cycles = arena.detect_negative_cycles()
+        print(f"Negative cycles: {len(negative_cycles)}")
+        print(f"Which are {negative_cycles}")
         return True
 
     def get_neighbours(self) -> Set[Node]:
@@ -308,7 +335,7 @@ class Arena:
             if edge.node2 not in self.nodes:
                 self.nodes.add(edge.node2)
                 
-        print("Final edges are: ", self.edges)
+        # logging.debug("Final edges are: ", self.edges)
 
     def load_from_pickle(self, filename: str):
         with open(filename, 'rb') as f:
@@ -329,28 +356,23 @@ class Arena:
         for origin in tqdm(nodes, desc="Creating graph"):
             for dest in nodes:
                 if random.random() < random.uniform(0, self.edge_probability):
-                    weight = random.uniform(*self.weight_range)
+                    weight = round(random.uniform(*self.weight_range))
                     if origin == dest and weight < 0:
                         continue
                     edge = Edge(origin, dest, weight)
-                    if not origin.safely_update(edge):
-                        continue
+                    origin.safely_add_edge(edge)
 
-                    #TODO: remove this add_edge and get the information from the node.reaches and node.parents
-                    origin.add_edge(edge)
-                    # dest.add_edge(edge)
-                    edges.add(edge)
                 if random.random() < random.uniform(0, self.edge_probability):
-                    weight = random.uniform(*self.weight_range)
+                    weight = round(random.uniform(*self.weight_range))
                     if origin == dest and weight < 0:
                         continue
                     edge = Edge(dest, origin, weight)
-                    if not dest.safely_update(edge):
-                        continue
+                    dest.safely_add_edge(edge)
 
-                    dest.add_edge(edge)
-                    # origin.add_edge(edge)
-                    edges.add(edge)
+        edges = set()
+        for node in nodes:
+            edges = edges.union(node.reaches)
+            edges = edges.union(node.parents)
 
         logging.debug(f"Final setting") 
         for node in nodes:
@@ -428,8 +450,8 @@ class Arena:
         distances = {node: 0 for node in self.nodes}
         predecessors = {node: None for node in self.nodes}
 
-        print("Distances are ", distances)
-        print(f"Edges are {self.edges}")
+        logging.debug("Distances are ", distances)
+        logging.debug(f"Edges are {self.edges}")
 
         # Relax edges repeatedly
         for _ in range(len(self.nodes) - 1):
@@ -515,9 +537,10 @@ class Arena:
 
 def run_solver(num_nodes: int = 30, edge_probability: float = 0.1):
     arena = Arena(num_nodes=num_nodes,
-                  edge_probability=edge_probability)
+                  edge_probability=edge_probability, 
+                  seed=24) #Seed 24 creates negative cycles, useful for debugging
     arena.generate()
-    arena.save()
+    # arena.save()
     arena.check_arena_conditions()
     arena.value_iteration()
     value_dict = {node: round(node.value, 2) for node in arena.nodes}
@@ -527,5 +550,5 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1):
     # logging.debug(f"Min energy: {min_energy_dict}")
 
 if __name__ == "__main__":
-    solution = run_solver(num_nodes=6, edge_probability=0.9)
-    print(solution)
+    solution = run_solver(num_nodes=5, edge_probability=0.9)
+    logging.info(f"Solution: {solution}")
