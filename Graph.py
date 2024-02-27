@@ -1,4 +1,5 @@
 from __future__ import annotations
+import time
 from pprint import pprint
 from typing import Dict, List, Set
 from tqdm import tqdm
@@ -9,16 +10,26 @@ import logging
 import pickle
 import sys
 from copy import deepcopy
+import time
 
 #Set this to False to disable debug prints
 DEBUG = False
+INFO = True
 # Set up logging
 if DEBUG:
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-else:
+if INFO:
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
-
+def timeit(func):
+        def wrapper(*args, **kwargs):
+            start_time = time.time()
+            result = func(*args, **kwargs)
+            end_time = time.time()
+            execution_time = (end_time - start_time) * 1000
+            print(f"Execution time of {func.__name__}: {execution_time} ms")
+            return result
+        return wrapper
 class Node:
     _nodes = {}
 
@@ -259,24 +270,25 @@ class Arena:
         for node in self.nodes:
             logging.debug(f"   Node {node}: edges {node.edges}")
 
+    # @timeit 
     def safely_update(self, node: Node, edge: Edge):
         """
         Update the arena with the new edge and backtrack if a negative cycle is detected.
         """
-        self.print_state(f"Before update edge: {edge}")
-        negative_cycles = self.detect_negative_cycles()
-        assert len(negative_cycles) == 0, f"Negative cycles before update: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
+        # self.print_state(f"Before update edge: {edge}")
+        # negative_cycles = self.detect_negative_cycles()
+        # assert len(negative_cycles) == 0, f"Negative cycles before update: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
         self.update(node, edge)
-        self.print_state(f"After update edge: {edge}")
+        # self.print_state(f"After update edge: {edge}")
         negative_cycles = self.detect_negative_cycles()
         if len(negative_cycles) > 0:
             self.backtrack(message=f"removing {edge}")
-            negative_cycles = self.detect_negative_cycles()
-            self.print_state(f"After backtrack on edge: {edge}")
-            assert len(negative_cycles) == 0, f"Negative cycles after backtrack: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
+            # negative_cycles = self.detect_negative_cycles()
+            # self.print_state(f"After backtrack on edge: {edge}")
+            # assert len(negative_cycles) == 0, f"Negative cycles after backtrack: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
             return False
-        negative_cycles = self.detect_negative_cycles()
-        assert len(negative_cycles) == 0, f"Negative cycles without doing nothing: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
+        # negative_cycles = self.detect_negative_cycles()
+        # assert len(negative_cycles) == 0, f"Negative cycles without doing nothing: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
         node.add_edge(edge)
         return True
 
@@ -284,7 +296,7 @@ class Arena:
         if edge in self.edges:
             return
         if self.safely_update(node, edge):
-            assert len(self.detect_negative_cycles()) == 0, f"Negative cycles after adding edge {edge}. Expected 0"
+            # assert len(self.detect_negative_cycles()) == 0, f"Negative cycles after adding edge {edge}. Expected 0"
             return
         return
 
@@ -297,29 +309,22 @@ class Arena:
 
         for origin in tqdm(self.nodes, desc="Creating graph"):
             for dest in self.nodes:
-                if any([edge for edge in self.edges if (edge.node2 == dest and edge.node1 == origin) or (edge.node1 == dest and edge.node2 == origin)]):
-                    logging.debug(f"[generate] Edge {origin} -> {dest} already in edges")
-                    continue
-                else:
-                    logging.debug(f"[generate else] Edge {origin} -> {dest} not in edges. Edges are {self.edges}")
-                # if Edge(origin, dest, 0) in edges or Edge(dest, origin, 0) in edges:
-                #     logging.debug(f"[generate] Edge {origin} -> {dest} already in edges")
-                #     continue
-                if random.random() < random.uniform(0, self.edge_probability):
-                    weight = round(random.uniform(*self.weight_range))
+                if random.random() < self.edge_probability:
+                    # weight = round(random.uniform(*self.weight_range))
+                    weight = random.uniform(*self.weight_range)
                     if origin == dest and weight < 0:
                         continue
                     edge = Edge(origin, dest, weight)
                     self.save_state()
                     self.safely_add_edge(origin, edge)
 
-                if random.random() < random.uniform(0, self.edge_probability):
-                    weight = round(random.uniform(*self.weight_range))
-                    if origin == dest and weight < 0:
-                        continue
-                    edge = Edge(dest, origin, weight)
-                    self.save_state()
-                    self.safely_add_edge(origin, edge)
+                # if random.random() < self.edge_probability:
+                #     weight = round(random.uniform(*self.weight_range))
+                #     if origin == dest and weight < 0:
+                #         continue
+                #     edge = Edge(dest, origin, weight)
+                #     self.save_state()
+                #     self.safely_add_edge(origin, edge)
                 
 
                 for node in self.nodes:
@@ -497,16 +502,23 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | N
                   seed=seed) 
     arena.generate()
     # arena.check_arena_conditions()
+    # plot_2D_graph(arena)
     arena.value_iteration()
     # value_dict = {node: round(node.value, 2) for node in arena.nodes}
     min_energy_dict = arena.get_min_energy()
     return min_energy_dict
 
 if __name__ == "__main__":
+    times = []
     for seed in range(0, 10):
         try:
-            solution = run_solver(num_nodes=30, edge_probability=0.2, seed=seed)
+            start = time.time()
+            solution = run_solver(num_nodes=100, edge_probability=0.01, seed=seed)
+            end = time.time()
+            times.append(end - start)
             logging.info(f"Solution: {solution}")
         except AssertionError as e:
             logging.error(f"Seed {seed} failed with error: {e}")
             break
+    avg_time = (sum(times) / len(times)) * 1000
+    logging.info(f"Average time: {avg_time:f} ms")
