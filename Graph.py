@@ -1,4 +1,5 @@
 from __future__ import annotations
+from pprint import pprint
 from typing import Dict, List, Set
 from tqdm import tqdm
 import random
@@ -7,9 +8,10 @@ from plot_graph import plot_graph, plot_3D_graph, plot_2D_graph
 import logging
 import pickle
 import sys
+from copy import deepcopy
 
 #Set this to False to disable debug prints
-DEBUG = False 
+DEBUG = False
 # Set up logging
 if DEBUG:
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -37,202 +39,6 @@ class Node:
             self.player = player
         self.value = 0 #TODO: don't remember if this should be initialized to 0 
 
-        # The list of edges regarding the same player that this node reaches.
-        self.reaches: Set[Edge] = set()
-        # The list of edges regarding the same player that reach this node.
-        self.parents: Set[Edge]  = set()
-
-        # A copy of the reaches and parents list before the last update.
-        self.backtracking_reaches: Set[Edge] = set()
-        self.backtracking_parents: Set[Edge] = set()
-
-    def update(self, edge: Edge):
-        """
-        Update the `reaches` list of the node with the new edge.
-        Also update the reaches list of the self's parent nodes of the same player with the new edge.
-        """
-        # self.visited = False
-        self.visited = True
-        logging.debug(f"Updating edge {edge} for node {self}")
-        old_reaches = self.reaches.copy()
-        self.reaches.add(edge)
-        self.reaches = self.reaches.union(edge.node2.reaches)
-
-        old_parents = self.parents.copy()
-        dest = edge.node2
-        dest.parents.add(edge)
-
-        # if self.visited:
-        #     return
-
-        # self.visited = True
-        if self.reaches == old_reaches and self.parents == old_parents:
-            # Avoid max recursion depth
-            return
-
-        for p_edge in self.parents:
-            p_origin = p_edge.node1
-            p_origin.update(edge)
-        
-        logging.debug(f"""
-        Node: {self}
-        Edge: {edge}
-        Reaches: {self.reaches}
-        Backtracking Reaches: {self.backtracking_reaches}
-        Parent: {self.parents}
-        Backtracking Parents: {self.backtracking_parents}
-              """)
-
-    def backtrack(self, edge: Edge):
-        """
-        Remove the edge from the `reaches` list of the node.
-        Also remove the edge from the reaches list of the self's parent nodes of the same player.
-        """
-        logging.debug(f"[Node {self}]: Backtracking edge {edge}. Reaches is {self.reaches} and parents is {self.parents}")
-        if edge not in self.reaches:
-            logging.debug(f"[Node {self}]: Edge {edge} not in reaches {self.reaches}")
-            return
-        self.reaches.remove(edge)
-        logging.debug(f"[Node {self}]: Removed edge {edge} from reaches {self.reaches}")
-
-        #TODO: Remove also all the other edges that are not reachable anymore
-        for p_edge in self.parents:
-            p_origin = p_edge.node1
-            p_origin.backtrack(edge) 
-    
-    def new_backtrack(self):
-        """
-        Remove the edge from the `reaches` list of the node.
-        Also remove the edge from the reaches list of the self's parent nodes of the same player.
-        """
-        old_reaches = self.reaches.copy()
-        old_parents = self.parents.copy()
-        self.reaches = self.backtracking_reaches.copy()
-        self.parents = self.backtracking_parents.copy()
-
-        if self.reaches == old_reaches and old_parents == self.parents:
-            # Nothing changed, avoid max recursion depth
-            logging.debug(f"[Node {self}], nothing changed")
-            return
-        # if self.visited:
-        #     return
-        # self.visited = True
-        logging.debug(f"Restoring node {self} state with reaches {self.backtracking_reaches} and parents {self.backtracking_parents}")
-        # for edge in self.reaches:
-        #     edge.node2.new_backtrack()
-        for edge in self.parents:
-            edge.node1.new_backtrack()
-
-        
-
-    def _check_cycle(self):
-        """
-        Returns true if the node is part of a negative cycle.
-        A cycle exists if, for each (i, j) in self.reaches, it exists at least one j == self.
-        """
-        for edge in self.reaches:
-            if edge.node2 == self:
-                return True
-        return False
-
-    def check_negative_cycle(self):
-        """
-        Returns true if the node is part of a negative cycle.
-        """
-        if self._check_cycle():
-            weight_sum_player_1 = sum(
-                [edge.weight for edge in self.reaches if edge.node1.player.name == 1])
-            weight_sum_player_2 = sum(
-                [edge.weight for edge in self.reaches if edge.node1.player.name == 2])
-
-            # self_loops = any(
-            #     [edge for edge in self.reaches if edge.node1 == self and edge.node2 == self])
-            
-            #TODO: this is not correct since the result is different from the Arena.detect_negative_cyclesj
-            return weight_sum_player_1 < 0 or weight_sum_player_2 < 0 
-        return False
-
-    def save_state(self):
-        print(f"[save_state] Node {self} saving state")
-        # if self.visited:
-        #     return
-        # self.visited = True
-
-        self.backtracking_reaches = self.reaches.copy()
-        self.backtracking_parents = self.parents.copy()
-
-        for p_edge in self.parents:
-            p_origin = p_edge.node1
-            p_origin.save_state()
-
-
-    def safely_add_edge(self, edge: Edge):
-        print(f'[safely_add_edge] Node {self} adding edge {edge}')
-        if edge in self.edges:
-            print(f'[safely_add_edge] edge {edge} NOT ADDED to node {self} because already in self.edges')
-            return
-        if self.safely_update(edge):
-            print(f'[safely_add_edge] edge {edge} ADDED to node {self}')
-            self.add_edge(edge)
-            return
-        print(f'[safely_add_edge] edge {edge} NOT ADDED to node {self} because LOOP')
-        
-
-    def generate_temp_arena(self):
-        def get_nodes(node: Node, nodes: Set[Node] = set()):
-            if node in nodes: 
-                return 
-            nodes.add(node)
-            for edge in node.edges:
-                get_nodes(edge.node1, nodes)
-                get_nodes(edge.node2, nodes)
-            return 
-        nodes = set()
-        get_nodes(self, nodes)
-        arena = Arena()
-        arena.load_from_nodes(nodes)
-        logging.debug(f"Final temp arena is: {arena}")
-        return arena
-
-    def safely_update(self, next_edge: Edge):
-        """
-        Update the node with the next edge and backtrack if a negative cycle is detected.
-        """
-        #TODO: arena creation just for the print below, remove it in prod
-        arena = self.generate_temp_arena()
-        negative_cycles = arena.detect_negative_cycles()
-        print("-"*25 + f"Before update edge: {next_edge}" + "-"*25)
-        print(f"Negative cycles: {len(negative_cycles)}")
-        print(f"Arena: {arena}")
-        print(f"Next edge: {next_edge}")
-        for node in arena.nodes:
-            print(f"   Node {node}: edges {node.edges}")
-        assert len(negative_cycles) == 0, f"Negative cycles before update: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
-        logging.debug(f"[Node {self}]: Safely update on edge {next_edge}")
-        self.save_state()
-        self.visited = False
-        self.update(next_edge)
-        arena = self.generate_temp_arena()
-        logging.debug(f"Temp arena!!!: {arena}")
-        negative_cycles = arena.detect_negative_cycles()
-        print("-"*25 + f"After update edge: {next_edge}" + "-"*25)
-        print(f"Negative cycles: {len(negative_cycles)}")
-        print(f"Arena: {arena}")
-        print(f"Next edge: {next_edge}")
-        for node in arena.nodes:
-            print(f"   Node {node}: edges {node.edges}")
-        if len(negative_cycles) > 0:
-            logging.debug(f"Negative cycle detected for node {self} with edge {next_edge}")
-            self.new_backtrack()
-            logging.debug(f"Arena after backtrack: {arena}")
-            negative_cycles = arena.detect_negative_cycles()
-            #TODO: there are still negative cycles, need to check why
-            assert len(negative_cycles) == 0, f"Negative cycles after backtrack: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
-            return False
-        logging.debug(f"Arena after update: {arena}")
-        negative_cycles = arena.detect_negative_cycles()
-        assert len(negative_cycles) == 0, f"Negative cycles without doing nothing: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
-        return True
 
     def get_neighbours(self) -> Set[Node]:
         neigh = set()
@@ -269,6 +75,11 @@ class Node:
     def __repr__(self):
         return f"{self.name}"
 
+    def __deepcopy__(self, memo):
+        # Create a new instance of Node with the same properties
+        # return Node(self.name, self.player)
+        return self
+
 
 class Edge:
     _edges = {}
@@ -296,6 +107,11 @@ class Edge:
 
     def __repr__(self) -> str:
         return f"{self.node1} -> {self.node2} ({self.weight})"
+    
+    def __deepcopy__(self, memo):
+        # Create a new instance of Edge with the same properties
+        # return Edge(self.node1, self.node2, self.weight)
+        return self
 
 
 class Player:
@@ -328,6 +144,13 @@ class Arena:
         self.edge_probability = edge_probability
         self.max_weight = 10
         self.weight_range = (-self.max_weight, self.max_weight)
+        self.backtracking_reaches: Dict[Node, Set[Edge]] = {}
+        self.backtracking_parents: Dict[Node, Set[Edge]] = {}
+        self.backtracking_edges: Set[Edge] = set()
+
+        self.reaches: Dict[Node, Set[Edge]] = {}
+        self.parents: Dict[Node, Set[Edge]] = {}
+
         if seed is not None:
             random.seed(seed)
 
@@ -360,53 +183,163 @@ class Arena:
         with open('arena.pkl', 'wb') as f:
             pickle.dump(self, f)
 
+    def save_state(self):
+        logging.debug("+" * 25 + "Saving state" + "+" * 25)
+        logging.debug(f"Saving the state:")
+        logging.debug("Reaches:")
+        logging.debug(self.reaches)
+        logging.debug("Parents:")
+        logging.debug(self.parents)
+        logging.debug("Edges:")
+        logging.debug(self.edges)
+        logging.debug("+" * 25 + "+" * 25)
+        self.backtracking_reaches = deepcopy(self.reaches)
+        self.backtracking_parents = deepcopy(self.parents)
+        self.backtracking_edges = deepcopy(self.edges)
+
+    def backtrack(self, message: str = ""):
+        logging.debug("*" * 25 + f" Backtracking ({message}) " + "*" * 25)
+        logging.debug(f"Backtracking from state:")
+        logging.debug(self.reaches)
+        logging.debug(self.parents)
+        logging.debug(self.edges)
+        logging.debug(f"to state:")
+        logging.debug(self.backtracking_reaches)
+        logging.debug(self.backtracking_parents)
+        logging.debug(self.backtracking_edges)
+        self.reaches = deepcopy(self.backtracking_reaches)
+        self.parents = deepcopy(self.backtracking_parents)
+        self.edges = deepcopy(self.backtracking_edges)
+    
+    def update_reaches(self, node: Node, edge: Edge):
+        if self.reaches.get(node) is None:
+            self.reaches[node] = {edge}
+        else:
+            self.reaches[node].add(edge)
+
+    def update_parents(self, node: Node, edge: Edge):
+        if self.parents.get(node) is None:
+            self.parents[node] = {edge}
+        else:
+            self.parents[node].add(edge)
+
+    def update(self, node: Node, edge: Edge):
+        """
+        Update the `reaches` list of the node with the new edge.
+        Also update the reaches list of the self's parent nodes of the same player with the new edge.
+        """
+        logging.debug(f"Updating edge {edge} for node {self}")
+        old_reaches = deepcopy(self.reaches)
+        self.update_reaches(node, edge)
+        self.reaches[node] = self.reaches[node].union(self.reaches.get(edge.node2, set()))
+
+        old_parents = deepcopy(self.parents)
+        dest = edge.node2
+        self.update_parents(dest, edge)
+
+        if self.reaches == old_reaches and self.parents == old_parents:
+            # Avoid max recursion depth
+            return
+
+        self.edges.add(edge)
+
+        for p_edge in self.parents.get(node, set()):
+            p_origin = p_edge.node1
+            self.update(p_origin, edge)
+
+    def print_state(self, message):
+        negative_cycles = self.detect_negative_cycles()
+        logging.debug("-"*25 + message + "-"*25)
+        logging.debug(f"Negative cycles: {len(negative_cycles)}")
+        logging.debug(f"Arena: {self}")
+        logging.debug(f"Reaches:")
+        logging.debug(self.reaches)
+        logging.debug(f"Parents:")
+        logging.debug(self.parents)
+        for node in self.nodes:
+            logging.debug(f"   Node {node}: edges {node.edges}")
+
+    def safely_update(self, node: Node, edge: Edge):
+        """
+        Update the arena with the new edge and backtrack if a negative cycle is detected.
+        """
+        self.print_state(f"Before update edge: {edge}")
+        negative_cycles = self.detect_negative_cycles()
+        assert len(negative_cycles) == 0, f"Negative cycles before update: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
+        self.update(node, edge)
+        self.print_state(f"After update edge: {edge}")
+        negative_cycles = self.detect_negative_cycles()
+        if len(negative_cycles) > 0:
+            self.backtrack(message=f"removing {edge}")
+            negative_cycles = self.detect_negative_cycles()
+            self.print_state(f"After backtrack on edge: {edge}")
+            assert len(negative_cycles) == 0, f"Negative cycles after backtrack: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
+            return False
+        negative_cycles = self.detect_negative_cycles()
+        assert len(negative_cycles) == 0, f"Negative cycles without doing nothing: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
+        node.add_edge(edge)
+        for node in self.nodes:
+            print(f"Node {node}: edges {node.edges}")
+        return True
+
+    def safely_add_edge(self, node: Node, edge: Edge):
+        if edge in self.edges:
+            return
+        if self.safely_update(node, edge):
+            #TODO: safely update wrongly outputs True
+            assert len(self.detect_negative_cycles()) == 0, f"Negative cycles after adding edge {edge}. Expected 0"
+            return
+        return
+
     def generate(self):
-        nodes: Set[Node] = set()
+        self.nodes: Set[Node] = set()
+        self.edges: Set[Edge] = set()
         for i in range(self.num_nodes):
-            nodes.add(Node(name=i, player=Player(random.randint(1, 2))))
+            self.nodes.add(Node(name=i, player=Player(random.randint(1, 2))))
 
-        edges: Set[Edge] = set()
 
-        for origin in tqdm(nodes, desc="Creating graph"):
-            for dest in nodes:
-                if any([edge for edge in edges if (edge.node2 == dest and edge.node1 == origin) or (edge.node1 == dest and edge.node2 == origin)]):
-                    print(f"[generate] Edge {origin} -> {dest} already in edges")
+        for origin in tqdm(self.nodes, desc="Creating graph"):
+            for dest in self.nodes:
+                if any([edge for edge in self.edges if (edge.node2 == dest and edge.node1 == origin) or (edge.node1 == dest and edge.node2 == origin)]):
+                    logging.debug(f"[generate] Edge {origin} -> {dest} already in edges")
                     continue
                 else:
-                    print(f"[generate else] Edge {origin} -> {dest} not in edges. Edges are {edges}")
+                    logging.debug(f"[generate else] Edge {origin} -> {dest} not in edges. Edges are {self.edges}")
                 # if Edge(origin, dest, 0) in edges or Edge(dest, origin, 0) in edges:
-                #     print(f"[generate] Edge {origin} -> {dest} already in edges")
+                #     logging.debug(f"[generate] Edge {origin} -> {dest} already in edges")
                 #     continue
                 if random.random() < random.uniform(0, self.edge_probability):
                     weight = round(random.uniform(*self.weight_range))
                     if origin == dest and weight < 0:
                         continue
                     edge = Edge(origin, dest, weight)
-                    origin.safely_add_edge(edge)
+                    self.save_state()
+                    self.safely_add_edge(origin, edge)
 
-                # if random.random() < random.uniform(0, self.edge_probability):
-                #     weight = round(random.uniform(*self.weight_range))
-                #     if origin == dest and weight < 0:
-                #         continue
-                #     edge = Edge(dest, origin, weight)
-                #     dest.safely_add_edge(edge)
+                if random.random() < random.uniform(0, self.edge_probability):
+                    weight = round(random.uniform(*self.weight_range))
+                    if origin == dest and weight < 0:
+                        continue
+                    edge = Edge(dest, origin, weight)
+                    self.save_state()
+                    self.safely_add_edge(origin, edge)
                 
 
-            for node in nodes:
-                edges = edges.union(node.reaches)
-                edges = edges.union(node.parents)
+                for node in self.nodes:
+                    self.edges = self.edges.union(self.reaches.get(node, set()))
+                    self.edges = self.edges.union(self.parents.get(node, set()))
+                
+                logging.debug(f"[generate] Edges are {self.edges}")
 
-        logging.debug(f"Final setting") 
-        for node in nodes:
-            logging.debug(f"""
-            ---
-            Node: {node}
-            Reaches: {node.reaches}
-            Parents: {node.parents}
-                          """)
+        # logging.debug(f"Final setting") 
+        # for node in self.nodes:
+        #     logging.debug(f"""
+        #     ---
+        #     Node: {node}
+        #     Reaches: {node.reaches}
+        #     Parents: {node.parents}
+        #                   """)
         
-        self.nodes, self.edges = nodes, edges
-        return nodes, edges
 
     def get_edge(self, node1, node2):
         """
@@ -448,22 +381,22 @@ class Arena:
         assert num_negative_cycles == 0, f"Graph has {num_negative_cycles} negative cycles"
 
 
-    def _is_reachable(self, start):
-        """
-        Check if all nodes are reachable from the start node using BFS.
-        """
-        visited = {node: False for node in self.nodes}
-        queue = deque([start])
-        visited[start] = True
+    # def _is_reachable(self, start):
+    #     """
+    #     Check if all nodes are reachable from the start node using BFS.
+    #     """
+    #     visited = {node: False for node in self.nodes}
+    #     queue = deque([start])
+    #     visited[start] = True
 
-        while queue:
-            current_node = queue.popleft()
-            for edge in self.edges:
-                if edge.node1 == current_node and not visited[edge.node2]:
-                    visited[edge.node2] = True
-                    queue.append(edge.node2)
+    #     while queue:
+    #         current_node = queue.popleft()
+    #         for edge in self.edges:
+    #             if edge.node1 == current_node and not visited[edge.node2]:
+    #                 visited[edge.node2] = True
+    #                 queue.append(edge.node2)
 
-        return all(visited.values())
+    #     return all(visited.values())
 
     def detect_negative_cycles(self):
         """
@@ -471,9 +404,6 @@ class Arena:
         """
         distances = {node: 0 for node in self.nodes}
         predecessors = {node: None for node in self.nodes}
-
-        logging.debug("Distances are ", distances)
-        logging.debug(f"Edges are {self.edges}")
 
         # Relax edges repeatedly
         for _ in range(len(self.nodes) - 1):
@@ -534,9 +464,9 @@ class Arena:
                     converged[node] = True
         pbar.close()
         if steps > max_steps:
-            logging.debug(f"Did not converge after {steps} steps")
+            logging.info(f"Did not converge after {steps} steps")
         else:
-            logging.debug(f"Converged after {steps} steps")
+            logging.info(f"Converged after {steps} steps")
         return self.nodes
 
     def get_min_energy(self, round_to: int = 2):
@@ -551,7 +481,7 @@ class Arena:
                 node for node in self.nodes if node.player == player]
 
             # Find the maximum value among the player's nodes
-            max_value = max(node.value for node in player_nodes)
+            max_value = max((node.value for node in player_nodes))
 
             min_energy_dict[player.name] = round(max_value, round_to)
         return min_energy_dict
@@ -560,21 +490,18 @@ class Arena:
 def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | None = None):
     arena = Arena(num_nodes=num_nodes,
                   edge_probability=edge_probability, 
-                  seed=seed) #Seed 24 creates negative cycles, useful for debugging
+                  seed=seed) 
     arena.generate()
-    # arena.save()
     arena.check_arena_conditions()
     arena.value_iteration()
-    value_dict = {node: round(node.value, 2) for node in arena.nodes}
-    # logging.debug(f"Final state: {value_dict}")
+    # value_dict = {node: round(node.value, 2) for node in arena.nodes}
     min_energy_dict = arena.get_min_energy()
     return min_energy_dict
-    # logging.debug(f"Min energy: {min_energy_dict}")
 
 if __name__ == "__main__":
-    for seed in range(1000):
+    for seed in range(0, 1):
         try:
-            solution = run_solver(num_nodes=5, edge_probability=0.9, seed=seed)
+            solution = run_solver(num_nodes=10, edge_probability=0.9, seed=seed)
             logging.info(f"Solution: {solution}")
         except AssertionError as e:
             logging.error(f"Seed {seed} failed with error: {e}")
