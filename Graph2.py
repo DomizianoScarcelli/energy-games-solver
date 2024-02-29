@@ -1,11 +1,13 @@
 from __future__ import annotations
 import cProfile
+from copy import deepcopy
+import pstats
 from itertools import product
 import json
 import math
 import time
 from pprint import pprint
-from typing import Dict, List, Set
+from typing import Dict, List, Set, Tuple
 from tqdm import tqdm
 import random
 from collections import deque
@@ -13,8 +15,15 @@ from plot_graph import plot_graph
 import logging
 import pickle
 import sys
-from copy import deepcopy
 import time
+
+def set_default(obj):
+    if isinstance(obj, set):
+        return list(obj)
+    # if isinstance(obj, Node):
+    #     return (obj.name, obj.player.name)
+    raise TypeError(f"Error in set_default: Object of type {obj.__class__.__name__} is not JSON serializable")
+
 
 #Set this to False to disable debug prints
 DEBUG = False
@@ -37,58 +46,73 @@ def timeit(func):
 class Node:
     _nodes = {}
 
-    def __new__(cls, name: int, player: Player = None):
+    def __new__(cls, name: int, player: Player = None, value: float = 0.0):
         if name in cls._nodes:
             return cls._nodes[name]
         else:
             cls._nodes[name] = super(Node, cls).__new__(cls)
             return cls._nodes[name]
 
-    def __init__(self, name: int, player: Player = None):
+    def __init__(self, name: int, player: Player = None, value: float = 0.0):
         self.name = name
-        self.edges: List[Edge] = []
+        self.edges: List[Tuple[int, int, float]] = []
         self.visited: bool = False
+        self.value = value
         if player is None:
             self.player = Player(1)
         else:
             self.player = player
-        self.value = 0 #TODO: don't remember if this should be initialized to 0 
 
 
-    def get_neighbours(self) -> Set[Node]:
+    def get_neighbours(self) -> Set[int]:
         neigh = set()
+        #TODO: edges is empty
         for edge in self.edges:
-            neigh.add(edge.node1)
-            neigh.add(edge.node2)
+            neigh.add(edge[0])
+            neigh.add(edge[1])
         if self in neigh:
             neigh.remove(self)
         return neigh
 
-    def get_neighbours_with_edges(self) -> Dict[Node, Edge]:
-        neigh: Dict[Node, Edge] = {}
+    def get_neighbours_with_edges(self, player_mapping, value_mapping) -> Dict[Node, Tuple[int, int, float]]:
+        neigh: Dict[Node, Tuple[int, int, float]] = {}
         neighbours = self.get_neighbours()
         for edge in self.edges:
-            if edge.node1 == self and edge.node2 in neighbours:
-                neigh[edge.node2] = edge
-        return neigh
+            if edge[0] == self.name and edge[1] in neighbours:
+                neigh[edge[0]] = edge
+        return {Node(name=name, player=player_mapping[name], value=value_mapping[name]): edge for name, edge in neigh.items()} 
 
-    def add_edge(self, node: Node):
-        self.edges.append(node)
+    def add_edge(self, edge: Tuple[int, int, float]):
+        self.edges.append(edge)
 
     def set_visited(self):
         self.visited = True
 
     def __eq__(self, __value: Node) -> bool:
-        return self.name == __value.name
+        left, right = None, None
+        if isinstance(self, str):
+            left = self.split("-")[0]
+        if isinstance(__value, str):
+            right = __value.split("-")[0]
+        if isinstance(self, Node):
+            left = self.name
+        if isinstance(__value, Node):
+            right = __value.name
+        if isinstance(self, int):
+            left = self
+        if isinstance(__value, int):
+            right = __value
+        if left is not None and right is not None:
+            return left == right
 
     def __hash__(self) -> int:
         return hash(self.name)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"N({self.name, self.player.name, self.value})"
 
     def __repr__(self):
-        return f"{self.name}"
+        return f"N({self.name, self.player.name, self.value})"
 
     def __deepcopy__(self, memo):
         # Create a new instance of Node with the same properties
@@ -96,37 +120,46 @@ class Node:
         return self
 
 
-class Edge:
-    _edges = {}
+# class Edge:
+#     _edges = {}
 
-    def __new__(cls, node1: Node, node2: Node, weight: float):
-        if (node1, node2) in cls._edges:
-            return cls._edges[(node1, node2)]
-        else:
-            cls._edges[(node1, node2)] = super(Edge, cls).__new__(cls)
-            return cls._edges[(node1, node2)]
+#     def __new__(cls, node1: Node, node2: Node, weight: float):
+#         if (node1, node2) in cls._edges:
+#             return cls._edges[(node1, node2)]
+#         else:
+#             cls._edges[(node1, node2)] = super(Edge, cls).__new__(cls)
+#             return cls._edges[(node1, node2)]
 
-    def __init__(self, node1: Node, node2: Node, weight: float):
-        self.node1 = node1
-        self.node2 = node2
-        self.weight = weight
+#     def __init__(self, node1: Node, node2: Node, weight: float):
+#         self.node1 = node1
+#         self.node2 = node2
+#         self.weight = weight
 
-    def __eq__(self, __value: Edge) -> bool:
-        return self.node1 == __value.node1 and self.node2 == __value.node2
+#     def get_tuple(self):
+#         return (self.node1, self.node2, self.weight)
 
-    def __hash__(self) -> int:
-        return abs(hash(self.node1) + hash(self.node2))
+#     def __eq__(self, __value: Edge) -> bool:
+#         if isinstance(self, tuple):
+#             return self.node1 == __value[0] and self.node2 == __value[1]
+#         if isinstance(__value, tuple):
+#             return self.node1 == __value[0] and self.node2 == __value[1]
+#         if isinstance(self, tuple) and isinstance(__value, tuple):
+#             return self.node1 == __value[0] and self.node2 == __value[1]
+#         return self.node1 == __value.node1 and self.node2 == __value.node2
 
-    def __str__(self) -> str:
-        return f"{self.node1} -> {self.node2} ({self.weight})"
+#     def __hash__(self) -> int:
+#         return abs(hash(self.node1) + hash(self.node2))
 
-    def __repr__(self) -> str:
-        return f"{self.node1} -> {self.node2} ({self.weight})"
+#     def __str__(self) -> str:
+#         return f"{self.node1} -> {self.node2} ({self.weight})"
+
+#     def __repr__(self) -> str:
+#         return f"{self.node1} -> {self.node2} ({self.weight})"
     
-    def __deepcopy__(self, memo):
-        # Create a new instance of Edge with the same properties
-        # return Edge(self.node1, self.node2, self.weight)
-        return self
+#     def __deepcopy__(self, memo):
+#         # Create a new instance of Edge with the same properties
+#         # return Edge(self.node1, self.node2, self.weight)
+#         return self
 
 
 class Player:
@@ -155,16 +188,20 @@ class Player:
 class Arena:
     def __init__(self, num_nodes: float = 10, edge_probability: float = 0.01, seed: int | None = None):
         self.players: List[Player] = [Player(1), Player(2)]
+        self.player_mapping: Dict[int, Player] = dict()
+        self.value_mapping: Dict[int, float] = dict()
+        #MAJOR TODO: this has to be initialized in the generate, otherwise each time a new node is created, the old old edge list is lost
+        self.edges_mapping: Dict[int, Tuple[int, int, float]] = dict()
         self.num_nodes = num_nodes
         self.edge_probability = edge_probability
         self.max_weight = 10
         self.weight_range = (-self.max_weight, self.max_weight)
-        self.backtracking_reaches: Dict[Node, Set[Edge]] = {}
-        self.backtracking_parents: Dict[Node, Set[Edge]] = {}
-        self.backtracking_edges: Set[Edge] = set()
+        self.backtracking_reaches: Dict[int, Set[Tuple[int, int]]] = {}
+        self.backtracking_parents: Dict[int, Set[Tuple[int, int]]] = {}
+        self.backtracking_edges: Set[Tuple[int, int]] = set()
 
-        self.reaches: Dict[Node, Set[Edge]] = {}
-        self.parents: Dict[Node, Set[Edge]] = {}
+        self.reaches: Dict[int, Set[Tuple[int, int]]] = {}
+        self.parents: Dict[int, Set[Tuple[int, int]]] = {}
 
         if seed is not None:
             random.seed(seed)
@@ -198,44 +235,41 @@ class Arena:
         with open('arena.pkl', 'wb') as f:
             pickle.dump(self, f)
 
-    def _deepcopy(self, _dict, strategy: str = "deepcopy"):
-        
+    def _deepcopy(self, _dict, strategy: str = "json"):
         if strategy == "json":
-            def set_default(obj):
-                if isinstance(obj, set):
-                    return list(obj)
-                raise TypeError
-
-            result = json.dumps(_dict, default=set_default)
+            #TODO: I'm loosing the information about the player
+            result = json.loads(json.dumps(_dict, default=set_default))
             return result
         elif strategy == "deepcopy":
             return deepcopy(_dict)
         else:
-            return NotImplementedError("Strategy not implemented")
+            raise NotImplementedError("Strategy not implemented")
         
     def save_state(self):
         self.backtracking_reaches = self._deepcopy(self.reaches)
         self.backtracking_parents = self._deepcopy(self.parents)
-        self.backtracking_edges = self._deepcopy(self.edges)
+        self.backtracking_edges = self.edges.copy()
 
     def backtrack(self, message: str = ""):
         self.reaches = self._deepcopy(self.backtracking_reaches)
         self.parents = self._deepcopy(self.backtracking_parents)
-        self.edges = self._deepcopy(self.backtracking_edges)
+        self.edges = self.backtracking_edges.copy()
     
-    def update_reaches(self, node: Node, edge: Edge):
-        if self.reaches.get(node) is None:
-            self.reaches[node] = {edge}
+    def update_reaches(self, node: Node, edge: Tuple[int, int, float]):
+        name = node.name if isinstance(node, Node) else node
+        if self.reaches.get(name) is None:
+            self.reaches[name] = {edge}
         else:
-            self.reaches[node].add(edge)
+            self.reaches[name].add(edge)
 
-    def update_parents(self, node: Node, edge: Edge):
-        if self.parents.get(node) is None:
-            self.parents[node] = {edge}
+    def update_parents(self, node: Node, edge: Tuple[int, int, float]):
+        name = node.name if isinstance(node, Node) else node
+        if self.parents.get(name) is None:
+            self.parents[name] = {edge}
         else:
-            self.parents[node].add(edge)
+            self.parents[name].add(edge)
 
-    def update(self, node: Node, edge: Edge):
+    def update(self, node: Node, edge: Tuple[int, int, float]):
         """
         Update the `reaches` list of the node with the new edge.
         Also update the reaches list of the self's parent nodes of the same player with the new edge.
@@ -243,20 +277,21 @@ class Arena:
         logging.debug(f"Updating edge {edge} for node {self}")
         old_reaches = self._deepcopy(self.reaches)
         self.update_reaches(node, edge)
-        self.reaches[node] = self.reaches[node].union(self.reaches.get(edge.node2, set()))
+        name = node.name if isinstance(node, Node) else node
+        self.reaches[name] = self.reaches[name].union(self.reaches.get(Node(edge[1]), set()))
 
         old_parents = self._deepcopy(self.parents)
-        dest = edge.node2
+        dest = edge[1]
         self.update_parents(dest, edge)
 
-        if self.reaches == old_reaches and self.parents == old_parents:
+        if self._deepcopy(self.reaches) == old_reaches and self._deepcopy(self.parents) == old_parents:
             # Avoid max recursion depth
             return
 
         self.edges.add(edge)
 
-        for p_edge in self.parents.get(node, set()):
-            p_origin = p_edge.node1
+        for p_edge in self.parents.get(name, set()):
+            p_origin = p_edge[0]
             self.update(p_origin, edge)
 
     def print_state(self, message):
@@ -272,7 +307,7 @@ class Arena:
             logging.debug(f"   Node {node}: edges {node.edges}")
 
     # @timeit 
-    def safely_update(self, node: Node, edge: Edge):
+    def safely_update(self, node: Node, edge: Tuple[int, int, float]):
         """
         Update the arena with the new edge and backtrack if a negative cycle is detected.
         """
@@ -284,17 +319,16 @@ class Arena:
         node.add_edge(edge)
         return True
 
-    def safely_add_edge(self, node: Node, edge: Edge):
+    def safely_add_edge(self, node: Node, edge: Tuple[int, int, float]):
         if edge in self.edges:
             return
-        if self.safely_update(node, edge):
-            # assert len(self.detect_negative_cycles()) == 0, f"Negative cycles after adding edge {edge}. Expected 0"
-            return
-        return
+        self.safely_update(node, edge)
 
     def generate(self):
         self.nodes: Set[Node] = {Node(name=i, player=Player(random.randint(1, 2))) for i in range(self.num_nodes)}
-        self.edges: Set[Edge] = set()
+        self.player_mapping = {node.name: node.player for node in self.nodes}
+        self.value_mapping = {node.name: 0 for node in self.nodes}
+        self.edges: Set[Tuple[int, int,float]] = set()
 
         pbar = tqdm(total=self.num_nodes ** 2, desc="Creating graph")
         update_delta = round(math.sqrt(pbar.total))
@@ -304,7 +338,7 @@ class Arena:
             if random.random() < self.edge_probability:
                 weight = random.uniform(*self.weight_range)
                 if origin != dest or weight >= 0:
-                    edge = Edge(origin, dest, weight)
+                    edge = (origin.name, dest.name, weight)
                     self.save_state()
                     self.safely_add_edge(origin, edge)
                     self.edges.add(edge)
@@ -426,21 +460,21 @@ class Arena:
     def detect_negative_cycles(self):
         for key, value in self.reaches.items():
             for edge in value:
-                if edge.node2 == key:
+                if edge[1] == key:
                     return [0]
         return []
 
    
     def value_iteration(self):
-
         def delta(l, w): return max(l-w, 0)
-
         def Q(node: Node):
-            outgoing_edges = node.get_neighbours_with_edges()
+            outgoing_edges = node.get_neighbours_with_edges(self.player_mapping, self.value_mapping)
+            print(f"Node {node} has outgoing edges {outgoing_edges}")
             # logging.debug(f"Node {node} has outgoing edges {outgoing_edges}")
             for node, edge in outgoing_edges.items():
-                print(f"Value is {node.value}, weight is {edge.weight}, delta is {delta(node.value, edge.weight)}")
-            values = [delta(node.value, edge.weight)
+                print(f"Value is {self.value_mapping[node.name]}, weight is {edge[2]}, delta is {delta(self.value_mapping[node.name], edge[2])}")
+
+            values = [delta(self.value_mapping[node.name], edge[2])
                       for node, edge in outgoing_edges.items()]
             if values == []:
                 return 0
@@ -462,9 +496,9 @@ class Arena:
                 break
             pbar.update(1)
             for node in self.nodes:
-                old_value = node.value
-                node.value = Q(node)
-                if abs(node.value - old_value) < threshold:
+                old_value = self.value_mapping[node.name]
+                self.value_mapping[node.name] = Q(node)
+                if abs(self.value_mapping[node.name] - old_value) < threshold:
                     converged[node] = True
         pbar.close()
         if steps > max_steps:
@@ -479,13 +513,15 @@ class Arena:
         (Energy is lost when a player moves to a node whose edge has negative weight, and gained when it moves to a node whose edge has a positive weight.)
         """
         min_energy_dict = {}
+        self.nodes = [Node(node.name, self.player_mapping[node.name]) for node in self.nodes]
         for player in self.players:
             # Get the nodes owned by the player
             player_nodes = [
                 node for node in self.nodes if node.player == player]
-
+            if player_nodes == []:
+                raise ValueError(f"No nodes found for player {player.name}. The nodes are {dict({node: node.player for node in self.nodes})}")
             # Find the maximum value among the player's nodes
-            max_value = max((node.value for node in player_nodes))
+            max_value = max(self.value_mapping[node.name] for node in player_nodes)
 
             min_energy_dict[player.name] = round(max_value, round_to)
         return min_energy_dict
@@ -519,18 +555,16 @@ def run_multiple():
     logging.info(f"Average time: {avg_time:f} ms")
 
 def profile():
-    import cProfile
-    import pstats
-
     profiler = cProfile.Profile()
     profiler.enable()
 
     # Run your function
-    run_solver(num_nodes=200, edge_probability=0.01)
+    run_solver(num_nodes=10, edge_probability=0.2)
 
     profiler.disable()
     stats = pstats.Stats(profiler).sort_stats('cumtime')
     stats.print_stats()
 
 if __name__ == "__main__":
+    # profile()    
     run_multiple()

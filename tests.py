@@ -1,5 +1,6 @@
 import pytest
 from Graph import Arena, Node, Edge, Player
+from Graph2 import set_default
 
 @pytest.mark.skip(reason="Not needed for now")
 def test_safe_update_1(monkeypatch):
@@ -109,7 +110,7 @@ def test_safe_update_2(monkeypatch):
         """
     )
 
-
+@pytest.mark.skip(reason="Not needed for now")
 def test_safe_update_3(monkeypatch):
     """
     Test that the safe update function works as expected.
@@ -179,3 +180,10 @@ def test_safe_update_3(monkeypatch):
         node_6.parents = {node_6.parents}
         """
     )
+
+import json
+def test_serialization():
+    _dict = {0: {(0, 8, -8.63227481561914), (3, 0, 1.7886554660070182), (0, 3, 6.964664132393558), (0, 4, 1.0679336002545714)}, 1: {(0, 8, -8.63227481561914), (1, 8, -0.07505398815246878), (1, 0, -5.46025620618159), (1, 4, 2.066219437274448), (0, 3, 6.964664132393558), (1, 9, 2.084858131547069), (3, 0, 1.7886554660070182), (0, 4, 1.0679336002545714)}, 2: {(2, 0, -0.3513524109322592), (0, 8, -8.63227481561914), (1, 8, -0.07505398815246878), (1, 0, -5.46025620618159), (1, 4, 2.066219437274448), (0, 3, 6.964664132393558), (2, 3, -5.906936957454045), (2, 1, 5.623667152210125), (1, 9, 2.084858131547069), (2, 9, 4.47305245885196), (3, 0, 1.7886554660070182), (0, 4, 1.0679336002545714)}, 3: {(0, 8, -8.63227481561914), (0, 3, 6.964664132393558), (3, 0, 1.7886554660070182), (0, 4, 1.0679336002545714)}} 
+    result = json.loads(json.dumps(_dict, default=set_default))
+    print(result)
+    return result

@@ -17,8 +17,15 @@ class EnergyGameArena:
     def _edges_dict_list(self):
         default_color = 'black'
         highlight_size = 1.5
-
-        return [{'source': edge.node1.name, 'target': edge.node2.name, 'label': round(edge.weight, 2), 'metadata': {
+        if hasattr(list(self.edges)[0], "node1"):
+            return [{'source': edge.node1.name, 'target': edge.node2.name, 'label': round(edge.weight, 2), 'metadata': {
+                        'color': default_color,
+                        'opacity': 1.0,
+                        'size': highlight_size,
+                        'label_color': "black",
+                        'label_size': 12,
+                    },} for edge in self.edges]
+        return [{'source': edge[0], 'target': edge[1], 'label': round(edge[2], 2), 'metadata': {
                     'color': default_color,
                     'opacity': 1.0,
                     'size': highlight_size,
