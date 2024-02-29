@@ -5,7 +5,7 @@ from typing import Dict, List, Set
 from tqdm import tqdm
 import random
 from collections import deque
-from plot_graph import plot_graph, plot_3D_graph, plot_2D_graph
+from plot_graph import plot_graph
 import logging
 import pickle
 import sys
@@ -503,6 +503,7 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | N
     arena.generate()
     # arena.check_arena_conditions()
     # plot_2D_graph(arena)
+    plot_graph(arena)
     arena.value_iteration()
     # value_dict = {node: round(node.value, 2) for node in arena.nodes}
     min_energy_dict = arena.get_min_energy()
@@ -510,7 +511,7 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | N
 
 if __name__ == "__main__":
     times = []
-    for seed in range(0, 10):
+    for seed in range(0, 1):
         try:
             start = time.time()
             solution = run_solver(num_nodes=100, edge_probability=0.01, seed=seed)
