@@ -18,7 +18,7 @@ class EnergyGameArena:
         default_color = 'black'
         highlight_size = 1.5
 
-        return [{'source': edge.node1.name, 'target': edge.node2.name, 'label': round(edge.weight), 'metadata': {
+        return [{'source': edge.node1.name, 'target': edge.node2.name, 'label': round(edge.weight, 2), 'metadata': {
                     'color': default_color,
                     'opacity': 1.0,
                     'size': highlight_size,
@@ -38,9 +38,16 @@ class EnergyGameArena:
     }}
 
     def create_plot(self):
-        self.fig = gv.d3(self.config, edge_label_data_source='label', show_edge_label=True, zoom_factor=2)
+        self.fig = gv.d3(self.config, 
+                         edge_label_data_source='label', 
+                         show_edge_label=True, 
+                         use_edge_size_normalization=True,
+                            node_drag_fix=True, 
+                            node_hover_neighborhood=True, show_edge_label_border=True, use_many_body_force=True, many_body_force_strength=-1000)
         return self.fig
-
+    
+# def save_graph(graph, filename):
+#     EnergyGameArena(graph.nodes, graph.edges).create_plot().export_png(filename)
 
 def plot_graph(graph):
     EnergyGameArena(graph.nodes, graph.edges).create_plot().display()

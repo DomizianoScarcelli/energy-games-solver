@@ -1,4 +1,8 @@
 from __future__ import annotations
+import cProfile
+from itertools import product
+import json
+import math
 import time
 from pprint import pprint
 from typing import Dict, List, Set
@@ -194,33 +198,30 @@ class Arena:
         with open('arena.pkl', 'wb') as f:
             pickle.dump(self, f)
 
+    def _deepcopy(self, _dict, strategy: str = "json"):
+        
+        if strategy == "json":
+            def set_default(obj):
+                if isinstance(obj, set):
+                    return list(obj)
+                raise TypeError
+
+            result = json.dumps(_dict, default=set_default)
+            return result
+        elif strategy == "deepcopy":
+            return deepcopy(_dict)
+        else:
+            return NotImplementedError("Strategy not implemented")
+        
     def save_state(self):
-        logging.debug("+" * 25 + "Saving state" + "+" * 25)
-        logging.debug(f"Saving the state:")
-        logging.debug("Reaches:")
-        logging.debug(self.reaches)
-        logging.debug("Parents:")
-        logging.debug(self.parents)
-        logging.debug("Edges:")
-        logging.debug(self.edges)
-        logging.debug("+" * 25 + "+" * 25)
-        self.backtracking_reaches = deepcopy(self.reaches)
-        self.backtracking_parents = deepcopy(self.parents)
-        self.backtracking_edges = deepcopy(self.edges)
+        self.backtracking_reaches = self._deepcopy(self.reaches)
+        self.backtracking_parents = self._deepcopy(self.parents)
+        self.backtracking_edges = self._deepcopy(self.edges)
 
     def backtrack(self, message: str = ""):
-        logging.debug("*" * 25 + f" Backtracking ({message}) " + "*" * 25)
-        logging.debug(f"Backtracking from state:")
-        logging.debug(self.reaches)
-        logging.debug(self.parents)
-        logging.debug(self.edges)
-        logging.debug(f"to state:")
-        logging.debug(self.backtracking_reaches)
-        logging.debug(self.backtracking_parents)
-        logging.debug(self.backtracking_edges)
-        self.reaches = deepcopy(self.backtracking_reaches)
-        self.parents = deepcopy(self.backtracking_parents)
-        self.edges = deepcopy(self.backtracking_edges)
+        self.reaches = self._deepcopy(self.backtracking_reaches)
+        self.parents = self._deepcopy(self.backtracking_parents)
+        self.edges = self._deepcopy(self.backtracking_edges)
     
     def update_reaches(self, node: Node, edge: Edge):
         if self.reaches.get(node) is None:
@@ -240,11 +241,11 @@ class Arena:
         Also update the reaches list of the self's parent nodes of the same player with the new edge.
         """
         logging.debug(f"Updating edge {edge} for node {self}")
-        old_reaches = deepcopy(self.reaches)
+        old_reaches = self._deepcopy(self.reaches)
         self.update_reaches(node, edge)
         self.reaches[node] = self.reaches[node].union(self.reaches.get(edge.node2, set()))
 
-        old_parents = deepcopy(self.parents)
+        old_parents = self._deepcopy(self.parents)
         dest = edge.node2
         self.update_parents(dest, edge)
 
@@ -275,20 +276,11 @@ class Arena:
         """
         Update the arena with the new edge and backtrack if a negative cycle is detected.
         """
-        # self.print_state(f"Before update edge: {edge}")
-        # negative_cycles = self.detect_negative_cycles()
-        # assert len(negative_cycles) == 0, f"Negative cycles before update: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
         self.update(node, edge)
-        # self.print_state(f"After update edge: {edge}")
         negative_cycles = self.detect_negative_cycles()
         if len(negative_cycles) > 0:
             self.backtrack(message=f"removing {edge}")
-            # negative_cycles = self.detect_negative_cycles()
-            # self.print_state(f"After backtrack on edge: {edge}")
-            # assert len(negative_cycles) == 0, f"Negative cycles after backtrack: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
             return False
-        # negative_cycles = self.detect_negative_cycles()
-        # assert len(negative_cycles) == 0, f"Negative cycles without doing nothing: {len(negative_cycles)}, which are {negative_cycles}. Expected 0"
         node.add_edge(edge)
         return True
 
@@ -301,47 +293,49 @@ class Arena:
         return
 
     def generate(self):
-        self.nodes: Set[Node] = set()
+        self.nodes: Set[Node] = {Node(name=i, player=Player(random.randint(1, 2))) for i in range(self.num_nodes)}
         self.edges: Set[Edge] = set()
-        for i in range(self.num_nodes):
-            self.nodes.add(Node(name=i, player=Player(random.randint(1, 2))))
 
-
-        for origin in tqdm(self.nodes, desc="Creating graph"):
-            for dest in self.nodes:
-                if random.random() < self.edge_probability:
-                    # weight = round(random.uniform(*self.weight_range))
-                    weight = random.uniform(*self.weight_range)
-                    if origin == dest and weight < 0:
-                        continue
+        pbar = tqdm(total=self.num_nodes ** 2, desc="Creating graph")
+        update_delta = round(math.sqrt(pbar.total))
+        for i, (origin, dest) in enumerate(product(self.nodes, repeat=2)):
+            if i % update_delta == 0:
+                pbar.update(update_delta)
+            if random.random() < self.edge_probability:
+                weight = random.uniform(*self.weight_range)
+                if origin != dest or weight >= 0:
                     edge = Edge(origin, dest, weight)
                     self.save_state()
                     self.safely_add_edge(origin, edge)
+                    self.edges.add(edge)
+        pbar.close()
 
-                # if random.random() < self.edge_probability:
-                #     weight = round(random.uniform(*self.weight_range))
-                #     if origin == dest and weight < 0:
-                #         continue
-                #     edge = Edge(dest, origin, weight)
-                #     self.save_state()
-                #     self.safely_add_edge(origin, edge)
+    # def generate(self):
+    #     self.nodes: Set[Node] = set()
+    #     self.edges: Set[Edge] = set()
+    #     for i in range(self.num_nodes):
+    #         self.nodes.add(Node(name=i, player=Player(random.randint(1, 2))))
+
+    #     pbar = tqdm(total=self.num_nodes ** 2, desc="Creating graph")
+    #     for origin in self.nodes:
+    #         for dest in self.nodes:
+    #             pbar.update(1)
+    #             if random.random() < self.edge_probability:
+    #                 # weight = round(random.uniform(*self.weight_range))
+    #                 weight = random.uniform(*self.weight_range)
+    #                 if origin == dest and weight < 0:
+    #                     continue
+    #                 edge = Edge(origin, dest, weight)
+    #                 self.save_state()
+    #                 self.safely_add_edge(origin, edge)
+
+    #                 for node in self.nodes:
+    #                     self.edges = self.edges.union(self.reaches.get(node, set()))
+    #                     self.edges = self.edges.union(self.parents.get(node, set()))
                 
+    #             logging.debug(f"[generate] Edges are {self.edges}")
 
-                for node in self.nodes:
-                    self.edges = self.edges.union(self.reaches.get(node, set()))
-                    self.edges = self.edges.union(self.parents.get(node, set()))
-                
-                logging.debug(f"[generate] Edges are {self.edges}")
-
-        # logging.debug(f"Final setting") 
-        # for node in self.nodes:
-        #     logging.debug(f"""
-        #     ---
-        #     Node: {node}
-        #     Reaches: {node.reaches}
-        #     Parents: {node.parents}
-        #                   """)
-        
+     
 
     def get_edge(self, node1, node2):
         """
@@ -383,14 +377,13 @@ class Arena:
         assert num_negative_cycles == 0, f"Graph has {num_negative_cycles} negative cycles"
 
 
-    def _is_reachable(self, start):
-        """
-        Check if all nodes are reachable from the start node using BFS.
-        """
-        visited = {node: False for node in self.nodes}
-        queue = deque([start])
-        visited[start] = True
-
+    # def _is_reachable(self, start):
+    #     """
+    #     Check if all nodes are reachable from the start node using BFS.
+    #     """
+    #     visited = {node: False for node in self.nodes}
+    #     queue = deque([start])
+    #     visited[start] = True
     #     while queue:
     #         current_node = queue.popleft()
     #         for edge in self.edges:
@@ -502,19 +495,18 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | N
                   seed=seed) 
     arena.generate()
     # arena.check_arena_conditions()
-    # plot_2D_graph(arena)
     plot_graph(arena)
     arena.value_iteration()
     # value_dict = {node: round(node.value, 2) for node in arena.nodes}
     min_energy_dict = arena.get_min_energy()
     return min_energy_dict
 
-if __name__ == "__main__":
+def run_multiple():
     times = []
     for seed in range(0, 1):
         try:
             start = time.time()
-            solution = run_solver(num_nodes=100, edge_probability=0.01, seed=seed)
+            solution = run_solver(num_nodes=10000, edge_probability=0.01, seed=seed)
             end = time.time()
             times.append(end - start)
             logging.info(f"Solution: {solution}")
@@ -523,3 +515,20 @@ if __name__ == "__main__":
             break
     avg_time = (sum(times) / len(times)) * 1000
     logging.info(f"Average time: {avg_time:f} ms")
+
+def profile():
+    import cProfile
+    import pstats
+
+    profiler = cProfile.Profile()
+    profiler.enable()
+
+    # Run your function
+    run_solver(num_nodes=200, edge_probability=0.01)
+
+    profiler.disable()
+    stats = pstats.Stats(profiler).sort_stats('cumtime')
+    stats.print_stats()
+
+if __name__ == "__main__":
+    profile()    
