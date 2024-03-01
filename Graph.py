@@ -432,7 +432,7 @@ class Arena:
 
    
     def value_iteration(self):
-
+        print(f"Nodes are {self.nodes}")
         def delta(l, w): return max(l-w, 0)
 
         def Q(node: Node):
@@ -508,7 +508,7 @@ def run_multiple():
     for seed in range(0, 1):
         try:
             start = time.time()
-            solution = run_solver(num_nodes=20, edge_probability=0.3, seed=seed)
+            solution = run_solver(num_nodes=10, edge_probability=0.3, seed=seed)
             end = time.time()
             times.append(end - start)
             logging.info(f"Solution: {solution}")

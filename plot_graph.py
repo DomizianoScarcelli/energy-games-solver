@@ -5,14 +5,16 @@ import networkx as nx
 
 
 class EnergyGameArena:
-    def __init__(self, nodes, edges):
+    def __init__(self, nodes, edges, player_mapping=None):
         self.nodes = nodes
         self.edges = edges
+        self.player_mapping = player_mapping
         self._init_config()
 
     def _nodes_dict(self):
-        nodes_dict = {node.name: {'metadata': {'color': 'red' if node.player.name == 1 else 'blue', 'label_color':'red' if node.player.name == 1 else 'blue'  }} for node in self.nodes}
-        return nodes_dict
+        if self.player_mapping:
+            return {node.name: {'metadata': {'color': 'red' if self.player_mapping[node.name].name == 1 else 'blue', 'label_color':'red' if self.player_mapping[node] == 1 else 'blue'  }} for node in self.nodes}
+        return {node.name: {'metadata': {'color': 'red' if node.player.name == 1 else 'blue', 'label_color':'red' if node.player.name == 1 else 'blue'  }} for node in self.nodes}
 
     def _edges_dict_list(self):
         default_color = 'black'
@@ -57,4 +59,4 @@ class EnergyGameArena:
 #     EnergyGameArena(graph.nodes, graph.edges).create_plot().export_png(filename)
 
 def plot_graph(graph):
-    EnergyGameArena(graph.nodes, graph.edges).create_plot().display()
+    EnergyGameArena(graph.nodes, graph.edges, graph.player_mapping if hasattr(graph, "player_mapping") else None).create_plot().display()
