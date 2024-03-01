@@ -432,14 +432,13 @@ class Arena:
 
    
     def value_iteration(self):
-        print(f"Nodes are {self.nodes}")
         def delta(l, w): return max(l-w, 0)
 
         def Q(node: Node):
             outgoing_edges = node.get_neighbours_with_edges()
-            # logging.debug(f"Node {node} has outgoing edges {outgoing_edges}")
-            for node, edge in outgoing_edges.items():
-                print(f"Value is {node.value}, weight is {edge.weight}, delta is {delta(node.value, edge.weight)}")
+            print(f"Outgoing edges for node {node} are {outgoing_edges}")
+            # for n, e in outgoing_edges.items():
+            #     print(f"Value is {n.value}, weight is {e.weight}, delta is {delta(n.value, e.weight)}")
             values = [delta(node.value, edge.weight)
                       for node, edge in outgoing_edges.items()]
             if values == []:
@@ -462,6 +461,7 @@ class Arena:
                 break
             pbar.update(1)
             for node in self.nodes:
+                print(f"Analyzing node {node} with value {node.value} and player {node.player.name}")
                 old_value = node.value
                 node.value = Q(node)
                 if abs(node.value - old_value) < threshold:
@@ -497,7 +497,7 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | N
                   seed=seed) 
     arena.generate()
     # arena.check_arena_conditions()
-    # plot_graph(arena)
+    plot_graph(arena)
     arena.value_iteration()
     # value_dict = {node: round(node.value, 2) for node in arena.nodes}
     min_energy_dict = arena.get_min_energy()

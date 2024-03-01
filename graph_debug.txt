@@ -1,0 +1,43 @@
+Analyzing node 0 with value 0 and player 2
+Outgoing edges for node 0 are {1: 0 -> 1 (5.116084083144479), 3: 0 -> 3 (8.194925119364804)}
+Analyzing node 1 with value 0 and player 2
+Outgoing edges for node 1 are {2: 1 -> 2 (-1.3165632909243268), 8: 1 -> 8 (6.100556540260445)}
+Analyzing node 2 with value 0 and player 1
+Outgoing edges for node 2 are {4: 2 -> 4 (-0.12844267069350757), 6: 2 -> 6 (-3.4959127450521983), 8: 2 -> 8 (1.3502148124134372), 9: 2 -> 9 (9.350805005802869)}
+Analyzing node 3 with value 0 and player 2
+Outgoing edges for node 3 are {2: 3 -> 2 (-3.598907906549085), 5: 3 -> 5 (1.0253449218110244)}
+Analyzing node 4 with value 0 and player 2
+Outgoing edges for node 4 are {7: 4 -> 7 (-6.212173428912877), 8: 4 -> 8 (2.2554635973721346)}
+Analyzing node 5 with value 0 and player 2
+Outgoing edges for node 5 are {1: 5 -> 1 (5.152078439328736)}
+Analyzing node 6 with value 0 and player 2
+Outgoing edges for node 6 are {}
+Analyzing node 7 with value 0 and player 2
+Outgoing edges for node 7 are {6: 7 -> 6 (-5.59078926264343)}
+Analyzing node 8 with value 0 and player 2
+Outgoing edges for node 8 are {6: 8 -> 6 (2.6999981982291654)}
+Analyzing node 9 with value 0 and player 1
+Outgoing edges for node 9 are {4: 9 -> 4 (-7.522096711511366), 7: 9 -> 7 (-1.4876233606636564), 8: 9 -> 8 (-4.801602204143361)}
+Analyzing node 0 with value 0 and player 2
+Outgoing edges for node 0 are {1: 0 -> 1 (5.116084083144479), 3: 0 -> 3 (8.194925119364804)}
+Analyzing node 1 with value 0 and player 2
+Outgoing edges for node 1 are {2: 1 -> 2 (-1.3165632909243268), 8: 1 -> 8 (6.100556540260445)}
+Analyzing node 2 with value 3.4959127450521983 and player 1
+Outgoing edges for node 2 are {4: 2 -> 4 (-0.12844267069350757), 6: 2 -> 6 (-3.4959127450521983), 8: 2 -> 8 (1.3502148124134372), 9: 2 -> 9 (9.350805005802869)}
+Analyzing node 3 with value 0 and player 2
+Outgoing edges for node 3 are {2: 3 -> 2 (-3.598907906549085), 5: 3 -> 5 (1.0253449218110244)}
+Analyzing node 4 with value 0 and player 2
+Outgoing edges for node 4 are {7: 4 -> 7 (-6.212173428912877), 8: 4 -> 8 (2.2554635973721346)}
+Analyzing node 5 with value 0 and player 2
+Outgoing edges for node 5 are {1: 5 -> 1 (5.152078439328736)}
+Analyzing node 6 with value 0 and player 2
+Outgoing edges for node 6 are {}
+Analyzing node 7 with value 5.59078926264343 and player 2
+Outgoing edges for node 7 are {6: 7 -> 6 (-5.59078926264343)}
+Analyzing node 8 with value 0 and player 2
+Outgoing edges for node 8 are {6: 8 -> 6 (2.6999981982291654)}
+Analyzing node 9 with value 7.522096711511366 and player 1
+Outgoing edges for node 9 are {4: 9 -> 4 (-7.522096711511366), 7: 9 -> 7 (-1.4876233606636564), 8: 9 -> 8 (-4.801602204143361)}
+INFO:root:Converged after 2 steps
+INFO:root:Solution: {1: 7.52, 2: 5.59}
+INFO:root:Average time: 23.776770 ms
