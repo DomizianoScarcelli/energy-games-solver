@@ -6,24 +6,22 @@ from itertools import product
 import json
 import math
 import time
-from pprint import pprint
 from typing import Dict, List, Set, Tuple
 from tqdm import tqdm
 import random
-from collections import deque
 from plot_graph import plot_graph
 import logging
 import pickle
 import sys
 import time
 
-def set_default(obj):
-    if isinstance(obj, set):
-        return list(obj)
-    raise TypeError(f"Error in set_default: Object of type {obj.__class__.__name__} is not JSON serializable")
+# def set_default(obj):
+#     if isinstance(obj, set):
+#         return list(obj)
+#     raise TypeError(f"Error in set_default: Object of type {obj.__class__.__name__} is not JSON serializable")
 
-def deserialize_dict(_dict):
-    return {int(k): {tuple(e) for e in v} for k, v in _dict.items()}
+# def deserialize_dict(_dict):
+#     return {int(k): {tuple(e) for e in v} for k, v in _dict.items()}
 
 #Set this to False to disable debug prints
 DEBUG = False
@@ -44,37 +42,10 @@ def timeit(func):
             return result
         return wrapper
 
-class Player:
-    _players = {}
-
-    def __new__(self, name: int, energy: float = 0):
-        if name in self._players:
-            return self._players[name]
-        else:
-            self._players[name] = super(Player, self).__new__(self)
-            return self._players[name]
-
-    def __init__(self, name: int, energy: float = 0):
-        self.name = name
-        self.energy = 0
-
-    def __hash__(self):
-        return hash(self.name)
-
-    def __str__(self):
-        return f"Player {self.name}, energy: {self.energy}"
-
-    def __repr__(self):
-        return f"Player {self.name}, energy: {self.energy}"
-
-    def __deepcopy__(self, memo):
-        return self
-
 class Arena:
     def __init__(self, num_nodes: float = 10, edge_probability: float = 0.01, seed: int | None = None):
         self.nodes = set(range(num_nodes))
-        self.players: List[Player] = [Player(1), Player(2)]
-        self.player_mapping: Dict[int, Player] = {i: Player(random.randint(1, 2)) for i in range(num_nodes)} 
+        self.player_mapping: Dict[int, int] = {i: random.randint(1, 2) for i in range(num_nodes)} 
         self.value_mapping: Dict[int, float] = {i: 0 for i in range(num_nodes)}
         self.edges_mapping: Dict[int, Set[Tuple[int, int, float]]] = {i: set() for i in range(num_nodes)}
         self.edges = set()
@@ -121,33 +92,38 @@ class Arena:
     #         arena = pickle.load(f)
     #     self = arena
 
-    # def save(self):
-    #     with open('arena.pkl', 'wb') as f:
-    #         pickle.dump(self, f)
+    def save(self, save_path: str = "arena.pkl"):
+        with open(save_path, 'wb') as f:
+            pickle.dump(self, f)
 
-    def _deepcopy(self, _dict, strategy: str = "json", loading: bool = False):
-        if strategy == "json":
-            if loading:
-                result = json.loads(_dict)
-            else:
-                result = json.dumps(_dict, default=set_default)
-            return result
-        elif strategy == "deepcopy":
-            if not loading:
-                return deepcopy(_dict)
-            return _dict
-        else:
-            raise NotImplementedError("Strategy not implemented")
+    def load(self, pickle_file: str):
+        with open(pickle_file, 'rb') as f:
+            arena = pickle.load(f)
+        return arena
+
+    # def _deepcopy(self, _dict, strategy: str = "json", loading: bool = False):
+    #     if strategy == "json":
+    #         if loading:
+    #             result = json.loads(_dict)
+    #         else:
+    #             result = json.dumps(_dict, default=set_default)
+    #         return result
+    #     elif strategy == "deepcopy":
+    #         if not loading:
+    #             return deepcopy(_dict)
+    #         return _dict
+    #     else:
+    #         raise NotImplementedError("Strategy not implemented")
         
-    def save_state(self):
-        self.backtracking_reaches = self._deepcopy(self.reaches, loading=False)
-        self.backtracking_parents = self._deepcopy(self.parents, loading=False)
-        self.backtracking_edges = self.edges.copy()
+    # def save_state(self):
+    #     self.backtracking_reaches = self._deepcopy(self.reaches, loading=False)
+    #     self.backtracking_parents = self._deepcopy(self.parents, loading=False)
+    #     self.backtracking_edges = self.edges.copy()
 
-    def backtrack(self, message: str = ""):
-        self.reaches = deserialize_dict(self._deepcopy(self.backtracking_reaches, loading=True))
-        self.parents = deserialize_dict(self._deepcopy(self.backtracking_parents, loading=True))
-        self.edges = self.backtracking_edges.copy()
+    # def backtrack(self, message: str = ""):
+    #     self.reaches = deserialize_dict(self._deepcopy(self.backtracking_reaches, loading=True))
+    #     self.parents = deserialize_dict(self._deepcopy(self.backtracking_parents, loading=True))
+    #     self.edges = self.backtracking_edges.copy()
     
     def update_reaches(self, node: int, edge: Tuple[int, int, float]):
         # key = str(node) if isinstance(node, int) else node
@@ -193,11 +169,13 @@ class Arena:
         """
         Update the arena with the new edge and backtrack if a negative cycle is detected.
         """
-        self.update(node, edge)
-        negative_cycles = self.detect_negative_cycles()
+        negative_cycles = self.bool_bellman_ford(nodes=[*self.nodes, node], edges=[*self.edges, edge])
         if negative_cycles > 0:
-            self.backtrack(message=f"removing {edge}")
             return False
+        self.update(node, edge)
+        # if negative_cycles > 0:
+        #     self.backtrack(message=f"removing {edge}")
+        #     return False
         self.edges_mapping[node].add(edge)
         return True
 
@@ -215,9 +193,8 @@ class Arena:
                 pbar.update(update_delta)
             if random.random() < self.edge_probability:
                 weight = random.uniform(*self.weight_range)
-                if origin != dest or weight >= 0:
+                if not (origin == dest and weight < 0): # Avoid self loops with negative weight
                     edge = (origin, dest, weight)
-                    self.save_state()
                     self.safely_update(origin, edge)
         pbar.close()
 
@@ -252,67 +229,107 @@ class Arena:
     #     assert num_negative_cycles == 0, f"Graph has {num_negative_cycles} negative cycles"
 
 
-    def bellman_ford(self):
+    # def bellman_ford(self, nodes=None, edges=None):
+    #     """
+    #     Detect negative cycles using Bellman-Ford algorithm.
+    #     """
+    #     if nodes is None:
+    #         nodes = self.nodes
+    #     if edges is None:
+    #         edges = self.edges
+
+    #     distances = {node: 0 for node in nodes}
+    #     predecessors = {node: None for node in nodes}
+
+    #     # Relax edges repeatedly
+    #     for _ in range(len(nodes) - 1):
+    #         for edge in edges:
+    #             if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
+    #                 distances[edge[1]] = distances[edge[0]] + edge[2]
+    #                 predecessors[edge[1]] = edge[0]
+
+    #     # Check for negative cycles
+    #     negative_cycles = []
+    #     for edge in edges:
+    #         if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
+    #             # Negative cycle found
+    #             cycle = [edge[1]]
+    #             node = edge[0]
+    #             while node not in cycle:
+    #                 cycle.append(node)
+    #                 node = predecessors[node]
+    #             cycle.append(node)
+    #             # cycle.reverse() #NOTE: removed for efficiency
+    #             negative_cycles.append(cycle)
+
+    #     return len(negative_cycles)
+
+
+    def bool_bellman_ford(self, nodes: List[int] = None, edges: List[Tuple[int, int, float]] = None):
         """
         Detect negative cycles using Bellman-Ford algorithm.
         """
-        distances = {node: 0 for node in self.nodes}
-        predecessors = {node: None for node in self.nodes}
+        if nodes is None:
+            nodes = self.nodes
+        if edges is None:
+            edges = self.edges
+
+        distances = {node: 0 for node in nodes}
 
         # Relax edges repeatedly
-        for _ in range(len(self.nodes) - 1):
-            for edge in self.edges:
-                if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
-                    distances[edge[1]] = distances[edge[0]] + edge[2]
-                    predecessors[edge[1]] = edge[0]
-
-        # Check for negative cycles
-        negative_cycles = []
-        for edge in self.edges:
-            if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
-                # Negative cycle found
-                cycle = [edge[1]]
-                node = edge[0]
-                while node not in cycle:
-                    cycle.append(node)
-                    node = predecessors[node]
-                cycle.append(node)
-                # cycle.reverse() #NOTE: removed for efficiency
-                negative_cycles.append(cycle)
-
-        return negative_cycles
-
-
-    def bool_bellman_ford(self):
-        """
-        Detect negative cycles using Bellman-Ford algorithm.
-        """
-        distances = {node: 0 for node in self.nodes}
-
-        # Relax edges repeatedly
-        for _ in range(len(self.nodes) - 1):
-            for edge in self.edges:
+        for _ in range(len(nodes) - 1):
+            for edge in edges:
                 if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
                     distances[edge[1]] = distances[edge[0]] + edge[2]
 
         # Check for negative cycles
-        for edge in self.edges:
+        for edge in edges:
             if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
                 return True  # Negative cycle found
 
         return False  # No negative cycle found
+
+    # def adj_bool_bellman_ford(self, nodes: List[int] = None, edges: List[Tuple[int, int, float]] = None ):
+    #     """
+    #     Detect negative cycles using Bellman-Ford algorithm.
+    #     """
+    #     if nodes is None:
+    #         nodes = self.nodes
+    #     if edges is None:
+    #         edges = self.edges
+
+    #     distances = {node: 0 for node in nodes}
+    #     adjacency_list = {node: [] for node in nodes}
+
+    #     for edge in edges:
+    #         adjacency_list[edge[0]].append(edge)
+
+    #     # Relax edges repeatedly
+    #     for _ in range(len(nodes) - 1):
+    #         for node in nodes:
+    #             for edge in adjacency_list[node]:
+    #                 if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
+    #                     distances[edge[1]] = distances[edge[0]] + edge[2]
+
+    #     # Check for negative cycles
+    #     for node in nodes:
+    #         for edge in adjacency_list[node]:
+    #             if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
+    #                 return True  # Negative cycle found
+
+    #     return False  # No negative cycle found
     
    
 
-    def detect_negative_cycles(self):
-        # Note: this piece of code doesn't allow for ANY cycle, and not only negative cycles, hence I use bellman_ford. 
-        # for key, value in self.reaches.items():
-        #     for edge in value:
-        #         if edge[1] == key:
-        #             return [0] #there is a cycle
-        # return [] #no negative cycle
+    # def detect_negative_cycles(self):
+    #     # Note: this piece of code doesn't allow for ANY cycle, and not only negative cycles, hence I use bellman_ford. 
+    #     # for key, value in self.reaches.items():
+    #     #     for edge in value:
+    #     #         if edge[1] == key:
+    #     #             return [0] #there is a cycle
+    #     # return [] #no negative cycle
 
-        return self.bool_bellman_ford()
+    #     return self.bool_bellman_ford()
 
     def get_node_neighbours_with_edges(self, node: int) -> Dict[int, Tuple[int, int, float]]:
         """
@@ -335,7 +352,7 @@ class Arena:
                       for node, edge in outgoing_edges.items()]
             if values == []:
                 return 0
-            if self.player_mapping[node].name == 1:  # max
+            if self.player_mapping[node] == 1:  # max
                 return max(values)
             else:  # min
                 return min(values)
@@ -368,14 +385,14 @@ class Arena:
         (Energy is lost when a player moves to a node whose edge has negative weight, and gained when it moves to a node whose edge has a positive weight.)
         """
         min_energy_dict = {}
-        for player in self.players:
+        for player in range(1, 3):
             # Get the nodes owned by the player
             player_nodes = [
                 node for node in self.nodes if self.player_mapping[node] == player]
             # Find the maximum value among the player's nodes
             max_value = max(self.value_mapping[node] for node in player_nodes)
 
-            min_energy_dict[player.name] = round(max_value, round_to)
+            min_energy_dict[player] = round(max_value, round_to)
         return min_energy_dict
 
 
@@ -384,19 +401,18 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | N
                   edge_probability=edge_probability, 
                   seed=seed) 
     arena.generate()
-    # arena.check_arena_conditions()
+    arena.save("arena.pkl")
     plot_graph(arena)
     arena.value_iteration()
-    # value_dict = {node: round(node.value, 2) for node in arena.nodes}
     min_energy_dict = arena.get_min_energy()
     return min_energy_dict
 
-def run_multiple():
+def run_multiple(n_runs: int = 100):
     times = []
-    for seed in range(0, 100):
+    for seed in range(0, n_runs):
         try:
             start = time.time()
-            solution = run_solver(num_nodes=100, edge_probability=0.2, seed=seed)
+            solution = run_solver(num_nodes=1000, edge_probability=0.01, seed=seed)
             end = time.time()
             times.append(end - start)
             logging.info(f"Solution: {solution}")
@@ -420,4 +436,4 @@ def profile():
 
 if __name__ == "__main__":
     profile()    
-    # run_multiple()
+    # run_multiple(n_runs=1)

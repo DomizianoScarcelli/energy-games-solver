@@ -13,7 +13,7 @@ class EnergyGameArena:
 
     def _nodes_dict(self):
         if self.player_mapping:
-            return {node: {'metadata': {'color': 'red' if self.player_mapping[node].name == 1 else 'blue', 'label_color':'red' if self.player_mapping[node] == 1 else 'blue'  }} for node in self.nodes}
+            return {node: {'metadata': {'color': 'red' if self.player_mapping[node] == 1 else 'blue', 'label_color':'red' if self.player_mapping[node] == 1 else 'blue'  }} for node in self.nodes}
         return {node.name: {'metadata': {'color': 'red' if node.player.name == 1 else 'blue', 'label_color':'red' if node.player.name == 1 else 'blue'  }} for node in self.nodes}
 
     def _edges_dict_list(self):
