@@ -1,9 +1,7 @@
 from __future__ import annotations
 import cProfile
-from copy import deepcopy
 import pstats
 from itertools import product
-import json
 import math
 import time
 from typing import Dict, List, Set, Tuple
@@ -15,13 +13,6 @@ import pickle
 import sys
 import time
 
-# def set_default(obj):
-#     if isinstance(obj, set):
-#         return list(obj)
-#     raise TypeError(f"Error in set_default: Object of type {obj.__class__.__name__} is not JSON serializable")
-
-# def deserialize_dict(_dict):
-#     return {int(k): {tuple(e) for e in v} for k, v in _dict.items()}
 
 #Set this to False to disable debug prints
 DEBUG = False
@@ -73,24 +64,6 @@ class Arena:
     def __str__(self):
         return f"Nodes: {self.nodes}\nEdges: {self.edges}"
 
-    # def load_from_nodes(self, nodes: Set[Node]):
-    #     self.nodes = nodes
-    #     self.edges = set()
-    #     for node in nodes:
-    #         self.edges = self.edges.union(node.reaches)
-    #         self.edges = self.edges.union(node.parents)
-    #     for edge in self.edges.copy():
-    #         if edge.node1 not in self.nodes:
-    #             self.nodes.add(edge.node1)
-    #         if edge.node2 not in self.nodes:
-    #             self.nodes.add(edge.node2)
-                
-        # logging.debug("Final edges are: ", self.edges)
-
-    # def load_from_pickle(self, filename: str):
-    #     with open(filename, 'rb') as f:
-    #         arena = pickle.load(f)
-    #     self = arena
 
     def save(self, save_path: str = "arena.pkl"):
         with open(save_path, 'wb') as f:
@@ -101,29 +74,6 @@ class Arena:
             arena = pickle.load(f)
         return arena
 
-    # def _deepcopy(self, _dict, strategy: str = "json", loading: bool = False):
-    #     if strategy == "json":
-    #         if loading:
-    #             result = json.loads(_dict)
-    #         else:
-    #             result = json.dumps(_dict, default=set_default)
-    #         return result
-    #     elif strategy == "deepcopy":
-    #         if not loading:
-    #             return deepcopy(_dict)
-    #         return _dict
-    #     else:
-    #         raise NotImplementedError("Strategy not implemented")
-        
-    # def save_state(self):
-    #     self.backtracking_reaches = self._deepcopy(self.reaches, loading=False)
-    #     self.backtracking_parents = self._deepcopy(self.parents, loading=False)
-    #     self.backtracking_edges = self.edges.copy()
-
-    # def backtrack(self, message: str = ""):
-    #     self.reaches = deserialize_dict(self._deepcopy(self.backtracking_reaches, loading=True))
-    #     self.parents = deserialize_dict(self._deepcopy(self.backtracking_parents, loading=True))
-    #     self.edges = self.backtracking_edges.copy()
     
     def update_reaches(self, node: int, edge: Tuple[int, int, float]):
         # key = str(node) if isinstance(node, int) else node
@@ -198,71 +148,6 @@ class Arena:
                     self.safely_update(origin, edge)
         pbar.close()
 
-    # def check_arena_conditions(self):
-    #     """
-    #     Let us say that a cycle in G is non-negative if the sum of its weights is nonnegative. We consider the following properties:
-    #     (i) G satisfies MeanPayoff− ≥ 0.
-    #     (ii) All cycles in G are non-negative.
-    #     (iii) G satisfies Energy < ∞
-    #     """
-    #     # Checkign if sum of weights is non negative and if there are both negative and positive weights
-
-    #     weight_sum = sum([edge.weight for edge in self.edges])
-    #     num_positive_weights = len(
-    #         [edge for edge in self.edges if edge.weight > 0])
-    #     num_negative_weights = len(
-    #         [edge for edge in self.edges if edge.weight < 0])
-
-    #     weight_sum_player_1 = sum(
-    #         [edge.weight for edge in self.edges if edge.node1.player.name == 1])
-    #     weight_sum_player_2 = sum(
-    #         [edge.weight for edge in self.edges if edge.node1.player.name == 2])
-    #     logging.debug(f"Sum of weights for player 1: {weight_sum_player_1}")
-    #     logging.debug(f"Sum of weights for player 2: {weight_sum_player_2}")
-    #     logging.debug(f"Sum is non negative: {weight_sum}")
-    #     logging.debug(
-    #         f"There are {num_positive_weights} positive weights and {num_negative_weights} negative weights")
-
-    #     num_negative_cycles = len(self.detect_negative_cycles())
-    #     #TODO: commented by now
-    #     # assert weight_sum >= 0, "Graph does not satisfy MeanPayoff− ≥ 0"
-    #     assert num_negative_cycles == 0, f"Graph has {num_negative_cycles} negative cycles"
-
-
-    # def bellman_ford(self, nodes=None, edges=None):
-    #     """
-    #     Detect negative cycles using Bellman-Ford algorithm.
-    #     """
-    #     if nodes is None:
-    #         nodes = self.nodes
-    #     if edges is None:
-    #         edges = self.edges
-
-    #     distances = {node: 0 for node in nodes}
-    #     predecessors = {node: None for node in nodes}
-
-    #     # Relax edges repeatedly
-    #     for _ in range(len(nodes) - 1):
-    #         for edge in edges:
-    #             if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
-    #                 distances[edge[1]] = distances[edge[0]] + edge[2]
-    #                 predecessors[edge[1]] = edge[0]
-
-    #     # Check for negative cycles
-    #     negative_cycles = []
-    #     for edge in edges:
-    #         if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
-    #             # Negative cycle found
-    #             cycle = [edge[1]]
-    #             node = edge[0]
-    #             while node not in cycle:
-    #                 cycle.append(node)
-    #                 node = predecessors[node]
-    #             cycle.append(node)
-    #             # cycle.reverse() #NOTE: removed for efficiency
-    #             negative_cycles.append(cycle)
-
-    #     return len(negative_cycles)
 
 
     def bool_bellman_ford(self, nodes: List[int] = None, edges: List[Tuple[int, int, float]] = None):
@@ -289,48 +174,6 @@ class Arena:
 
         return False  # No negative cycle found
 
-    # def adj_bool_bellman_ford(self, nodes: List[int] = None, edges: List[Tuple[int, int, float]] = None ):
-    #     """
-    #     Detect negative cycles using Bellman-Ford algorithm.
-    #     """
-    #     if nodes is None:
-    #         nodes = self.nodes
-    #     if edges is None:
-    #         edges = self.edges
-
-    #     distances = {node: 0 for node in nodes}
-    #     adjacency_list = {node: [] for node in nodes}
-
-    #     for edge in edges:
-    #         adjacency_list[edge[0]].append(edge)
-
-    #     # Relax edges repeatedly
-    #     for _ in range(len(nodes) - 1):
-    #         for node in nodes:
-    #             for edge in adjacency_list[node]:
-    #                 if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
-    #                     distances[edge[1]] = distances[edge[0]] + edge[2]
-
-    #     # Check for negative cycles
-    #     for node in nodes:
-    #         for edge in adjacency_list[node]:
-    #             if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
-    #                 return True  # Negative cycle found
-
-    #     return False  # No negative cycle found
-    
-   
-
-    # def detect_negative_cycles(self):
-    #     # Note: this piece of code doesn't allow for ANY cycle, and not only negative cycles, hence I use bellman_ford. 
-    #     # for key, value in self.reaches.items():
-    #     #     for edge in value:
-    #     #         if edge[1] == key:
-    #     #             return [0] #there is a cycle
-    #     # return [] #no negative cycle
-
-    #     return self.bool_bellman_ford()
-
     def get_node_neighbours_with_edges(self, node: int) -> Dict[int, Tuple[int, int, float]]:
         """
         Get the neighbours of a node, along with the edge that connects them.
@@ -345,9 +188,6 @@ class Arena:
         def delta(l, w): return max(l-w, 0)
         def Q(node: int):
             outgoing_edges = self.get_node_neighbours_with_edges(node)
-            # print(f"Outgoing edges for node {node} are {outgoing_edges}")
-            # for n, e in outgoing_edges.items():
-            #     print(f"Value is {self.value_mapping[n]}, weight is {e[2]}, delta is {delta(self.value_mapping[n], e[2])}")
             values = [delta(self.value_mapping[node], edge[2])
                       for node, edge in outgoing_edges.items()]
             if values == []:
@@ -367,7 +207,6 @@ class Arena:
                 break
             pbar.update(1)
             for node in self.nodes:
-                # print(f"Analyizing node {node} with value {self.value_mapping[node]} and player {self.player_mapping[node].name}")
                 old_value = self.value_mapping[node]
                 self.value_mapping[node] = Q(node)
                 if abs(self.value_mapping[node] - old_value) < threshold:
@@ -427,7 +266,7 @@ def profile():
     profiler.enable()
 
     # Run your function
-    # Best time: 25sec (num_nodes=100, edge_probability=0.1, seed=3, json deepcopy)
+    # Best time: 9 sec (num_nodes=100, edge_probability=0.1, seed=3, json deepcopy)
     run_solver(num_nodes=100, edge_probability=0.1, seed=3)
 
     profiler.disable()
