@@ -36,7 +36,8 @@ def timeit(func):
 class Arena:
     def __init__(self, num_nodes: float = 10, edge_probability: float = 0.01, seed: int | None = None):
         self.nodes = set(range(num_nodes))
-        self.player_mapping: Dict[int, int] = {i: random.randint(1, 2) for i in range(num_nodes)} 
+        self.random = random.Random(seed)
+        self.player_mapping: Dict[int, int] = {i: self.random.randint(1, 2) for i in range(num_nodes)} 
         self.value_mapping: Dict[int, float] = {i: 0 for i in range(num_nodes)}
         self.edges_mapping: Dict[int, Set[Tuple[int, int, float]]] = {i: set() for i in range(num_nodes)}
         self.edges = set()
@@ -67,43 +68,6 @@ class Arena:
         return arena
 
     
-    # def update_reaches(self, node: int, edge: Tuple[int, int, float]):
-    #     # key = str(node) if isinstance(node, int) else node
-    #     key = node
-    #     if self.reaches.get(key) is None:
-    #         self.reaches[key] = {edge}
-    #     else:
-    #         self.reaches[key].add(edge)
-
-    # def update_parents(self, node: int, edge: Tuple[int, int, float]):
-    #     # key = str(node) if isinstance(node, int) else node
-    #     key = node
-    #     if self.parents.get(key) is None:
-    #         self.parents[key] = {edge}
-    #     else:
-    #         self.parents[key].add(edge)
-
-    # def update(self, node: int, edge: Tuple[int, int, float]):
-    #     """
-    #     Update the `reaches` list of the node with the new edge.
-    #     Also update the reaches list of the self's parent nodes of the same player with the new edge.
-    #     """
-    #     logging.debug(f"Updating edge {edge} for node {node}")
-    #     if (node, edge) in self.considered:
-    #         # Avoid maximum recursion depth
-    #         return
-
-    #     self.considered.add((node, edge))
-    #     # self.update_reaches(node, edge)
-    #     # self.reaches[node] = self.reaches[node].union(self.reaches.get(edge[1], set()))
-
-    #     self.update_parents(edge[1], edge)
-    #     self.edges.add(edge)
-
-    #     for p_edge in self.parents.get(node, set()):
-    #         p_origin = p_edge[0]
-    #         self.update(p_origin, edge)
-
     def safely_update(self, node: int, edge: Tuple[int, int, float]):
         """
         Update the arena with the new edge and backtrack if a negative cycle is detected.
@@ -114,7 +78,6 @@ class Arena:
         if negative_cycles:
             return 
         # self.distances = new_distances
-        self.edges.add(edge)
         self.edges_mapping[node].add(edge)
 
         
@@ -138,23 +101,37 @@ class Arena:
         #TODO: this creates a valid graph, but sometimes it has some false positives
 
         # Add the new edge
-        edges = self.edges.copy()
-        edges.add(new_edge)
+        self.edges.add(new_edge)
 
-        distances = self.distances.copy()
+        # distances = self.distances.copy()
+        # distances = self.distances
+        new_distance_0 = self.distances.get(new_edge[0], 0) + new_edge[2]
+        new_distance_1 = self.distances.get(new_edge[1], float('inf'))
+
+        # previous_distance_0 = self.distances.get(new_edge[0], None)
+        previous_distance_1 = self.distances.get(new_edge[1], None)
 
         # Relax edges related to the new edge
         for _ in range(len(self.nodes) - 1):
-            if distances[new_edge[0]] + new_edge[2] < distances.get(new_edge[1], float('inf')):
-                distances[new_edge[1]] = distances[new_edge[0]] + new_edge[2]
+            # if distances[new_edge[0]] + new_edge[2] < distances.get(new_edge[1], float('inf')):
+            #     distances[new_edge[1]] = distances[new_edge[0]] + new_edge[2]
+            if new_distance_0 < new_distance_1:
+                new_distance_1 = new_distance_0
+
+        # print(f"Edge is {new_edge}, new_distance_0 is {new_distance_0}, new_distance_1 is {new_distance_1}")
+        # self.distances[new_edge[0]] = new_distance_0
+        self.distances[new_edge[1]] = new_distance_1
 
         # Check for negative cycles related to the new edge
-        for edge in edges:
+        for edge in self.edges:
             if edge[0] == new_edge[0] or edge[1] == new_edge[0] or edge[0] == new_edge[1] or edge[1] == new_edge[1]:
-                if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
+                if self.distances[edge[0]] + edge[2] < self.distances.get(edge[1], float('inf')):
+                    self.edges.remove(new_edge)
+                    # self.distances[new_edge[0]] = previous_distance_0
+                    self.distances[new_edge[1]] = previous_distance_1
                     return True # Negative cycle found
 
-        self.distances = distances
+        # self.distances = distances
         return False  # No negative cycle found
 
     def bool_bellman_ford(self, nodes: List[int] = None, edges: List[Tuple[int, int, float]] = None):
@@ -258,7 +235,7 @@ def run_multiple(n_runs: int = 100, plot: bool = False, save: bool = False):
     for seed in range(0, n_runs):
         try:
             start = time.time()
-            solution = run_solver(num_nodes=500, edge_probability=0.1, seed=seed, plot=plot, save=save)
+            solution = run_solver(num_nodes=1000, edge_probability=0.5, seed=seed, plot=plot, save=save)
             end = time.time()
             times.append(end - start)
             logging.info(f"Solution: {solution}")
