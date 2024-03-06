@@ -90,6 +90,9 @@ class Arena:
         self.reaches: Dict[int, Set[Tuple[int, int]]] = {}
         self.parents: Dict[int, Set[Tuple[int, int]]] = {}
 
+
+        self.considered: Set[Tuple[int, Tuple[int, int, float]]]= set()
+
         if seed is not None:
             random.seed(seed)
 
@@ -140,14 +143,10 @@ class Arena:
         self.backtracking_reaches = self._deepcopy(self.reaches, loading=False)
         self.backtracking_parents = self._deepcopy(self.parents, loading=False)
         self.backtracking_edges = self.edges.copy()
-        #TODO: Don't know if I need to deepcopy this
-        # print(f"Saving edges_mapping: {self.edges_mapping}")
-        # self.backtracking_edges_mapping = self._deepcopy(self.edges_mapping)
 
     def backtrack(self, message: str = ""):
         self.reaches = deserialize_dict(self._deepcopy(self.backtracking_reaches, loading=True))
         self.parents = deserialize_dict(self._deepcopy(self.backtracking_parents, loading=True))
-        # self.edges_mapping = deserialize_dict(self._deepcopy(self.backtracking_edges_mapping))
         self.edges = self.backtracking_edges.copy()
     
     def update_reaches(self, node: int, edge: Tuple[int, int, float]):
@@ -171,18 +170,17 @@ class Arena:
         Update the `reaches` list of the node with the new edge.
         Also update the reaches list of the self's parent nodes of the same player with the new edge.
         """
-        logging.debug(f"Updating edge {edge} for node {self}")
-        old_reaches = self._deepcopy(self.reaches, loading=False)
+        logging.debug(f"Updating edge {edge} for node {node}")
+        if (node, edge) in self.considered:
+            # Avoid maximum recursion depth
+            return
+
+        self.considered.add((node, edge))
         self.update_reaches(node, edge)
         self.reaches[node] = self.reaches[node].union(self.reaches.get(edge[1], set()))
 
-        old_parents = self._deepcopy(self.parents, loading=False)
         dest = edge[1]
         self.update_parents(dest, edge)
-
-        if self._deepcopy(self.reaches, loading=False) == old_reaches and self._deepcopy(self.parents, loading=False) == old_parents:
-            # Avoid max recursion depth
-            return
 
         self.edges.add(edge)
 
@@ -197,19 +195,18 @@ class Arena:
         """
         self.update(node, edge)
         negative_cycles = self.detect_negative_cycles()
-        if len(negative_cycles) > 0:
+        if negative_cycles > 0:
             self.backtrack(message=f"removing {edge}")
             return False
         self.edges_mapping[node].add(edge)
         return True
 
-    def safely_add_edge(self, node: int, edge: Tuple[int, int, float]):
-        if (edge[0], edge[1]) in {(e[0], e[1]) for e in self.edges}:
-            print(f"HERE")
-            return False
-        self.safely_update(node, edge)
+    # def safely_add_edge(self, node: int, edge: Tuple[int, int, float]):
+    #     # if (edge[0], edge[1]) in {(e[0], e[1]) for e in self.edges}:
+    #     #     print(f"HERE")
+    #     #     return False
+    #     self.safely_update(node, edge)
         
-
     def generate(self):
         pbar = tqdm(total=self.num_nodes ** 2, desc="Creating graph")
         update_delta = round(math.sqrt(pbar.total))
@@ -221,7 +218,7 @@ class Arena:
                 if origin != dest or weight >= 0:
                     edge = (origin, dest, weight)
                     self.save_state()
-                    self.safely_add_edge(origin, edge)
+                    self.safely_update(origin, edge)
         pbar.close()
 
     # def check_arena_conditions(self):
@@ -285,15 +282,37 @@ class Arena:
 
         return negative_cycles
 
+
+    def bool_bellman_ford(self):
+        """
+        Detect negative cycles using Bellman-Ford algorithm.
+        """
+        distances = {node: 0 for node in self.nodes}
+
+        # Relax edges repeatedly
+        for _ in range(len(self.nodes) - 1):
+            for edge in self.edges:
+                if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
+                    distances[edge[1]] = distances[edge[0]] + edge[2]
+
+        # Check for negative cycles
+        for edge in self.edges:
+            if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
+                return True  # Negative cycle found
+
+        return False  # No negative cycle found
+    
+   
+
     def detect_negative_cycles(self):
-        # print(f"Reaches is: ")
-        # pprint(self.reaches)
+        # Note: this piece of code doesn't allow for ANY cycle, and not only negative cycles, hence I use bellman_ford. 
         # for key, value in self.reaches.items():
         #     for edge in value:
         #         if edge[1] == key:
         #             return [0] #there is a cycle
         # return [] #no negative cycle
-        return self.bellman_ford()
+
+        return self.bool_bellman_ford()
 
     def get_node_neighbours_with_edges(self, node: int) -> Dict[int, Tuple[int, int, float]]:
         """
@@ -366,7 +385,7 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | N
                   seed=seed) 
     arena.generate()
     # arena.check_arena_conditions()
-    # plot_graph(arena)
+    plot_graph(arena)
     arena.value_iteration()
     # value_dict = {node: round(node.value, 2) for node in arena.nodes}
     min_energy_dict = arena.get_min_energy()
@@ -377,7 +396,7 @@ def run_multiple():
     for seed in range(0, 100):
         try:
             start = time.time()
-            solution = run_solver(num_nodes=20, edge_probability=0.3, seed=seed)
+            solution = run_solver(num_nodes=100, edge_probability=0.2, seed=seed)
             end = time.time()
             times.append(end - start)
             logging.info(f"Solution: {solution}")
@@ -392,7 +411,8 @@ def profile():
     profiler.enable()
 
     # Run your function
-    run_solver(num_nodes=50, edge_probability=0.1)
+    # Best time: 25sec (num_nodes=100, edge_probability=0.1, seed=3, json deepcopy)
+    run_solver(num_nodes=100, edge_probability=0.1, seed=3)
 
     profiler.disable()
     stats = pstats.Stats(profiler).sort_stats('cumtime')
