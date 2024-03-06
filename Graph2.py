@@ -44,15 +44,7 @@ class Arena:
         self.edge_probability = edge_probability
         self.max_weight = 10
         self.weight_range = (-self.max_weight, self.max_weight)
-        self.backtracking_reaches: Dict[int, Set[Tuple[int, int]]] = {}
-        self.backtracking_parents: Dict[int, Set[Tuple[int, int]]] = {}
-        self.backtracking_edges: Set[Tuple[int, int]] = set()
-        self.backtracking_edges_mapping: Dict[int, Set[Tuple[int, int, float]]] = {}
-
-        self.reaches: Dict[int, Set[Tuple[int, int]]] = {}
-        self.parents: Dict[int, Set[Tuple[int, int]]] = {}
-
-
+        self.distances = {node: 0 for node in self.nodes}
         self.considered: Set[Tuple[int, Tuple[int, int, float]]]= set()
 
         if seed is not None:
@@ -75,65 +67,56 @@ class Arena:
         return arena
 
     
-    def update_reaches(self, node: int, edge: Tuple[int, int, float]):
-        # key = str(node) if isinstance(node, int) else node
-        key = node
-        if self.reaches.get(key) is None:
-            self.reaches[key] = {edge}
-        else:
-            self.reaches[key].add(edge)
+    # def update_reaches(self, node: int, edge: Tuple[int, int, float]):
+    #     # key = str(node) if isinstance(node, int) else node
+    #     key = node
+    #     if self.reaches.get(key) is None:
+    #         self.reaches[key] = {edge}
+    #     else:
+    #         self.reaches[key].add(edge)
 
-    def update_parents(self, node: int, edge: Tuple[int, int, float]):
-        # key = str(node) if isinstance(node, int) else node
-        key = node
-        if self.parents.get(key) is None:
-            self.parents[key] = {edge}
-        else:
-            self.parents[key].add(edge)
+    # def update_parents(self, node: int, edge: Tuple[int, int, float]):
+    #     # key = str(node) if isinstance(node, int) else node
+    #     key = node
+    #     if self.parents.get(key) is None:
+    #         self.parents[key] = {edge}
+    #     else:
+    #         self.parents[key].add(edge)
 
-    def update(self, node: int, edge: Tuple[int, int, float]):
-        """
-        Update the `reaches` list of the node with the new edge.
-        Also update the reaches list of the self's parent nodes of the same player with the new edge.
-        """
-        logging.debug(f"Updating edge {edge} for node {node}")
-        if (node, edge) in self.considered:
-            # Avoid maximum recursion depth
-            return
+    # def update(self, node: int, edge: Tuple[int, int, float]):
+    #     """
+    #     Update the `reaches` list of the node with the new edge.
+    #     Also update the reaches list of the self's parent nodes of the same player with the new edge.
+    #     """
+    #     logging.debug(f"Updating edge {edge} for node {node}")
+    #     if (node, edge) in self.considered:
+    #         # Avoid maximum recursion depth
+    #         return
 
-        self.considered.add((node, edge))
-        self.update_reaches(node, edge)
-        self.reaches[node] = self.reaches[node].union(self.reaches.get(edge[1], set()))
+    #     self.considered.add((node, edge))
+    #     # self.update_reaches(node, edge)
+    #     # self.reaches[node] = self.reaches[node].union(self.reaches.get(edge[1], set()))
 
-        dest = edge[1]
-        self.update_parents(dest, edge)
+    #     self.update_parents(edge[1], edge)
+    #     self.edges.add(edge)
 
-        self.edges.add(edge)
+    #     for p_edge in self.parents.get(node, set()):
+    #         p_origin = p_edge[0]
+    #         self.update(p_origin, edge)
 
-        for p_edge in self.parents.get(node, set()):
-            p_origin = p_edge[0]
-            self.update(p_origin, edge)
-
-    # @timeit 
     def safely_update(self, node: int, edge: Tuple[int, int, float]):
         """
         Update the arena with the new edge and backtrack if a negative cycle is detected.
         """
-        negative_cycles = self.bool_bellman_ford(nodes=[*self.nodes, node], edges=[*self.edges, edge])
-        if negative_cycles > 0:
-            return False
-        self.update(node, edge)
-        # if negative_cycles > 0:
-        #     self.backtrack(message=f"removing {edge}")
-        #     return False
+        negative_cycles = self.bool_bellman_ford_incremental(edge)
+        # alt_negative_cycles = self.bool_bellman_ford(nodes=[*self.nodes, node], edges=[*self.edges, edge])
+        # assert negative_cycles == alt_negative_cycles, f"Negative cycles do not match: {negative_cycles} vs {alt_negative_cycles}"
+        if negative_cycles:
+            return 
+        # self.distances = new_distances
+        self.edges.add(edge)
         self.edges_mapping[node].add(edge)
-        return True
 
-    # def safely_add_edge(self, node: int, edge: Tuple[int, int, float]):
-    #     # if (edge[0], edge[1]) in {(e[0], e[1]) for e in self.edges}:
-    #     #     print(f"HERE")
-    #     #     return False
-    #     self.safely_update(node, edge)
         
     def generate(self):
         pbar = tqdm(total=self.num_nodes ** 2, desc="Creating graph")
@@ -148,7 +131,31 @@ class Arena:
                     self.safely_update(origin, edge)
         pbar.close()
 
+    def bool_bellman_ford_incremental(self, new_edge: Tuple[int, int, float]):
+        """
+        Detect negative cycles using Bellman-Ford algorithm, with incremental updates.
+        """
+        #TODO: this creates a valid graph, but sometimes it has some false positives
 
+        # Add the new edge
+        edges = self.edges.copy()
+        edges.add(new_edge)
+
+        distances = self.distances.copy()
+
+        # Relax edges related to the new edge
+        for _ in range(len(self.nodes) - 1):
+            if distances[new_edge[0]] + new_edge[2] < distances.get(new_edge[1], float('inf')):
+                distances[new_edge[1]] = distances[new_edge[0]] + new_edge[2]
+
+        # Check for negative cycles related to the new edge
+        for edge in edges:
+            if edge[0] == new_edge[0] or edge[1] == new_edge[0] or edge[0] == new_edge[1] or edge[1] == new_edge[1]:
+                if distances[edge[0]] + edge[2] < distances.get(edge[1], float('inf')):
+                    return True # Negative cycle found
+
+        self.distances = distances
+        return False  # No negative cycle found
 
     def bool_bellman_ford(self, nodes: List[int] = None, edges: List[Tuple[int, int, float]] = None):
         """
@@ -178,8 +185,6 @@ class Arena:
         """
         Get the neighbours of a node, along with the edge that connects them.
         """
-        # if isinstance(node, int):
-        #     node = str(node)
         outgoing_edges = self.edges_mapping[node]
         neighbours = {edge[1]: edge for edge in outgoing_edges if edge[1] != node}
         return neighbours
@@ -235,23 +240,25 @@ class Arena:
         return min_energy_dict
 
 
-def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | None = None):
+def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | None = None, plot: bool = False, save: bool = False):
     arena = Arena(num_nodes=num_nodes,
                   edge_probability=edge_probability, 
                   seed=seed) 
     arena.generate()
-    arena.save(f"arena_{num_nodes}_{edge_probability}.pkl")
-    plot_graph(arena)
+    if plot:
+        plot_graph(arena)
+    if save:
+        arena.save(f"arena_{num_nodes}_{edge_probability}.pkl")
     arena.value_iteration()
     min_energy_dict = arena.get_min_energy()
     return min_energy_dict
 
-def run_multiple(n_runs: int = 100):
+def run_multiple(n_runs: int = 100, plot: bool = False, save: bool = False):
     times = []
     for seed in range(0, n_runs):
         try:
             start = time.time()
-            solution = run_solver(num_nodes=1000, edge_probability=0.01, seed=seed)
+            solution = run_solver(num_nodes=500, edge_probability=0.1, seed=seed, plot=plot, save=save)
             end = time.time()
             times.append(end - start)
             logging.info(f"Solution: {solution}")
@@ -267,12 +274,13 @@ def profile():
 
     # Run your function
     # Best time: 9 sec (num_nodes=100, edge_probability=0.1, seed=3, json deepcopy)
-    run_solver(num_nodes=100, edge_probability=0.1, seed=3)
+    solution = run_solver(num_nodes=100, edge_probability=0.1, seed=3)
+    logging.info(f"Solution: {solution}")
 
     profiler.disable()
     stats = pstats.Stats(profiler).sort_stats('cumtime')
     stats.print_stats()
 
 if __name__ == "__main__":
-    profile()    
-    # run_multiple(n_runs=1)
+    # profile()    
+    run_multiple(n_runs=1, plot=True, save=False)
