@@ -401,7 +401,7 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | N
                   edge_probability=edge_probability, 
                   seed=seed) 
     arena.generate()
-    arena.save("arena.pkl")
+    arena.save(f"arena_{num_nodes}_{edge_probability}.pkl")
     plot_graph(arena)
     arena.value_iteration()
     min_energy_dict = arena.get_min_energy()
