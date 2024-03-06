@@ -47,6 +47,8 @@ class Arena:
         self.weight_range = (-self.max_weight, self.max_weight)
         self.distances = {node: 0 for node in self.nodes}
         self.considered: Set[Tuple[int, Tuple[int, int, float]]]= set()
+        self.considered_edges_bf: Set[Tuple[int, int, float]] = set()
+        self.fast_edges: Dict[int, Dict[int, float]] = {i: {} for i in range(num_nodes)}
 
         if seed is not None:
             random.seed(seed)
@@ -102,9 +104,8 @@ class Arena:
 
         # Add the new edge
         self.edges.add(new_edge)
+        self.fast_edges[new_edge[0]][new_edge[1]] = new_edge[2]
 
-        # distances = self.distances.copy()
-        # distances = self.distances
         new_distance_0 = self.distances.get(new_edge[0], 0) + new_edge[2]
         new_distance_1 = self.distances.get(new_edge[1], float('inf'))
 
@@ -113,25 +114,30 @@ class Arena:
 
         # Relax edges related to the new edge
         for _ in range(len(self.nodes) - 1):
-            # if distances[new_edge[0]] + new_edge[2] < distances.get(new_edge[1], float('inf')):
-            #     distances[new_edge[1]] = distances[new_edge[0]] + new_edge[2]
             if new_distance_0 < new_distance_1:
                 new_distance_1 = new_distance_0
 
-        # print(f"Edge is {new_edge}, new_distance_0 is {new_distance_0}, new_distance_1 is {new_distance_1}")
-        # self.distances[new_edge[0]] = new_distance_0
         self.distances[new_edge[1]] = new_distance_1
 
         # Check for negative cycles related to the new edge
-        for edge in self.edges:
-            if edge[0] == new_edge[0] or edge[1] == new_edge[0] or edge[0] == new_edge[1] or edge[1] == new_edge[1]:
-                if self.distances[edge[0]] + edge[2] < self.distances.get(edge[1], float('inf')):
-                    self.edges.remove(new_edge)
-                    # self.distances[new_edge[0]] = previous_distance_0
-                    self.distances[new_edge[1]] = previous_distance_1
-                    return True # Negative cycle found
+        # for edge in self.edges:
+        #     if edge[0] == new_edge[0] or edge[1] == new_edge[0] or edge[0] == new_edge[1] or edge[1] == new_edge[1]:
+        #         if self.distances[edge[0]] + edge[2] < self.distances.get(edge[1], float('inf')):
+        #             self.edges.remove(new_edge)
+        #             self.distances[new_edge[1]] = previous_distance_1
+        #             return True # Negative cycle found
 
-        # self.distances = distances
+        origin_to = self.fast_edges[new_edge[0]] #this is a dict that maps the destination to the weight
+        dest_to = self.fast_edges[new_edge[1]] #this is a dict that maps the origin to the weight
+
+        edges = {(new_edge[0], dest, weight) for dest, weight in origin_to.items()} | {(new_edge[1], origin, weight) for origin, weight in dest_to.items()}
+        for edge in edges:
+            if self.distances[edge[0]] + edge[2] < self.distances.get(edge[1], float('inf')):
+                self.edges.remove(new_edge)
+                self.fast_edges[new_edge[0]].pop(new_edge[1])
+                self.distances[new_edge[1]] = previous_distance_1
+                return True
+
         return False  # No negative cycle found
 
     def bool_bellman_ford(self, nodes: List[int] = None, edges: List[Tuple[int, int, float]] = None):
@@ -235,7 +241,7 @@ def run_multiple(n_runs: int = 100, plot: bool = False, save: bool = False):
     for seed in range(0, n_runs):
         try:
             start = time.time()
-            solution = run_solver(num_nodes=1000, edge_probability=0.5, seed=seed, plot=plot, save=save)
+            solution = run_solver(num_nodes=5000, edge_probability=0.1, seed=seed, plot=plot, save=save)
             end = time.time()
             times.append(end - start)
             logging.info(f"Solution: {solution}")
@@ -260,4 +266,4 @@ def profile():
 
 if __name__ == "__main__":
     # profile()    
-    run_multiple(n_runs=1, plot=True, save=False)
+    run_multiple(n_runs=1, plot=False, save=True)
