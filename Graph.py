@@ -1,9 +1,6 @@
 from __future__ import annotations
-import cProfile
-import pstats
 from itertools import product
 import math
-import time
 from typing import Dict, List, Set, Tuple
 from tqdm import tqdm
 import random
@@ -23,21 +20,10 @@ if DEBUG:
 if INFO:
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
-def timeit(func):
-        def wrapper(*args, **kwargs):
-            start_time = time.time()
-            result = func(*args, **kwargs)
-            end_time = time.time()
-            execution_time = (end_time - start_time) * 1000
-            print(f"Execution time of {func.__name__}: {execution_time} ms")
-            return result
-        return wrapper
-
 class Arena:
     def __init__(self, num_nodes: float = 10, edge_probability: float = 0.01, seed: int | None = None):
         self.nodes = set(range(num_nodes))
         self.random = random.Random(seed)
-        self.player_mapping: Dict[int, int] = {i: self.random.randint(1, 2) for i in range(num_nodes)} 
         self.value_mapping: Dict[int, float] = {i: 0 for i in range(num_nodes)}
         self.edges_mapping: Dict[int, Set[Tuple[int, int, float]]] = {i: set() for i in range(num_nodes)}
         self.edges = set()
@@ -49,6 +35,7 @@ class Arena:
         self.considered: Set[Tuple[int, Tuple[int, int, float]]]= set()
         self.considered_edges_bf: Set[Tuple[int, int, float]] = set()
         self.fast_edges: Dict[int, Dict[int, float]] = {i: {} for i in range(num_nodes)}
+        self.player_mapping: Dict[int, int] = self._assign_players(equal=True) 
 
         if seed is not None:
             random.seed(seed)
@@ -68,6 +55,18 @@ class Arena:
         with open(pickle_file, 'rb') as f:
             arena = pickle.load(f)
         return arena
+
+    def _assign_players(self, equal: bool = False):
+        """
+        Assign players to the nodes.
+        """
+        if equal:
+            players = [1] * (self.num_nodes // 2) + [2] * (self.num_nodes // 2)
+            random.shuffle(players)
+            player_mapping = {i: player for i, player in enumerate(players)}
+        else:
+            player_mapping = {i: self.random.randint(1, 2) for i in range(self.num_nodes)}
+        return player_mapping
 
     
     def safely_update(self, node: int, edge: Tuple[int, int, float]):
@@ -224,45 +223,3 @@ class Arena:
         return min_energy_dict
 
 
-def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | None = None, plot: bool = False, save: bool = False):
-    arena = Arena(num_nodes=num_nodes,
-                  edge_probability=edge_probability, 
-                  seed=seed) 
-    arena.generate()
-    if plot:
-        plot_graph(arena)
-    if save:
-        arena.save(f"arena_{num_nodes}_{edge_probability}.pkl")
-    arena.value_iteration()
-    min_energy_dict = arena.get_min_energy()
-    return min_energy_dict
-
-def run_multiple(n_runs: int = 100, plot: bool = False, save: bool = False):
-    times = []
-    for seed in range(0, n_runs):
-        try:
-            start = time.time()
-            solution = run_solver(num_nodes=5000, edge_probability=0.1, seed=seed, plot=plot, save=save)
-            end = time.time()
-            times.append(end - start)
-            logging.info(f"Solution: {solution}")
-        except AssertionError as e:
-            logging.error(f"Seed {seed} failed with error: {e}")
-            break
-    avg_time = (sum(times) / len(times)) * 1000
-    logging.info(f"Average time: {avg_time:f} ms")
-
-def profile(seed: int = 0, plot: bool = False, save: bool = False):
-    profiler = cProfile.Profile()
-    profiler.enable()
-
-    # Run your function
-    solution = run_solver(num_nodes=5000, edge_probability=0.2, seed=seed, plot=plot, save=save)    
-    logging.info(f"Solution: {solution}")
-    profiler.disable()
-    stats = pstats.Stats(profiler).sort_stats('cumtime')
-    stats.print_stats()
-
-if __name__ == "__main__":
-    profile(plot=False, save=True, seed=0)    
-    # run_multiple(n_runs=1, plot=False, save=True)
