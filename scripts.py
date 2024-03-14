@@ -12,11 +12,14 @@ from plot_graph import plot_graph
 import json
 
 
-def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | None = None, plot: bool = False, save: bool = False, optimize: bool = False):
-    arena = Arena(num_nodes=num_nodes,
-                  edge_probability=edge_probability, 
-                  seed=seed) 
-    arena.generate()
+def run_solver(num_nodes: Optional[int] = None, edge_probability: Optional[float] = None, seed: int | None = None, plot: bool = False, save: bool = False, optimize: bool = False, arena: Optional[Arena] = None):
+    if not arena:
+        arena = Arena(num_nodes=num_nodes,
+                    edge_probability=edge_probability, 
+                    seed=seed) 
+        arena.generate()
+    if arena and not (num_nodes or edge_probability):
+        raise ValueError("You must provide either an arena or the number of nodes and edge probability")
     if plot:
         plot_graph(arena)
     if save:
@@ -128,6 +131,6 @@ if __name__ == "__main__":
     # print(solve_game(num_nodes=10, edge_probability=0.3, seed=0, plot=True, save=False))
     # solve_all()
     # profile(plot=False, save=True, seed=0)    
-    result = run_solver(num_nodes=20, edge_probability=0.4, seed=0, plot=False, save=False)
+    result = run_solver(num_nodes=100, edge_probability=0.4, seed=0, plot=False, save=False, optimize=True)
     print(result)
     # run_multiple(n_runs=1, plot=False, save=True)

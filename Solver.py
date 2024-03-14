@@ -54,7 +54,7 @@ class Solver:
                 count[u] = 0
 
             ingoing_edges = self.arena.get_ingoing_edges(u)
-            for (v,u,w) in ingoing_edges:
+            for (v, u, _) in ingoing_edges:
                 if v in incorrect:
                     if self.arena.player_mapping[v] == 2:
                         count[v] += 1
@@ -70,10 +70,10 @@ class Solver:
             for u in incorrect:
                 treat(u)
                 update(u)
-            if len(incorrect) == 0:
+            if len(incorrect_prime) == 0:
                 return {node: self.arena.value_mapping[node] for node in self.arena.nodes}
-            else:
-                incorrect = incorrect_prime
+            incorrect = incorrect_prime
+
 
         
 
