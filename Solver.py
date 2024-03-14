@@ -16,8 +16,11 @@ class Solver:
         def delta(l, w): return max(l-w, 0)
 
         def init():
+            self.arena.value_mapping = {node: 0 for node in self.arena.nodes}
+            pbar = tqdm(total=len(self.arena.nodes), desc="Opt Value Iteration - Init")
             # For each MIN node
             for node in [n for n in self.arena.nodes if self.arena.player_mapping[n] == 2]:
+                pbar.update(1)
                 outgoing_edges = self.arena.get_node_neighbours_with_edges(node)
                 for edge in outgoing_edges.values():
                     u, v, w = edge
@@ -25,11 +28,12 @@ class Solver:
                     if self.arena.value_mapping[u] < delta(self.arena.value_mapping[v], w):
                         count[u] += 1
                 # If count == degree of node
-                if count[u] == len(outgoing_edges):
+                if count[u] == self.arena.get_node_degree(u):
                     incorrect.add(u)
 
             # For each MAX node
             for node in [n for n in self.arena.nodes if self.arena.player_mapping[n] == 1]:
+                pbar.update(1)
                 outgoing_edges = self.arena.get_node_neighbours_with_edges(node)
                 for edge in outgoing_edges.values():
                     u, v, w = edge
@@ -39,9 +43,9 @@ class Solver:
         
         # It's the same code as the Q function in value_iteration
         def treat(u: int):
-            outgoing_edges = self.arena.get_node_neighbours_with_edges(u)
-            values = [delta(self.arena.value_mapping[node], edge[2]) # delta between the value of the node and the weight of the edge for each outgoing edge 
-                      for node, edge in outgoing_edges.items()]
+            outgoing_edges = self.arena.get_node_neighbours_with_edges(u).values()
+            values = [delta(self.arena.value_mapping[edge[1]], edge[2]) # delta between the value of the node and the weight of the edge for each outgoing edge 
+                      for edge in outgoing_edges]
             if values == []:
                 return 0
             if self.arena.player_mapping[u] == 1:  # player is max
@@ -53,26 +57,32 @@ class Solver:
             if self.arena.player_mapping[u] == 2:
                 count[u] = 0
 
-            ingoing_edges = self.arena.get_ingoing_edges(u)
+            ingoing_edges = self.arena.ingoing_edges.get(u, set())
             for (v, u, _) in ingoing_edges:
-                if v in incorrect:
-                    if self.arena.player_mapping[v] == 2:
-                        count[v] += 1
-                        outgoing_edges = self.arena.get_node_neighbours_with_edges(v).values()
-                        if count[v] == len(outgoing_edges):
-                            incorrect_prime.add(v)
-                    if self.arena.player_mapping[v] == 1:
+                if v not in incorrect:
+                    return
+                if self.arena.player_mapping[v] == 2:
+                    count[v] += 1
+                    if count[v] == self.arena.get_node_degree(v):
                         incorrect_prime.add(v)
+                if self.arena.player_mapping[v] == 1:
+                    incorrect_prime.add(v)
 
         init()
-        for i in tqdm(range(10_000)):
+        m = self.arena.num_nodes
+        n = len(self.arena.edges)
+        W = self.arena.max_weight
+        max_steps = m * n * W
+        for i in tqdm(range(max_steps)):
             incorrect_prime = set()
             for u in incorrect:
                 treat(u)
                 update(u)
+            # print(len(incorrect_prime))
             if len(incorrect_prime) == 0:
                 return {node: self.arena.value_mapping[node] for node in self.arena.nodes}
             incorrect = incorrect_prime
+            print(self.get_min_energy())
 
 
         
@@ -84,7 +94,7 @@ class Solver:
 
         def Q(node: int):
             outgoing_edges = self.arena.get_node_neighbours_with_edges(node)
-            values = [delta(self.arena.value_mapping[node], edge[2]) # delta between the value of the node and the weight of the edge for each outgoing edge 
+            values = [delta(self.arena.value_mapping[edge[1]], edge[2]) # delta between the value of the connected node and the weight of the edge for each outgoing edge 
                       for node, edge in outgoing_edges.items()]
             if values == []:
                 return 0

@@ -35,6 +35,7 @@ class Arena:
         self.considered_edges_bf: Set[Tuple[int, int, float]] = set()
         self.fast_edges: Dict[int, Dict[int, float]] = {i: {} for i in range(num_nodes)}
         self.player_mapping: Dict[int, int] = self._assign_players(equal=True) 
+        self.ingoing_edges: Dict[int, Set[Tuple[int, int, float]]] = {i: set() for i in range(num_nodes)}
 
         if seed is not None:
             random.seed(seed)
@@ -79,6 +80,7 @@ class Arena:
             return 
         # self.distances = new_distances
         self.edges_mapping[node].add(edge)
+        self.ingoing_edges[edge[1]].add(edge)
         
     def generate(self):
         pbar = tqdm(total=self.num_nodes ** 2, desc="Creating graph")
@@ -171,12 +173,12 @@ class Arena:
         neighbours = {edge[1]: edge for edge in outgoing_edges if edge[1] != node}
         return neighbours
 
-    def get_ingoing_edges(self, node: int)-> Set[Tuple[int, int, float]]:
+
+    def get_node_degree(self, node: int) -> int:
         """
-        Get the ingoing edges of a node.
+        Get the degree of a node.
         """
-        ingoing_edges = {(origin, dest, weight) for origin, dest, weight in self.edges if dest == node}
-        return ingoing_edges
+        return len(self.edges_mapping[node])
 
     
 
