@@ -45,9 +45,9 @@ class Solver:
             if values == []:
                 return 0
             if self.arena.player_mapping[u] == 1:  # player is max
-                return max(values)
+                self.arena.value_mapping[u] = max(values)
             else:  # player is min
-                return min(values)
+                self.arena.value_mapping[u] = min(values)
 
         def update(u: int):
             if self.arena.player_mapping[u] == 2:
@@ -65,7 +65,7 @@ class Solver:
                         incorrect_prime.add(v)
 
         init()
-        for i in range(10_000):
+        for i in tqdm(range(10_000)):
             incorrect_prime = set()
             for u in incorrect:
                 treat(u)

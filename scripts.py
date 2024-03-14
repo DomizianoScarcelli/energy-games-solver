@@ -12,7 +12,7 @@ from plot_graph import plot_graph
 import json
 
 
-def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | None = None, plot: bool = False, save: bool = False):
+def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | None = None, plot: bool = False, save: bool = False, optimize: bool = False):
     arena = Arena(num_nodes=num_nodes,
                   edge_probability=edge_probability, 
                   seed=seed) 
@@ -23,7 +23,10 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | N
         arena.save(f"arena_{num_nodes}_{edge_probability}.pkl")
     
     solver = Solver(arena)
-    solver.optimized_value_iteration()
+    if optimize:
+        solver.optimized_value_iteration()
+    else:
+        solver.value_iteration()
     min_energy_dict = solver.get_min_energy()
     return min_energy_dict
 
