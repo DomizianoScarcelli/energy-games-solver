@@ -8,7 +8,6 @@ from plot_graph import plot_graph
 import logging
 import pickle
 import sys
-import time
 
 
 #Set this to False to disable debug prints
@@ -47,11 +46,11 @@ class Arena:
         return f"Nodes: {self.nodes}\nEdges: {self.edges}"
 
 
-    def save(self, save_path: str = "arena.pkl"):
+    def save(self, save_path: str = "arena.pkl") -> None:
         with open(save_path, 'wb') as f:
             pickle.dump(self, f)
 
-    def load(self, pickle_file: str):
+    def load(self, pickle_file: str) -> Arena:
         with open(pickle_file, 'rb') as f:
             arena = pickle.load(f)
         return arena
@@ -80,7 +79,6 @@ class Arena:
             return 
         # self.distances = new_distances
         self.edges_mapping[node].add(edge)
-
         
     def generate(self):
         pbar = tqdm(total=self.num_nodes ** 2, desc="Creating graph")
@@ -113,6 +111,7 @@ class Arena:
         previous_distance_1 = self.distances.get(new_edge[1], None)
 
         # Relax edges related to the new edge
+        # TODO: in the bellman ford we should relax all edges, I think this doesn't provide the same result but it's faster and creates a valid graph anyways
         for _ in range(len(self.nodes) - 1):
             if new_distance_0 < new_distance_1:
                 new_distance_1 = new_distance_0
@@ -172,54 +171,13 @@ class Arena:
         neighbours = {edge[1]: edge for edge in outgoing_edges if edge[1] != node}
         return neighbours
 
-    def value_iteration(self):
-        def delta(l, w): return max(l-w, 0)
-        def Q(node: int):
-            outgoing_edges = self.get_node_neighbours_with_edges(node)
-            values = [delta(self.value_mapping[node], edge[2])
-                      for node, edge in outgoing_edges.items()]
-            if values == []:
-                return 0
-            if self.player_mapping[node] == 1:  # max
-                return max(values)
-            else:  # min
-                return min(values)
-        converged = {node: False for node in self.nodes}
-        threshold = 0.0001
-        steps = 0
-        max_steps = 10_000
-        pbar = tqdm(total=max_steps, desc="Value iteration")
-        while not all(converged.values()):
-            steps += 1
-            if steps > max_steps:
-                break
-            pbar.update(1)
-            for node in self.nodes:
-                old_value = self.value_mapping[node]
-                self.value_mapping[node] = Q(node)
-                if abs(self.value_mapping[node] - old_value) < threshold:
-                    converged[node] = True
-        pbar.close()
-        if steps > max_steps:
-            logging.info(f"Did not converge after {steps} steps")
-        else:
-            logging.info(f"Converged after {steps} steps")
-        return self.nodes
-
-    def get_min_energy(self, round_to: int = 2):
+    def get_ingoing_edges(self, node: int)-> Set[Tuple[int, int, float]]:
         """
-        For each player, finds the minimum amount of energy needed in order to keep it positive for an infinite amount of steps.
-        (Energy is lost when a player moves to a node whose edge has negative weight, and gained when it moves to a node whose edge has a positive weight.)
+        Get the ingoing edges of a node.
         """
-        min_energy_dict = {}
-        for player in range(1, 3):
-            # Get the nodes owned by the player
-            player_nodes = [
-                node for node in self.nodes if self.player_mapping[node] == player]
-            # Find the maximum value among the player's nodes
-            max_value = max(self.value_mapping[node] for node in player_nodes)
+        ingoing_edges = {(origin, dest, weight) for origin, dest, weight in self.edges if dest == node}
+        return ingoing_edges
 
-            min_energy_dict[player] = round(max_value, round_to)
-        return min_energy_dict
+    
 
 

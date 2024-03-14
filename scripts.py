@@ -7,6 +7,7 @@ from typing import Optional
 
 from tqdm import tqdm
 from Graph import Arena
+from Solver import Solver
 from plot_graph import plot_graph
 import json
 
@@ -20,9 +21,12 @@ def run_solver(num_nodes: int = 30, edge_probability: float = 0.1, seed: int | N
         plot_graph(arena)
     if save:
         arena.save(f"arena_{num_nodes}_{edge_probability}.pkl")
-    arena.value_iteration()
-    min_energy_dict = arena.get_min_energy()
+    
+    solver = Solver(arena)
+    solver.optimized_value_iteration()
+    min_energy_dict = solver.get_min_energy()
     return min_energy_dict
+
 
 def run_multiple(n_runs: int = 100, plot: bool = False, save: bool = False):
     times = []
@@ -89,8 +93,38 @@ def solve_game(num_nodes: int = 10, edge_probability: float = 0.1, seed: int | N
     min_energy_dict = arena.get_min_energy()
     return min_energy_dict
 
+def solve_all():
+    arenas_path = "arenas"
+    for file in tqdm(os.listdir(arenas_path)):
+        if file.endswith(".pkl"):
+            arena = Arena()
+            arena = arena.load(os.path.join(arenas_path, file))
+            start = time.time()
+            _, steps = arena.value_iteration()
+            end = time.time()
+            final_time = (end - start) * 1000
+            min_energy_dict = arena.get_min_energy()
+            min_energy_dict.update({"time_to_complete_ms": final_time})
+            min_energy_dict.update({"converged_in_steps": steps})
+            min_energy_dict.update({"num_nodes": arena.num_nodes})
+            min_energy_dict.update({"edge_probability": arena.edge_probability})
+            min_energy_dict.update({"player_1_nodes": len([node for node, player in arena.player_mapping.items() if player == 1])}) 
+            min_energy_dict.update({"player_2_nodes": len([node for node, player in arena.player_mapping.items() if player == 2])})
+            min_energy_dict.update({"edges": len(arena.edges)})
+            min_energy_dict.update({"sum_player_1_weights": sum([arena.value_mapping[node] for node, player in arena.player_mapping.items() if player == 1])})
+            min_energy_dict.update({"sum_player_2_weights": sum([arena.value_mapping[node] for node, player in arena.player_mapping.items() if player == 2])})
+            min_energy_dict.update({"min_energy_1": min_energy_dict[1]})
+            min_energy_dict.update({"min_energy_2": min_energy_dict[2]})
+            del min_energy_dict[1]
+            del min_energy_dict[2]
+            with open(f"results/min_energy_{file}.json", "w") as f:
+                json.dump(min_energy_dict, f)
+
 if __name__ == "__main__":
     # generate_multiple_arenas()
-    print(solve_game(num_nodes=10, edge_probability=0.3, seed=0, plot=True, save=False))
+    # print(solve_game(num_nodes=10, edge_probability=0.3, seed=0, plot=True, save=False))
+    # solve_all()
     # profile(plot=False, save=True, seed=0)    
+    result = run_solver(num_nodes=20, edge_probability=0.4, seed=0, plot=False, save=False)
+    print(result)
     # run_multiple(n_runs=1, plot=False, save=True)

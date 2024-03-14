@@ -1,0 +1,1 @@
+{"time_to_complete_ms": 4.844903945922852, "converged_in_steps": 13, "num_nodes": 100, "edge_probability": 0.2, "player_1_nodes": 56, "player_2_nodes": 44, "edges": 1102, "sum_player_1_weights": 1466.0352031488253, "sum_player_2_weights": 11.963793122098389, "min_energy_1": 57.59, "min_energy_2": 5.39}
