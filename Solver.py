@@ -68,25 +68,33 @@ class Solver:
                 if self.arena.player_mapping[v] == 1:
                     incorrect_prime.add(v)
 
+        def stop(old_values: Dict[int, int]):
+            """
+            (Added by me)
+            Stopping criterion: if the difference between the old and new values is less than a threshold for all nodes
+            """
+            threshold = 0.0001
+            for node in self.arena.nodes:
+                if abs(self.arena.value_mapping[node] - old_values[node]) > threshold:
+                    return False
+            return True
+
         init()
         m = self.arena.num_nodes
         n = len(self.arena.edges)
         W = self.arena.max_weight
-        max_steps = m * n * W
+        max_steps = m * n * W 
         for i in tqdm(range(max_steps)):
             incorrect_prime = set()
+            old_values = self.arena.value_mapping.copy()
             for u in incorrect:
                 treat(u)
                 update(u)
-            # print(len(incorrect_prime))
-            if len(incorrect_prime) == 0:
+            if stop(old_values) or len(incorrect_prime) == 0:
+                print(f"Converged after {i} steps")
                 return {node: self.arena.value_mapping[node] for node in self.arena.nodes}
             incorrect = incorrect_prime
             print(self.get_min_energy())
-
-
-        
-
 
     def value_iteration(self):
 

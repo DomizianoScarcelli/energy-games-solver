@@ -37,8 +37,8 @@ class Arena:
         self.player_mapping: Dict[int, int] = self._assign_players(equal=True) 
         self.ingoing_edges: Dict[int, Set[Tuple[int, int, float]]] = {i: set() for i in range(num_nodes)}
 
-        if seed is not None:
-            random.seed(seed)
+        # if seed is not None:
+        #     random.seed(seed)
 
     def __repr__(self):
         return f"Nodes: {self.nodes}\nEdges: {self.edges}"
@@ -62,7 +62,7 @@ class Arena:
         """
         if equal:
             players = [1] * (self.num_nodes // 2) + [2] * (self.num_nodes // 2)
-            random.shuffle(players)
+            self.random.shuffle(players)
             player_mapping = {i: player for i, player in enumerate(players)}
         else:
             player_mapping = {i: self.random.randint(1, 2) for i in range(self.num_nodes)}
@@ -88,8 +88,8 @@ class Arena:
         for i, (origin, dest) in enumerate(product(self.nodes, repeat=2)):
             if i % update_delta == 0:
                 pbar.update(update_delta)
-            if random.random() < self.edge_probability:
-                weight = random.uniform(*self.weight_range)
+            if self.random.random() < self.edge_probability:
+                weight = self.random.uniform(*self.weight_range)
                 if not (origin == dest and weight < 0): # Avoid self loops with negative weight
                     edge = (origin, dest, weight)
                     self.safely_update(origin, edge)

@@ -1,6 +1,7 @@
 import cProfile
 import logging
 import os
+import pickle
 import pstats
 import time
 from typing import Optional
@@ -11,14 +12,23 @@ from Solver import Solver
 from plot_graph import plot_graph
 import json
 
+from argparse import ArgumentParser
 
-def run_solver(num_nodes: Optional[int] = None, edge_probability: Optional[float] = None, seed: int | None = None, plot: bool = False, save: bool = False, optimize: bool = False, arena: Optional[Arena] = None):
+
+def run_solver(num_nodes: Optional[int] = None,
+            edge_probability: Optional[float] = None, 
+            seed: int | None = None,
+            plot: bool = False, 
+            save: bool = False, 
+            optimize: bool = False, 
+            arena: Optional[Arena] = None):
+
     if not arena:
         arena = Arena(num_nodes=num_nodes,
                     edge_probability=edge_probability, 
                     seed=seed) 
         arena.generate()
-    if arena and not (num_nodes or edge_probability):
+    if arena and (num_nodes or edge_probability):
         raise ValueError("You must provide either an arena or the number of nodes and edge probability")
     if plot:
         plot_graph(arena)
@@ -127,10 +137,33 @@ def solve_all():
                 json.dump(min_energy_dict, f)
 
 if __name__ == "__main__":
-    # generate_multiple_arenas()
-    # print(solve_game(num_nodes=10, edge_probability=0.3, seed=0, plot=True, save=False))
-    # solve_all()
-    # profile(plot=False, save=True, seed=0)    
-    result = run_solver(num_nodes=100, edge_probability=0.4, seed=0, plot=False, save=False, optimize=True)
-    print(result)
-    # run_multiple(n_runs=1, plot=False, save=True)
+    parser = ArgumentParser()
+    parser.add_argument("--generate", action="store_true")
+    parser.add_argument("--solve", action="store_true")
+
+    parser.add_argument("--num-nodes", dest="num_nodes", type=int, default=100)
+    parser.add_argument("--edge-probability", dest="edge_probability", type=float, default=0.4)
+    parser.add_argument("--seed", dest="seed", type=int, default=0)
+    parser.add_argument("--plot", dest="plot", action="store_true")
+    parser.add_argument("--save", dest="save", action="store_true")
+    parser.add_argument("--optimize", dest="optimize", action="store_true")
+    parser.add_argument("--arena-path", dest="arena_path", type=str, default=None)
+    args = parser.parse_args()
+
+    if args.solve:
+        if args.arena_path:
+            with open(args.arena_path, "rb") as f:
+                arena = pickle.load(f)
+            result = run_solver(arena=arena, plot=args.plot, save=args.save, optimize=args.optimize)
+        else:
+            result = run_solver(num_nodes=args.num_nodes, 
+                        edge_probability=args.edge_probability, 
+                        seed=args.seed, 
+                        plot=args.plot, 
+                        save=args.save, 
+                        optimize=args.optimize)
+        print(result)
+    elif args.generate:
+        generate_multiple_arenas()
+    else:
+        raise ValueError("You must provide either --generate or --solve-all")
