@@ -1,4 +1,5 @@
 from __future__ import annotations
+from enum import Enum
 from itertools import product
 import math
 from typing import Dict, List, Set, Tuple
@@ -19,6 +20,10 @@ if DEBUG:
 if INFO:
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
+class Player(Enum):
+    MIN = 1
+    MAX = 2
+
 class Arena:
     def __init__(self, num_nodes: float = 10, edge_probability: float = 0.01, seed: int | None = None):
         self.nodes = set(range(num_nodes))
@@ -35,9 +40,10 @@ class Arena:
         self.considered_edges_bf: Set[Tuple[int, int, float]] = set()
         self.fast_edges: Dict[int, Dict[int, float]] = {i: {} for i in range(num_nodes)}
         self.player_mapping: Dict[int, int] = self._assign_players(equal=True) 
+        self.ingoing_edges: Dict[int, Set[Tuple[int, int, float]]] = {i: set() for i in range(num_nodes)}
 
-        if seed is not None:
-            random.seed(seed)
+        # if seed is not None:
+        #     random.seed(seed)
 
     def __repr__(self):
         return f"Nodes: {self.nodes}\nEdges: {self.edges}"
@@ -60,11 +66,11 @@ class Arena:
         Assign players to the nodes.
         """
         if equal:
-            players = [1] * (self.num_nodes // 2) + [2] * (self.num_nodes // 2)
-            random.shuffle(players)
+            players = [Player.MAX] * (self.num_nodes // 2) + [Player.MIN] * (self.num_nodes // 2)
+            self.random.shuffle(players)
             player_mapping = {i: player for i, player in enumerate(players)}
         else:
-            player_mapping = {i: self.random.randint(1, 2) for i in range(self.num_nodes)}
+            player_mapping = {i: self.random.choice([Player.MIN, Player.MAX]) for i in range(self.num_nodes)}
         return player_mapping
 
     
@@ -79,6 +85,7 @@ class Arena:
             return 
         # self.distances = new_distances
         self.edges_mapping[node].add(edge)
+        self.ingoing_edges[edge[1]].add(edge)
         
     def generate(self):
         pbar = tqdm(total=self.num_nodes ** 2, desc="Creating graph")
@@ -86,8 +93,8 @@ class Arena:
         for i, (origin, dest) in enumerate(product(self.nodes, repeat=2)):
             if i % update_delta == 0:
                 pbar.update(update_delta)
-            if random.random() < self.edge_probability:
-                weight = random.uniform(*self.weight_range)
+            if self.random.random() < self.edge_probability:
+                weight = self.random.uniform(*self.weight_range)
                 if not (origin == dest and weight < 0): # Avoid self loops with negative weight
                     edge = (origin, dest, weight)
                     self.safely_update(origin, edge)
@@ -171,12 +178,12 @@ class Arena:
         neighbours = {edge[1]: edge for edge in outgoing_edges if edge[1] != node}
         return neighbours
 
-    def get_ingoing_edges(self, node: int)-> Set[Tuple[int, int, float]]:
+
+    def get_node_degree(self, node: int) -> int:
         """
-        Get the ingoing edges of a node.
+        Get the degree of a node.
         """
-        ingoing_edges = {(origin, dest, weight) for origin, dest, weight in self.edges if dest == node}
-        return ingoing_edges
+        return len(self.edges_mapping[node]) 
 
     
 
