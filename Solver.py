@@ -1,4 +1,5 @@
 import logging
+import time
 from typing import Dict, Set
 from tqdm import tqdm
 from Graph import Arena, Player
@@ -88,7 +89,6 @@ class Solver:
                 print(f"Converged after {i} steps")
                 return {node: self.arena.value_mapping[node] for node in self.arena.nodes}
             incorrect = incorrect_prime
-            print(self.get_min_energy())
 
     def _delta(self,l, w): return max(l-w, 0) 
 
@@ -125,14 +125,13 @@ class Solver:
                 self.arena.value_mapping[node] = self._O(node)
                 if abs(self.arena.value_mapping[node] - old_value) < threshold:
                     converged[node] = True
-            print(self.get_min_energy())
         pbar.close()
 
         if steps > max_steps:
             logging.info(f"Did not converge after {steps} steps")
         else:
             logging.info(f"Converged after {steps} steps")
-        return self.arena.nodes, steps
+        return steps
 
     def get_min_energy(self, round_to: int = 2):
         """
@@ -144,7 +143,7 @@ class Solver:
             # Get the nodes owned by the player
             player_nodes = [
                 node for node in self.arena.nodes if self.arena.player_mapping[node] == player]
-            # Find the maximum value among the player's nodes
+            # Find the maximum value among the playeor's nodes
             max_value = max(self.arena.value_mapping[node] for node in player_nodes)
 
             min_energy_dict[player] = round(max_value, round_to)
