@@ -28,8 +28,8 @@ class Solver:
                     if self.arena.value_mapping[u] < self._delta(self.arena.value_mapping[v], w):
                         count[u] += 1
                 # If count == degree of node
-                if count[u] == self.arena.get_node_degree(u):
-                    incorrect.add(u)
+                if count[node] == self.arena.get_node_degree(node):
+                    incorrect.add(node)
 
             # For each MAX node
             for node in [n for n in self.arena.nodes if self.arena.player_mapping[n] == Player.MAX]:
@@ -79,7 +79,9 @@ class Solver:
         n = len(self.arena.edges)
         W = self.arena.max_weight
         max_steps = m * n * W 
+        steps = 0
         for i in tqdm(range(max_steps)):
+            steps += 1
             incorrect_prime = set()
             old_values = self.arena.value_mapping.copy()
             for u in incorrect:
@@ -87,8 +89,11 @@ class Solver:
                 update(u)
             if stop(old_values) or len(incorrect_prime) == 0:
                 print(f"Converged after {i} steps")
-                return {node: self.arena.value_mapping[node] for node in self.arena.nodes}
+                return steps
+                # return {node: self.arena.value_mapping[node] for node in self.arena.nodes}
             incorrect = incorrect_prime
+
+        return steps
 
     def _delta(self,l, w): return max(l-w, 0) 
 
