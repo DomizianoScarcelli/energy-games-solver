@@ -23,13 +23,14 @@ def run_solver(num_nodes: Optional[int] = None,
             optimize: bool = False, 
             arena: Optional[Arena] = None):
 
+    if arena and (num_nodes or edge_probability):
+        raise ValueError("You must provide either an arena or the number of nodes and edge probability")
+
     if not arena:
         arena = Arena(num_nodes=num_nodes,
                     edge_probability=edge_probability, 
                     seed=seed) 
         arena.generate()
-    if arena and (num_nodes or edge_probability):
-        raise ValueError("You must provide either an arena or the number of nodes and edge probability")
     if plot:
         plot_graph(arena)
     if save:
@@ -150,6 +151,7 @@ if __name__ == "__main__":
     parser.add_argument("--arena-path", dest="arena_path", type=str, default=None)
     args = parser.parse_args()
 
+    print(f"Arguments: {args}")
     if args.solve:
         if args.arena_path:
             with open(args.arena_path, "rb") as f:
@@ -166,4 +168,4 @@ if __name__ == "__main__":
     elif args.generate:
         generate_multiple_arenas()
     else:
-        raise ValueError("You must provide either --generate or --solve-all")
+        raise ValueError("You must provide either --generate or --solve")

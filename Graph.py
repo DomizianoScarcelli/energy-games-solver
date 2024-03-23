@@ -1,4 +1,5 @@
 from __future__ import annotations
+from enum import Enum
 from itertools import product
 import math
 from typing import Dict, List, Set, Tuple
@@ -18,6 +19,10 @@ if DEBUG:
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 if INFO:
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+
+class Player(Enum):
+    MIN = 1
+    MAX = 2
 
 class Arena:
     def __init__(self, num_nodes: float = 10, edge_probability: float = 0.01, seed: int | None = None):
@@ -61,11 +66,11 @@ class Arena:
         Assign players to the nodes.
         """
         if equal:
-            players = [1] * (self.num_nodes // 2) + [2] * (self.num_nodes // 2)
+            players = [Player.MAX] * (self.num_nodes // 2) + [Player.MIN] * (self.num_nodes // 2)
             self.random.shuffle(players)
             player_mapping = {i: player for i, player in enumerate(players)}
         else:
-            player_mapping = {i: self.random.randint(1, 2) for i in range(self.num_nodes)}
+            player_mapping = {i: self.random.choice([Player.MIN, Player.MAX]) for i in range(self.num_nodes)}
         return player_mapping
 
     
@@ -178,7 +183,7 @@ class Arena:
         """
         Get the degree of a node.
         """
-        return len(self.edges_mapping[node])
+        return len(self.edges_mapping[node]) 
 
     
 
