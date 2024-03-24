@@ -189,7 +189,7 @@ class Arena:
         """
         Get the degree of a node.
         """
-        return len(self.get_outgoing_edges(node))  + len(self.ingoing_edges[node])
+        return len(self.get_outgoing_edges(node)) 
     
 
 

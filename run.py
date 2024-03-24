@@ -47,6 +47,7 @@ def run_solver(num_nodes: Optional[int] = None,
                          time_to_complete=time_in_ms, 
                          steps=num_steps, 
                          min_energy_dict=min_energy_dict,
+                         optimized=True,
                          file=f"{arena.num_nodes}_{arena.edge_probability}_optimized.json")
     else:
         start = time.time()
@@ -60,6 +61,7 @@ def run_solver(num_nodes: Optional[int] = None,
                          time_to_complete=time_in_ms, 
                          steps=num_steps, 
                          min_energy_dict=min_energy_dict,
+                         optimized=False,
                          file=f"{arena.num_nodes}_{arena.edge_probability}_naive.json")
 
     return min_energy_dict
@@ -68,7 +70,8 @@ def save_results_json(arena: Arena,
                  min_energy_dict: dict,
                  time_to_complete: float, 
                  steps:int, 
-                 file: str) -> None:
+                 file: str,
+                 optimized: bool = False) -> None:
 
 
     min_energy_dict.update({"time_to_complete_ms": time_to_complete})
@@ -82,6 +85,7 @@ def save_results_json(arena: Arena,
     min_energy_dict.update({"sum_player_MIN_weights": sum([arena.value_mapping[node] for node, player in arena.player_mapping.items() if player == Player.MIN])})
     min_energy_dict.update({"min_energy_MAX": min_energy_dict[Player.MAX]})
     min_energy_dict.update({"min_energy_MIN": min_energy_dict[Player.MIN]})
+    min_energy_dict.update({"optimized": optimized})
     del min_energy_dict[Player.MAX]
     del min_energy_dict[Player.MIN]
 

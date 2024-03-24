@@ -59,59 +59,52 @@ class Solver:
                 if self.arena.player_mapping[v] == Player.MAX:
                     incorrect_prime.add(v)
                 
-        # def stop(old_values: Dict[int, int]):
-        #     """
-        #     (Added by me)
-        #     Stopping criterion: if the difference between the old and new values is less than a threshold for all nodes
-        #     """
-        #     threshold = 0.0001
-        #     return not any(
-        #             abs(self.arena.value_mapping[node] - old_values[node]) > threshold
-        #             for node in self.arena.nodes
-        #         )
-
         init()
-        m = self.arena.num_nodes
         n = len(self.arena.edges)
         W = self.arena.max_weight
-        max_steps = m * n * W 
+        max_steps = n * W 
         steps = 0
+        #Total complexity is O(nmW) where n is the number of nodes, m is the number of edges and W is the maximum weight
         for i in tqdm(range(max_steps)):
             steps += 1
             incorrect_prime = set()
             for u in incorrect:
+                # Complexity is O(m) where m is the number of edges
                 treat(u)
                 update(u)
-            if len(incorrect_prime) == 0:
+            if incorrect_prime == set():
                 print(f"Converged after {i} steps")
                 return steps
             incorrect = incorrect_prime
         return steps
 
 
-    def _delta(self,l, w): return max(l-w, 0) 
+    def _delta(self,l, w): 
+        return max(l-w, 0)
 
     def _O(self, node: int):
             values = (self._delta(self.arena.value_mapping[v], w) for (u, v, w) in self.arena.get_outgoing_edges(node))
-
             if self.arena.player_mapping[node] == Player.MAX:  
                 return max(values, default=0)
             else:  # player is MIN
                 return min(values, default=0)
 
     def value_iteration(self):
-        threshold = 0.0001
+        threshold = 0.000001
         steps = 0
-        max_steps = 10_000
+        max_steps = 50_000
         pbar = tqdm(total=max_steps, desc="Value iteration")
 
         converged = {node: False for node in self.arena.nodes}
+        # Maximum nW iterations (W is the arena max weight), complexity per iteration is O(nm) 
+        # so the total complexity is O(n^2mW).
         while not all(converged.values()):
             converged = {node: False for node in self.arena.nodes}
             steps += 1
             if steps > max_steps:
                 break
             pbar.update(1)
+            # Complexity is O(nm) where n is the number of nodes and m is the number of edges
             for node in self.arena.nodes:
                 old_value = self.arena.value_mapping[node]
                 self.arena.value_mapping[node] = self._O(node)
