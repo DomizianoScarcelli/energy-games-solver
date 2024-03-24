@@ -170,21 +170,26 @@ class Arena:
 
         return False  # No negative cycle found
 
-    def get_node_neighbours_with_edges(self, node: int) -> Dict[int, Tuple[int, int, float]]:
+    # def get_node_neighbours_with_edges(self, node: int) -> Dict[int, Tuple[int, int, float]]:
+    #     """
+    #     Get the neighbours of a node, along with the edge that connects them.
+    #     """
+    #     outgoing_edges = self.edges_mapping[node]
+    #     neighbours = {edge[1]: edge for edge in outgoing_edges if edge[1] != node}
+    #     return neighbours
+
+    def get_outgoing_edges(self, node: int) -> Set[Tuple[int, int, float]]:
         """
-        Get the neighbours of a node, along with the edge that connects them.
+        Get the outgoing edges of a node.
         """
-        outgoing_edges = self.edges_mapping[node]
-        neighbours = {edge[1]: edge for edge in outgoing_edges if edge[1] != node}
-        return neighbours
+        return self.edges_mapping[node]
 
 
     def get_node_degree(self, node: int) -> int:
         """
         Get the degree of a node.
         """
-        return len(self.edges_mapping[node]) 
-
+        return len(self.get_outgoing_edges(node))  + len(self.ingoing_edges[node])
     
 
 

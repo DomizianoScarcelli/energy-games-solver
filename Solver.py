@@ -1,5 +1,5 @@
+from functools import lru_cache
 import logging
-import time
 from typing import Dict, Set
 from tqdm import tqdm
 from Graph import Arena, Player
@@ -19,12 +19,11 @@ class Solver:
             self.arena.value_mapping = {node: 0 for node in self.arena.nodes}
             pbar = tqdm(total=len(self.arena.nodes), desc="Opt Value Iteration - Init")
             # For each MIN node
-            for node in [n for n in self.arena.nodes if self.arena.player_mapping[n] == Player.MIN]:
+            for node in (n for n in self.arena.nodes if self.arena.player_mapping[n] == Player.MIN):
                 pbar.update(1)
-                outgoing_edges = self.arena.get_node_neighbours_with_edges(node)
-                for edge in outgoing_edges.values():
-                    u, v, w = edge
+                for (u, v, w) in self.arena.get_outgoing_edges(node):
                     # Node u is incorrect
+                    assert u == node
                     if self.arena.value_mapping[u] < self._delta(self.arena.value_mapping[v], w):
                         count[u] += 1
                 # If count == degree of node
@@ -32,12 +31,12 @@ class Solver:
                     incorrect.add(node)
 
             # For each MAX node
-            for node in [n for n in self.arena.nodes if self.arena.player_mapping[n] == Player.MAX]:
+            for node in (n for n in self.arena.nodes if self.arena.player_mapping[n] == Player.MAX):
                 pbar.update(1)
-                outgoing_edges = self.arena.get_node_neighbours_with_edges(node)
-                for edge in outgoing_edges.values():
-                    u, v, w = edge
+                for (u, v, w) in self.arena.get_outgoing_edges(node):
                     # Node u is incorrect
+                    assert u == node
+
                     if self.arena.value_mapping[u] < self._delta(self.arena.value_mapping[v], w):
                         incorrect.add(u)
         
@@ -48,13 +47,10 @@ class Solver:
             if self.arena.player_mapping[u] == Player.MIN:
                 count[u] = 0
 
-            ingoing_edges = self.arena.ingoing_edges.get(u, set())
-            for (v, u, _) in ingoing_edges:
+            for (v, _, w) in self.arena.ingoing_edges.get(u, set()):
                 # Only consider nodes that are incorrect
-
-                #TODO: if I put this, the results is different from the other algorithm, otherwise it's the same
-                # if v not in incorrect:
-                #     return
+                if not (self.arena.value_mapping[v] < self._delta(self.arena.value_mapping[u], w)):
+                    continue
 
                 if self.arena.player_mapping[v] == Player.MIN:
                     count[v] += 1
@@ -62,17 +58,17 @@ class Solver:
                         incorrect_prime.add(v)
                 if self.arena.player_mapping[v] == Player.MAX:
                     incorrect_prime.add(v)
-
-        def stop(old_values: Dict[int, int]):
-            """
-            (Added by me)
-            Stopping criterion: if the difference between the old and new values is less than a threshold for all nodes
-            """
-            threshold = 0.0001
-            for node in self.arena.nodes:
-                if abs(self.arena.value_mapping[node] - old_values[node]) > threshold:
-                    return False
-            return True
+                
+        # def stop(old_values: Dict[int, int]):
+        #     """
+        #     (Added by me)
+        #     Stopping criterion: if the difference between the old and new values is less than a threshold for all nodes
+        #     """
+        #     threshold = 0.0001
+        #     return not any(
+        #             abs(self.arena.value_mapping[node] - old_values[node]) > threshold
+        #             for node in self.arena.nodes
+        #         )
 
         init()
         m = self.arena.num_nodes
@@ -83,34 +79,25 @@ class Solver:
         for i in tqdm(range(max_steps)):
             steps += 1
             incorrect_prime = set()
-            old_values = self.arena.value_mapping.copy()
             for u in incorrect:
                 treat(u)
                 update(u)
-            if stop(old_values) or len(incorrect_prime) == 0:
+            if len(incorrect_prime) == 0:
                 print(f"Converged after {i} steps")
                 return steps
-                # return {node: self.arena.value_mapping[node] for node in self.arena.nodes}
             incorrect = incorrect_prime
-
         return steps
+
 
     def _delta(self,l, w): return max(l-w, 0) 
 
     def _O(self, node: int):
-            outgoing_edges = self.arena.get_node_neighbours_with_edges(node)
-            # print(f"Outgoing edges for node {node}: {outgoing_edges}")
-
-            values = [self._delta(self.arena.value_mapping[out_node], weight) # delta between the value of the connected node and the weight of the edge for each outgoing edge 
-                      for (_, out_node, weight) in outgoing_edges.values()]
-
-            if values == []:
-                return 0
+            values = (self._delta(self.arena.value_mapping[v], w) for (u, v, w) in self.arena.get_outgoing_edges(node))
 
             if self.arena.player_mapping[node] == Player.MAX:  
-                return max(values)
+                return max(values, default=0)
             else:  # player is MIN
-                return min(values)
+                return min(values, default=0)
 
     def value_iteration(self):
         threshold = 0.0001

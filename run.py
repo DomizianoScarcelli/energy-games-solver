@@ -1,5 +1,8 @@
+import cProfile
+import logging
 import os
 import pickle
+import pstats
 import time
 from typing import List, Optional
 from tqdm import tqdm
@@ -86,16 +89,19 @@ def save_results_json(arena: Arena,
     with open(os.path.join(base_path, file), "w") as f:
         json.dump(min_energy_dict, f)
 
-# def profile(seed: int = 0, plot: bool = False, save: bool = False):
-#     profiler = cProfile.Profile()
-#     profiler.enable()
-
-#     # Run your function
-#     solution = run_solver(num_nodes=5000, edge_probability=0.2, seed=seed, plot=plot, save=save)    
-#     logging.info(f"Solution: {solution}")
-#     profiler.disable()
-#     stats = pstats.Stats(profiler).sort_stats('cumtime')
-#     stats.print_stats()
+def profile(seed: int = 0, 
+            plot: bool = False, 
+            save: bool = False,
+            optimize: bool = False):
+    profiler = cProfile.Profile()
+    profiler.enable()
+    # Run your function
+    arena = Arena().load("arenas/arena_1000_0.1.pkl")
+    solution = run_solver(seed=seed, plot=plot, save_arena=save, arena=arena, optimize=optimize)    
+    logging.info(f"Solution: {solution}")
+    profiler.disable()
+    stats = pstats.Stats(profiler).sort_stats('cumtime')
+    stats.print_stats()
 
 def generate_arenas(nodes_space: Optional[List[int]] = None, 
                              probability_space: Optional[List[float]] = None,
@@ -135,10 +141,11 @@ def generate_arenas(nodes_space: Optional[List[int]] = None,
 
 if __name__ == "__main__":
     parser = ArgumentParser()
+    # Generate 
     parser.add_argument("--generate", action="store_true")
     parser.add_argument("--node-space", dest="node_space", type=int, nargs="+") 
     parser.add_argument("--probability-space", dest="probability_space", type=float, nargs="+")
-
+    # Solve
     parser.add_argument("--solve", action="store_true")
     parser.add_argument("--num-nodes", dest="num_nodes", type=int, default=100)
     parser.add_argument("--edge-probability", dest="edge_probability", type=float, default=0.4)
@@ -148,6 +155,8 @@ if __name__ == "__main__":
     parser.add_argument("--save-results", dest="save_results", action="store_true")
     parser.add_argument("--optimize", dest="optimize", action="store_true")
     parser.add_argument("--arena-path", dest="arena_path", type=str, default=None)
+    # Profile
+    parser.add_argument("--profile", action="store_true")
     args = parser.parse_args()
 
     if args.solve:
@@ -168,5 +177,7 @@ if __name__ == "__main__":
         generate_arenas(nodes_space=args.node_space, 
                         probability_space=args.probability_space, 
                         seed=args.seed)
+    elif args.profile:
+        profile(seed=args.seed, plot=args.plot, save=args.save_results, optimize=args.optimize)
     else:
         raise ValueError("You must provide either --generate or --solve")
