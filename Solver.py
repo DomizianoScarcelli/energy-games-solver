@@ -14,7 +14,6 @@ class Solver:
         incorrect_prime: Set[int] = set()
         count: Dict[int, int] = {node: 0 for node in self.arena.nodes}
 
-
         def init():
             self.arena.value_mapping = {node: 0 for node in self.arena.nodes}
             pbar = tqdm(total=len(self.arena.nodes), desc="Opt Value Iteration - Init")
@@ -48,7 +47,7 @@ class Solver:
                 count[u] = 0
 
             for (v, _, w) in self.arena.ingoing_edges.get(u, set()):
-                # Only consider nodes that are incorrect
+                # Only consider nodes that are still incorrect
                 if not (self.arena.value_mapping[v] < self._delta(self.arena.value_mapping[u], w)):
                     continue
 
@@ -58,64 +57,79 @@ class Solver:
                         incorrect_prime.add(v)
                 if self.arena.player_mapping[v] == Player.MAX:
                     incorrect_prime.add(v)
-                
+
+        # def stop(old_values: Dict[int, int], new_values: Dict[int, int]):
+        #     threshold = 0.000001
+        #     return all(abs(old_values[node] - new_values[node]) < threshold for node in self.arena.nodes)
+
         init()
-        n = len(self.arena.edges)
+        n = len(self.arena.nodes)
         W = self.arena.max_weight
-        max_steps = n * W 
+        max_steps = n * W
         steps = 0
-        #Total complexity is O(nmW) where n is the number of nodes, m is the number of edges and W is the maximum weight
+        # Maximum steps = n, so complexity is O(kn^2) in the case of edge_probability = 1. 
         for i in tqdm(range(max_steps)):
             steps += 1
             incorrect_prime = set()
+
+            # O(k * (|Out(u)| + |In(u)|) = O(k * 2n) = O(kn) where k is the number of incorrect nodes
             for u in incorrect:
-                # Complexity is O(m) where m is the number of edges
+                # Complexity of treat is O(|Out(u)|)
                 treat(u)
+                # Complexity of update is O(|In(u)|)
                 update(u)
+
+            # print(f"Step {i} - Incorrect: {len(incorrect)} | Incorrect prime: {len(incorrect_prime)}")
             if incorrect_prime == set():
                 print(f"Converged after {i} steps")
                 return steps
-            incorrect = incorrect_prime
+            incorrect = incorrect_prime 
         return steps
-
 
     def _delta(self,l, w): 
         return max(l-w, 0)
 
     def _O(self, node: int):
-            values = (self._delta(self.arena.value_mapping[v], w) for (u, v, w) in self.arena.get_outgoing_edges(node))
-            if self.arena.player_mapping[node] == Player.MAX:  
-                return max(values, default=0)
-            else:  # player is MIN
-                return min(values, default=0)
+        """
+        The O^G function which returns the max value between all the outgoing edges from the node (if player is Max), or the min value (if player is Min).
+        """
+        values = (self._delta(self.arena.value_mapping[v], w) for (u, v, w) in self.arena.get_outgoing_edges(node))
+        if self.arena.player_mapping[node] == Player.MAX:  
+            return max(values, default=0)
+        else:  # player is MIN
+            return min(values, default=0)
 
     def value_iteration(self):
+        """
+        The naive value iteration algorithm to compute the value function.
+        """
         threshold = 0.000001
         steps = 0
         max_steps = 50_000
         pbar = tqdm(total=max_steps, desc="Value iteration")
 
-        converged = {node: False for node in self.arena.nodes}
-        # Maximum nW iterations (W is the arena max weight), complexity per iteration is O(nm) 
-        # so the total complexity is O(n^2mW).
-        while not all(converged.values()):
-            converged = {node: False for node in self.arena.nodes}
+        # Maximum n iterationr, so complexity is O(n^3) in the case of edge_probability = 1
+        while True:
+            pbar.update(1)
             steps += 1
             if steps > max_steps:
                 break
-            pbar.update(1)
-            # Complexity is O(nm) where n is the number of nodes and m is the number of edges
+
+            old_value = self.arena.value_mapping.copy()
+            # O(n^2) complexity
             for node in self.arena.nodes:
-                old_value = self.arena.value_mapping[node]
+                # O(n) complexity
                 self.arena.value_mapping[node] = self._O(node)
-                if abs(self.arena.value_mapping[node] - old_value) < threshold:
-                    converged[node] = True
+
+            if all((abs(self.arena.value_mapping[node] - old_value[node]) < threshold for node in self.arena.nodes)):
+               break
+
         pbar.close()
 
         if steps > max_steps:
-            logging.info(f"Did not converge after {steps} steps")
+            print(f"Naive Value Iteration - Did not converge after {steps} steps")
         else:
-            logging.info(f"Converged after {steps} steps")
+            print(f"Naive Value Iteration - Converged after {steps} steps")
         return steps
 
     def get_min_energy(self, round_to: int = 2):

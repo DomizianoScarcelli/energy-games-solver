@@ -25,7 +25,10 @@ class Player(Enum):
     MAX = 2
 
 class Arena:
-    def __init__(self, num_nodes: float = 10, edge_probability: float = 0.01, seed: int | None = None):
+    def __init__(self, 
+                 num_nodes: float = 10, 
+                 edge_probability: float = 0.01, 
+                 seed: int | None = None):
         self.nodes = set(range(num_nodes))
         self.random = random.Random(seed)
         self.value_mapping: Dict[int, float] = {i: 0 for i in range(num_nodes)}
@@ -41,9 +44,6 @@ class Arena:
         self.fast_edges: Dict[int, Dict[int, float]] = {i: {} for i in range(num_nodes)}
         self.player_mapping: Dict[int, int] = self._assign_players(equal=True) 
         self.ingoing_edges: Dict[int, Set[Tuple[int, int, float]]] = {i: set() for i in range(num_nodes)}
-
-        # if seed is not None:
-        #     random.seed(seed)
 
     def __repr__(self):
         return f"Nodes: {self.nodes}\nEdges: {self.edges}"
@@ -84,9 +84,11 @@ class Arena:
         if negative_cycles:
             return 
         # self.distances = new_distances
+        assert node == edge[0]
         self.edges_mapping[node].add(edge)
         self.ingoing_edges[edge[1]].add(edge)
         
+
     def generate(self):
         pbar = tqdm(total=self.num_nodes ** 2, desc="Creating graph")
         update_delta = round(math.sqrt(pbar.total))
@@ -146,7 +148,9 @@ class Arena:
 
         return False  # No negative cycle found
 
-    def bool_bellman_ford(self, nodes: List[int] = None, edges: List[Tuple[int, int, float]] = None):
+    def bool_bellman_ford(self, 
+                        nodes: List[int] = None, 
+                        edges: List[Tuple[int, int, float]] = None):
         """
         Detect negative cycles using Bellman-Ford algorithm.
         """
@@ -169,14 +173,6 @@ class Arena:
                 return True  # Negative cycle found
 
         return False  # No negative cycle found
-
-    # def get_node_neighbours_with_edges(self, node: int) -> Dict[int, Tuple[int, int, float]]:
-    #     """
-    #     Get the neighbours of a node, along with the edge that connects them.
-    #     """
-    #     outgoing_edges = self.edges_mapping[node]
-    #     neighbours = {edge[1]: edge for edge in outgoing_edges if edge[1] != node}
-    #     return neighbours
 
     def get_outgoing_edges(self, node: int) -> Set[Tuple[int, int, float]]:
         """
