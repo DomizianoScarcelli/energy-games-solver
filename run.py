@@ -6,7 +6,7 @@ import pstats
 import time
 from typing import List, Optional
 from tqdm import tqdm
-from Graph import Arena, Player
+from Graph import Arena, Player, GenerationStrategy
 from Solver import Solver
 from plot_graph import plot_graph
 import json
@@ -19,7 +19,8 @@ def run_solver(num_nodes: Optional[int] = None,
             seed: int | None = None,
             plot: bool = False, 
             optimize: bool = False, 
-            arena: Optional[Arena] = None):
+            arena: Optional[Arena] = None,
+            strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD):
 
     if arena and (num_nodes or edge_probability):
         raise ValueError("You must provide either an arena or the number of nodes and edge probability")
@@ -28,7 +29,7 @@ def run_solver(num_nodes: Optional[int] = None,
         arena = Arena(num_nodes=num_nodes,
                     edge_probability=edge_probability, 
                     seed=seed) 
-        arena.generate()
+        arena.generate(strategy)
     if plot:
         plot_graph(arena)
     if save_arena:
@@ -96,20 +97,22 @@ def save_results_json(arena: Arena,
 def profile(seed: int = 0, 
             plot: bool = False, 
             save: bool = False,
-            optimize: bool = False):
+            optimize: bool = False, 
+            strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD):
     profiler = cProfile.Profile()
     profiler.enable()
     # Run your function
     arena = Arena().load("arenas/arena_1000_0.1.pkl")
-    solution = run_solver(seed=seed, plot=plot, save_arena=save, arena=arena, optimize=optimize)    
+    solution = run_solver(seed=seed, plot=plot, save_arena=save, arena=arena, optimize=optimize, strategy=strategy)    
     logging.info(f"Solution: {solution}")
     profiler.disable()
     stats = pstats.Stats(profiler).sort_stats('cumtime')
     stats.print_stats()
 
 def generate_arenas(nodes_space: Optional[List[int]] = None, 
-                             probability_space: Optional[List[float]] = None,
-                             seed: int | None = None):
+                    probability_space: Optional[List[float]] = None,
+                    seed: int | None = None,
+                    strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD):
     if not nodes_space:
         nodes_space = [10, 100, 500, 1000, 5000, 10_000]
     if not probability_space:
@@ -123,7 +126,7 @@ def generate_arenas(nodes_space: Optional[List[int]] = None,
                 continue
             arena = Arena(num_nodes=n, edge_probability=p, seed=seed)
             start = time.time()
-            arena.generate()
+            arena.generate(strategy)
             end = time.time()
             time_to_generate = (end - start) * 1000
             arena_name = f"arena_{n}_{p}"
@@ -149,6 +152,7 @@ if __name__ == "__main__":
     parser.add_argument("--generate", action="store_true")
     parser.add_argument("--node-space", dest="node_space", type=int, nargs="+") 
     parser.add_argument("--probability-space", dest="probability_space", type=float, nargs="+")
+    parser.add_argument("--strategy", dest="strategy", type=str, default="incremental_bellman_ford") #possible strategies defined in Graph.GenerationStrategy
     # Solve
     parser.add_argument("--solve", action="store_true")
     parser.add_argument("--num-nodes", dest="num_nodes", type=int, default=100)
@@ -167,7 +171,12 @@ if __name__ == "__main__":
         if args.arena_path:
             with open(args.arena_path, "rb") as f:
                 arena = pickle.load(f)
-            result = run_solver(arena=arena, plot=args.plot, save_arena=args.save_arena, optimize=args.optimize, save_results=args.save_results)
+            result = run_solver(arena=arena, 
+                                plot=args.plot, 
+                                save_arena=args.save_arena, 
+                                optimize=args.optimize, 
+                                save_results=args.save_results, 
+                                strategy=args.strategy)
         else:
             result = run_solver(num_nodes=args.num_nodes, 
                         edge_probability=args.edge_probability, 
@@ -175,13 +184,19 @@ if __name__ == "__main__":
                         seed=args.seed, 
                         plot=args.plot, 
                         save_arena=args.save_arena, 
-                        optimize=args.optimize)
+                        optimize=args.optimize, 
+                        strategy=args.strategy)
         print(result)
     elif args.generate:
         generate_arenas(nodes_space=args.node_space, 
                         probability_space=args.probability_space, 
-                        seed=args.seed)
+                        seed=args.seed, 
+                        strategy=args.strategy)
     elif args.profile:
-        profile(seed=args.seed, plot=args.plot, save=args.save_results, optimize=args.optimize)
+        profile(seed=args.seed, 
+                plot=args.plot, 
+                save=args.save_results, 
+                optimize=args.optimize, 
+                strategy=args.strategy)
     else:
         raise ValueError("You must provide either --generate or --solve")

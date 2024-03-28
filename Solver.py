@@ -18,7 +18,9 @@ class Solver:
             self.arena.value_mapping = {node: 0 for node in self.arena.nodes}
             pbar = tqdm(total=len(self.arena.nodes), desc="Opt Value Iteration - Init")
             # For each MIN node
-            for node in (n for n in self.arena.nodes if self.arena.player_mapping[n] == Player.MIN):
+            min_nodes = (n for n in self.arena.nodes 
+                         if self.arena.player_mapping[n] == Player.MIN)
+            for node in min_nodes:
                 pbar.update(1)
                 for (u, v, w) in self.arena.get_outgoing_edges(node):
                     # Node u is incorrect
@@ -30,7 +32,9 @@ class Solver:
                     incorrect.add(node)
 
             # For each MAX node
-            for node in (n for n in self.arena.nodes if self.arena.player_mapping[n] == Player.MAX):
+            max_nodes = (n for n in self.arena.nodes
+                            if self.arena.player_mapping[n] == Player.MAX)
+            for node in max_nodes:
                 pbar.update(1)
                 for (u, v, w) in self.arena.get_outgoing_edges(node):
                     # Node u is incorrect

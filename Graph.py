@@ -5,11 +5,9 @@ import math
 from typing import Dict, List, Set, Tuple
 from tqdm import tqdm
 import random
-from plot_graph import plot_graph
 import logging
 import pickle
 import sys
-
 
 #Set this to False to disable debug prints
 DEBUG = False
@@ -23,6 +21,11 @@ if INFO:
 class Player(Enum):
     MIN = 1
     MAX = 2
+
+class GenerationStrategy(Enum):
+    BELLMAN_FORD = "bellman_ford"
+    INCREMENTAL_BELLMAN_FORD = "incremental_bellman_ford"
+    NONE = 'none'
 
 class Arena:
     def __init__(self, 
@@ -74,22 +77,32 @@ class Arena:
         return player_mapping
 
     
-    def safely_update(self, node: int, edge: Tuple[int, int, float]):
+    def safely_update(self, 
+                      node: int, 
+                      edge: Tuple[int, int, float], 
+                      strategy: GenerationStrategy):
         """
         Update the arena with the new edge and backtrack if a negative cycle is detected.
         """
-        negative_cycles = self.bool_bellman_ford_incremental(edge)
-        # alt_negative_cycles = self.bool_bellman_ford(nodes=[*self.nodes, node], edges=[*self.edges, edge])
-        # assert negative_cycles == alt_negative_cycles, f"Negative cycles do not match: {negative_cycles} vs {alt_negative_cycles}"
+        if strategy == GenerationStrategy.NONE.value:
+            negative_cycles = False
+        elif strategy == GenerationStrategy.BELLMAN_FORD.value:
+            negative_cycles = self.bellman_ford(nodes=[*self.nodes, node], edges=[*self.edges, edge])
+        elif strategy == GenerationStrategy.INCREMENTAL_BELLMAN_FORD.value:
+            negative_cycles = self.bellman_ford_incremental(edge)
+        else:
+            raise ValueError(f"Invalid strategy: {strategy}")
+
         if negative_cycles:
             return 
-        # self.distances = new_distances
-        assert node == edge[0]
+
+        # assert node == edge[0]
         self.edges_mapping[node].add(edge)
         self.ingoing_edges[edge[1]].add(edge)
         
 
-    def generate(self):
+    def generate(self, 
+                 strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD):
         pbar = tqdm(total=self.num_nodes ** 2, desc="Creating graph")
         update_delta = round(math.sqrt(pbar.total))
         for i, (origin, dest) in enumerate(product(self.nodes, repeat=2)):
@@ -97,12 +110,15 @@ class Arena:
                 pbar.update(update_delta)
             if self.random.random() < self.edge_probability:
                 weight = self.random.uniform(*self.weight_range)
-                if not (origin == dest and weight < 0): # Avoid self loops with negative weight
+                # Avoid self loops with negative weight
+                if not (origin == dest and weight < 0): 
                     edge = (origin, dest, weight)
-                    self.safely_update(origin, edge)
+                    self.safely_update(node=origin, 
+                                       edge=edge, 
+                                       strategy=strategy)
         pbar.close()
 
-    def bool_bellman_ford_incremental(self, new_edge: Tuple[int, int, float]):
+    def bellman_ford_incremental(self, new_edge: Tuple[int, int, float]) -> bool:
         """
         A very efficient implementation of the Bellman-Ford algorithm that only checks for negative cycles related to the new edge.
         It uses the fast_edges dictionary to keep track of the edges and their weights, in order to avoid iterating over all the edges.
@@ -127,14 +143,6 @@ class Arena:
 
         self.distances[new_edge[1]] = new_distance_1
 
-        # Check for negative cycles related to the new edge
-        # for edge in self.edges:
-        #     if edge[0] == new_edge[0] or edge[1] == new_edge[0] or edge[0] == new_edge[1] or edge[1] == new_edge[1]:
-        #         if self.distances[edge[0]] + edge[2] < self.distances.get(edge[1], float('inf')):
-        #             self.edges.remove(new_edge)
-        #             self.distances[new_edge[1]] = previous_distance_1
-        #             return True # Negative cycle found
-
         origin_to = self.fast_edges[new_edge[0]] #this is a dict that maps the destination to the weight
         dest_to = self.fast_edges[new_edge[1]] #this is a dict that maps the origin to the weight
 
@@ -148,9 +156,9 @@ class Arena:
 
         return False  # No negative cycle found
 
-    def bool_bellman_ford(self, 
-                        nodes: List[int] = None, 
-                        edges: List[Tuple[int, int, float]] = None):
+    def bellman_ford(self, 
+                    nodes: List[int] = None, 
+                    edges: List[Tuple[int, int, float]] = None) -> bool:
         """
         Detect negative cycles using Bellman-Ford algorithm.
         """
