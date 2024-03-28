@@ -135,20 +135,66 @@ def generate_arenas(nodes_space: Optional[List[int]] = None,
             if not os.path.exists("arena_times.json"):
                 print(f"Creating arena_times.json for the first time")
                 with open("arena_times.json", "w") as f:
-                    json.dump({arena_name: time_to_generate}, f)
+                    json.dump({}, f)
 
             with open("arena_times.json", "r") as f:
                 data = json.load(f) 
-                data.update({arena_name: time_to_generate})
+                if arena_name not in data:
+                    data[arena_name] = [{"time_to_generate": time_to_generate,
+                                        "strategy": strategy.value,
+                                        "num_nodes": n,
+                                        "num_edges": len(arena.edges),
+                                        "edge_probability": p}]
+                else:
+                    data[arena_name].append({"time_to_generate": time_to_generate,
+                                        "strategy": strategy.value,
+                                        "num_nodes": n,
+                                        "num_edges": len(arena.edges),
+                                        "edge_probability": p})
             with open("arena_times.json", "w") as f:
                 json.dump(data, f)
 
             pbar.update(1)
 
+def generate_arena(num_nodes: int = None, 
+                edge_probability: float = None,
+                seed: int | None = None,
+                strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD):
+
+            arena = Arena(num_nodes=num_nodes, edge_probability=edge_probability, seed=seed)
+            start = time.time()
+            arena.generate(strategy)
+            end = time.time()
+            time_to_generate = (end - start) * 1000
+            arena_name = f"arena_{num_nodes}_{edge_probability}"
+            arena.save(f"arenas/{arena_name}.pkl")
+
+            if not os.path.exists("arena_times.json"):
+                print(f"Creating arena_times.json for the first time")
+                with open("arena_times.json", "w") as f:
+                    json.dump({}, f)
+
+            with open("arena_times.json", "r") as f:
+                data = json.load(f) 
+                if arena_name not in data:
+                    data[arena_name] = [{"time_to_generate": time_to_generate,
+                                        "strategy": strategy,
+                                        "num_nodes": num_nodes,
+                                        "num_edges": len(arena.edges),
+                                        "edge_probability": edge_probability}]
+                else:
+                    data[arena_name].append({"time_to_generate": time_to_generate,
+                                        "strategy": strategy,
+                                        "num_nodes": num_nodes,
+                                        "num_edges": len(arena.edges),
+                                        "edge_probability": edge_probability})
+            with open("arena_times.json", "w") as f:
+                json.dump(data, f)
 
 if __name__ == "__main__":
     parser = ArgumentParser()
     # Generate 
+    parser.add_argument("--batch-generate", action="store_true")
     parser.add_argument("--generate", action="store_true")
     parser.add_argument("--node-space", dest="node_space", type=int, nargs="+") 
     parser.add_argument("--probability-space", dest="probability_space", type=float, nargs="+")
@@ -187,11 +233,16 @@ if __name__ == "__main__":
                         optimize=args.optimize, 
                         strategy=args.strategy)
         print(result)
-    elif args.generate:
+    elif args.batch_generate:
         generate_arenas(nodes_space=args.node_space, 
                         probability_space=args.probability_space, 
                         seed=args.seed, 
                         strategy=args.strategy)
+    elif args.generate:
+        generate_arena(seed=args.seed, 
+                    num_nodes=args.num_nodes,
+                    edge_probability=args.edge_probability,
+                    strategy=args.strategy)
     elif args.profile:
         profile(seed=args.seed, 
                 plot=args.plot, 
