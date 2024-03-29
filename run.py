@@ -4,7 +4,7 @@ import os
 import pickle
 import pstats
 import time
-from typing import List, Optional
+from typing import Dict, List, Optional
 from tqdm import tqdm
 from Graph import Arena, Player, GenerationStrategy
 from Solver import Solver
@@ -159,37 +159,45 @@ def generate_arenas(nodes_space: Optional[List[int]] = None,
 def generate_arena(num_nodes: int = None, 
                 edge_probability: float = None,
                 seed: int | None = None,
-                strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD):
+                strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD, 
+                save_arena: bool = False):
 
-            arena = Arena(num_nodes=num_nodes, edge_probability=edge_probability, seed=seed)
-            start = time.time()
-            arena.generate(strategy)
-            end = time.time()
-            time_to_generate = (end - start) * 1000
-            arena_name = f"arena_{num_nodes}_{edge_probability}"
-            arena.save(f"arenas/{arena_name}.pkl")
+    arena = Arena(num_nodes=num_nodes, edge_probability=edge_probability, seed=seed)
+    start = time.time()
+    arena.generate(strategy)
+    end = time.time()
+    time_to_generate = (end - start) * 1000
+    arena_name = f"arena_{num_nodes}_{edge_probability}"
+    if save_arena:
+        arena.save(f"arenas/{arena_name}.pkl")
+    
+    update_arena_times(arena_name=arena_name,
+                       update_dict={"time_to_generate": time_to_generate,
+                                    "strategy": strategy,
+                                    "num_nodes": num_nodes,
+                                    "num_edges": len(arena.edges),
+                                    "edge_probability": edge_probability})  
 
-            if not os.path.exists("arena_times.json"):
-                print(f"Creating arena_times.json for the first time")
-                with open("arena_times.json", "w") as f:
-                    json.dump({}, f)
+def update_arena_times(arena_name: str, update_dict: Dict[str, any]) -> None:
+    if "strategy" not in update_dict:
+        raise ValueError("You must provide a strategy in the update_dict")
 
-            with open("arena_times.json", "r") as f:
-                data = json.load(f) 
-                if arena_name not in data:
-                    data[arena_name] = [{"time_to_generate": time_to_generate,
-                                        "strategy": strategy,
-                                        "num_nodes": num_nodes,
-                                        "num_edges": len(arena.edges),
-                                        "edge_probability": edge_probability}]
-                else:
-                    data[arena_name].append({"time_to_generate": time_to_generate,
-                                        "strategy": strategy,
-                                        "num_nodes": num_nodes,
-                                        "num_edges": len(arena.edges),
-                                        "edge_probability": edge_probability})
-            with open("arena_times.json", "w") as f:
-                json.dump(data, f)
+    if not os.path.exists("arena_times.json"):
+        print(f"Creating arena_times.json for the first time")
+        with open("arena_times.json", "w") as f:
+            json.dump({}, f)
+    with open("arena_times.json", "r") as f:
+        data = json.load(f) 
+        if arena_name not in data:
+            data[arena_name] = {update_dict["strategy"]: [update_dict]}
+        else:
+            if update_dict["strategy"] not in data[arena_name]:
+                data[arena_name][update_dict["strategy"]] = [update_dict]
+            else:
+                data[arena_name][update_dict["strategy"]].append(update_dict)
+    with open("arena_times.json", "w") as f:
+        json.dump(data, f)
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()
@@ -209,7 +217,7 @@ if __name__ == "__main__":
     parser.add_argument("--save-results", dest="save_results", action="store_true")
     parser.add_argument("--optimize", dest="optimize", action="store_true")
     parser.add_argument("--arena-path", dest="arena_path", type=str, default=None)
-    # Profile
+    # Profile (for debug)
     parser.add_argument("--profile", action="store_true")
     args = parser.parse_args()
 
@@ -242,7 +250,8 @@ if __name__ == "__main__":
         generate_arena(seed=args.seed, 
                     num_nodes=args.num_nodes,
                     edge_probability=args.edge_probability,
-                    strategy=args.strategy)
+                    strategy=args.strategy,
+                    save_arena=args.save_arena)
     elif args.profile:
         profile(seed=args.seed, 
                 plot=args.plot, 

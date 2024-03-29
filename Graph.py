@@ -103,7 +103,7 @@ class Arena:
 
     def generate(self, 
                  strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD):
-        pbar = tqdm(total=self.num_nodes ** 2, desc="Creating graph")
+        pbar = tqdm(total=self.num_nodes ** 2, desc=f"Creating graph (n = {self.num_nodes}, p = {self.edge_probability})")
         update_delta = round(math.sqrt(pbar.total))
         for i, (origin, dest) in enumerate(product(self.nodes, repeat=2)):
             if i % update_delta == 0:
