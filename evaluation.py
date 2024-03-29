@@ -29,10 +29,10 @@ def parse_arena_times():
         json.dump(parsed_data, f, indent=4)
 
 def parse_time(ms_time):
-    if ms_time > 1000:
-        return f"{ms_time / 1000:.2f} sec"
     if ms_time > 1000 * 60:
         return f"{ms_time / 1000 / 60:.2f} min" 
+    if ms_time > 1000:
+        return f"{ms_time / 1000:.2f} sec"
     return f"{ms_time:.2f} ms"
 
 def generate_latex_table_arena_generation():
@@ -43,9 +43,13 @@ def generate_latex_table_arena_generation():
         data = json.load(f)
     
     sorted_data = sorted(data.items(), key=lambda x: (int(x[0].split("_")[1]), float(x[0].split("_")[2])))
+    prev_nodes = None
     for item, eval in sorted_data:
         num_nodes = item.split("_")[1]
         edge_p = item.split("_")[2]
+        if prev_nodes is not None and prev_nodes != num_nodes:
+            result += "\\hline \n"
+        prev_nodes = num_nodes
         result += f"{num_nodes} & {edge_p}" 
         if "none" in eval:
             result += f" & {parse_time(eval['none'])}"
