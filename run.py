@@ -36,63 +36,63 @@ def run_solver(num_nodes: Optional[int] = None,
         arena.save(f"arena_{arena.num_nodes}_{arena.edge_probability}.pkl")
 
     solver = Solver(arena)
+    start = time.time()
     if optimize:
-        start = time.time()
         num_steps = solver.optimized_value_iteration()
-        end = time.time()
-        
-        time_in_ms = (end - start) * 1000
-        min_energy_dict = solver.get_min_energy()
-        if save_results:
-            save_results_json(arena=arena, 
-                         time_to_complete=time_in_ms, 
-                         steps=num_steps, 
-                         min_energy_dict=min_energy_dict,
-                         optimized=True,
-                         file=f"{arena.num_nodes}_{arena.edge_probability}_optimized.json")
     else:
-        start = time.time()
         num_steps = solver.value_iteration()
-        end = time.time()
-
-        time_in_ms = (end - start) * 1000
-        min_energy_dict = solver.get_min_energy()
-        if save_results:
-            save_results_json(arena=arena, 
-                         time_to_complete=time_in_ms, 
-                         steps=num_steps, 
-                         min_energy_dict=min_energy_dict,
-                         optimized=False,
-                         file=f"{arena.num_nodes}_{arena.edge_probability}_naive.json")
+    end = time.time()
+    
+    time_in_ms = (end - start) * 1000
+    min_energy_dict = solver.get_min_energy()
+    if save_results:
+        results = {
+            "time_to_complete": time_in_ms,
+            "steps": num_steps,
+            "strategy": strategy,
+            "min_energy_min": min_energy_dict[Player.MIN],
+            "min_energy_max": min_energy_dict[Player.MAX],
+            "num_edges": len(arena.edges),
+            "num_nodes": arena.num_nodes,
+            "edge_probability": arena.edge_probability,
+            "optimized": True
+        }
+        update_json_results(
+            arena_name=f"arena_{arena.num_nodes}_{arena.edge_probability}",
+            update_dict=results,
+            file="solve_results.json")
 
     return min_energy_dict
 
-def save_results_json(arena: Arena, 
-                 min_energy_dict: dict,
-                 time_to_complete: float, 
-                 steps:int, 
-                 file: str,
-                 optimized: bool = False) -> None:
+# def save_results_json(arena: Arena, 
+#                  min_energy_dict: dict,
+#                  time_to_complete: float, 
+#                  steps:int, 
+#                  file: str,
+#                  optimized: bool = False) -> None:
 
 
-    min_energy_dict.update({"time_to_complete_ms": time_to_complete})
-    min_energy_dict.update({"converged_in_steps": steps})
-    min_energy_dict.update({"num_nodes": arena.num_nodes})
-    min_energy_dict.update({"edge_probability": arena.edge_probability})
-    min_energy_dict.update({"MAX_nodes": len([node for node, player in arena.player_mapping.items() if player == Player.MIN])}) 
-    min_energy_dict.update({"MIN_nodes": len([node for node, player in arena.player_mapping.items() if player == Player.MAX])})
-    min_energy_dict.update({"edges": len(arena.edges)})
-    min_energy_dict.update({"sum_player_MAX_weights": sum([arena.value_mapping[node] for node, player in arena.player_mapping.items() if player == Player.MAX])})
-    min_energy_dict.update({"sum_player_MIN_weights": sum([arena.value_mapping[node] for node, player in arena.player_mapping.items() if player == Player.MIN])})
-    min_energy_dict.update({"min_energy_MAX": min_energy_dict[Player.MAX]})
-    min_energy_dict.update({"min_energy_MIN": min_energy_dict[Player.MIN]})
-    min_energy_dict.update({"optimized": optimized})
-    del min_energy_dict[Player.MAX]
-    del min_energy_dict[Player.MIN]
+#     min_energy_dict.update({"time_to_complete_ms": time_to_complete})
+#     min_energy_dict.update({"converged_in_steps": steps})
+#     min_energy_dict.update({"num_nodes": arena.num_nodes})
+#     min_energy_dict.update({"edge_probability": arena.edge_probability})
+#     min_energy_dict.update({"MAX_nodes": len([node for node, player in arena.player_mapping.items() if player == Player.MIN])}) 
+#     min_energy_dict.update({"MIN_nodes": len([node for node, player in arena.player_mapping.items() if player == Player.MAX])})
+#     min_energy_dict.update({"edges": len(arena.edges)})
+#     min_energy_dict.update({"sum_player_MAX_weights": sum([arena.value_mapping[node] for node, player in arena.player_mapping.items() if player == Player.MAX])})
+#     min_energy_dict.update({"sum_player_MIN_weights": sum([arena.value_mapping[node] for node, player in arena.player_mapping.items() if player == Player.MIN])})
+#     min_energy_dict.update({"min_energy_MAX": min_energy_dict[Player.MAX]})
+#     min_energy_dict.update({"min_energy_MIN": min_energy_dict[Player.MIN]})
+#     min_energy_dict.update({"optimized": optimized})
+#     del min_energy_dict[Player.MAX]
+#     del min_energy_dict[Player.MIN]
 
-    base_path = "results"    
-    with open(os.path.join(base_path, file), "w") as f:
-        json.dump(min_energy_dict, f)
+#     base_path = "results"    
+#     with open(os.path.join(base_path, file), "w") as f:
+#         json.dump(min_energy_dict, f)
+
+def new_save_results(update_dict: Dict[str, any], file: str) -> None:
+    pass
 
 def profile(seed: int = 0, 
             plot: bool = False, 
@@ -171,22 +171,24 @@ def generate_arena(num_nodes: int = None,
     if save_arena:
         arena.save(f"arenas/{arena_name}.pkl")
     
-    update_arena_times(arena_name=arena_name,
+    update_json_results(arena_name=arena_name,
                        update_dict={"time_to_generate": time_to_generate,
                                     "strategy": strategy,
                                     "num_nodes": num_nodes,
                                     "num_edges": len(arena.edges),
-                                    "edge_probability": edge_probability})  
+                                    "edge_probability": edge_probability},
+                        file="arena_times.json")  
 
-def update_arena_times(arena_name: str, update_dict: Dict[str, any]) -> None:
+
+def update_json_results(arena_name: str, update_dict: Dict[str, any], file: str) -> None:
     if "strategy" not in update_dict:
         raise ValueError("You must provide a strategy in the update_dict")
 
-    if not os.path.exists("arena_times.json"):
+    if not os.path.exists(file):
         print(f"Creating arena_times.json for the first time")
-        with open("arena_times.json", "w") as f:
+        with open(file, "w") as f:
             json.dump({}, f)
-    with open("arena_times.json", "r") as f:
+    with open(file, "r") as f:
         data = json.load(f) 
         if arena_name not in data:
             data[arena_name] = {update_dict["strategy"]: [update_dict]}
@@ -195,8 +197,10 @@ def update_arena_times(arena_name: str, update_dict: Dict[str, any]) -> None:
                 data[arena_name][update_dict["strategy"]] = [update_dict]
             else:
                 data[arena_name][update_dict["strategy"]].append(update_dict)
-    with open("arena_times.json", "w") as f:
+    with open(file, "w") as f:
         json.dump(data, f)
+
+    print("RESULTS UPDATED")
 
 
 if __name__ == "__main__":

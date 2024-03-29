@@ -1,0 +1,39 @@
+{
+	"arena_10_0.1": {
+		"incremental_bellman_ford": [
+			{
+				"time_to_complete": 0.21386146545410156,
+				"steps": 2,
+				"strategy": "incremental_bellman_ford",
+				"min_energy_min": 0,
+				"min_energy_max": 8.4,
+				"num_edges": 11,
+				"num_nodes": 10,
+				"edge_probability": 0.1,
+				"optimized": true
+			},
+			{
+				"time_to_complete": 0.2090930938720703,
+				"steps": 2,
+				"strategy": "incremental_bellman_ford",
+				"min_energy_min": 0,
+				"min_energy_max": 8.4,
+				"num_edges": 11,
+				"num_nodes": 10,
+				"edge_probability": 0.1,
+				"optimized": true
+			},
+			{
+				"time_to_complete": 0.21195411682128906,
+				"steps": 2,
+				"strategy": "incremental_bellman_ford",
+				"min_energy_min": 0,
+				"min_energy_max": 8.4,
+				"num_edges": 11,
+				"num_nodes": 10,
+				"edge_probability": 0.1,
+				"optimized": true
+			}
+		]
+	}
+}
