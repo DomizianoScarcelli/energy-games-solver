@@ -2,42 +2,50 @@
     "arena_100_0.1": {
         "none": 8.797097206115723,
         "incremental_bellman_ford": 13.891610232266514,
-        "percentage_diff": 57.91129626951373
+        "bellman_ford": 27.431964874267578,
+        "percentage_diff": 211.82973464470683
     },
     "arena_200_0.1": {
         "none": 10.52546501159668,
         "incremental_bellman_ford": 30.519767241044477,
-        "percentage_diff": 189.96122458645394
+        "bellman_ford": 133.11344385147095,
+        "percentage_diff": 1164.6799329512764
     },
     "arena_300_0.1": {
         "none": 18.537163734436035,
         "incremental_bellman_ford": 84.99789237976074,
-        "percentage_diff": 358.52695481058004
+        "bellman_ford": 407.8208804130554,
+        "percentage_diff": 2100.0176847737316
     },
     "arena_400_0.1": {
         "none": 28.151845932006836,
         "incremental_bellman_ford": 188.70173801075327,
-        "percentage_diff": 570.2996971016083
+        "bellman_ford": 1017.5331830978394,
+        "percentage_diff": 3514.445694095568
     },
     "arena_500_0.1": {
         "none": 41.80247783660889,
         "incremental_bellman_ford": 345.9360599517822,
-        "percentage_diff": 727.5491737688949
+        "bellman_ford": 1984.239935874939,
+        "percentage_diff": 4646.704115556575
     },
     "arena_1000_0.1": {
         "none": 161.30680304307205,
         "incremental_bellman_ford": 2533.8624807504507,
-        "percentage_diff": 1470.8342320031352
+        "bellman_ford": 15529.204924901327,
+        "percentage_diff": 9527.123364880481
     },
     "arena_2000_0.1": {
         "none": 616.5754318237305,
         "incremental_bellman_ford": 19574.67926873101,
-        "percentage_diff": 3074.7420118301297
+        "bellman_ford": 125846.4595079422,
+        "percentage_diff": 20310.553682897924
     },
     "arena_5000_0.1": {
         "none": 3977.022833294339,
         "incremental_bellman_ford": 302137.2917294502,
-        "percentage_diff": 7497.072091214949
+        "bellman_ford": 2019062.1128082275,
+        "percentage_diff": 50668.180054318465
     },
     "arena_10000_0.1": {
         "none": 16232.088565826416
@@ -45,77 +53,92 @@
     "arena_100_0.2": {
         "none": 7.394041333879743,
         "incremental_bellman_ford": 19.25492286682129,
-        "percentage_diff": 160.41135013128195
+        "bellman_ford": 41.810035705566406,
+        "percentage_diff": 465.45580174121335
     },
     "arena_200_0.2": {
         "none": 12.709413255964007,
         "incremental_bellman_ford": 65.14543294906616,
-        "percentage_diff": 412.5762427978025
+        "bellman_ford": 245.92304229736328,
+        "percentage_diff": 1834.9677073562912
     },
     "arena_300_0.2": {
         "none": 22.73392677307129,
         "incremental_bellman_ford": 183.59088897705078,
-        "percentage_diff": 707.5634746678132
+        "bellman_ford": 824.0361213684082,
+        "percentage_diff": 3524.6977022222686
     },
     "arena_400_0.2": {
         "none": 36.77691732134138,
         "incremental_bellman_ford": 424.9080717563629,
-        "percentage_diff": 1055.3661989766385
+        "bellman_ford": 1942.3820972442627,
+        "percentage_diff": 5181.525039938876
     },
     "arena_500_0.2": {
         "none": 62.838860920497346,
         "incremental_bellman_ford": 836.2679183483124,
-        "percentage_diff": 1230.8132994427513
+        "bellman_ford": 3766.075849533081,
+        "percentage_diff": 5893.227430232791
     },
     "arena_1000_0.2": {
         "none": 214.724029813494,
         "incremental_bellman_ford": 6139.796078205109,
-        "percentage_diff": 2759.389367616676
+        "bellman_ford": 29841.403245925903,
+        "percentage_diff": 13797.561102893647
     },
     "arena_2000_0.2": {
         "none": 871.3350977216448,
         "incremental_bellman_ford": 48258.02633166313,
-        "percentage_diff": 5438.400376370419
+        "bellman_ford": 240597.15270996094,
+        "percentage_diff": 27512.471176596824
     },
     "arena_5000_0.2": {
         "none": 5493.532930101667,
         "incremental_bellman_ford": 748035.2919995785,
-        "percentage_diff": 13516.652553418568
+        "bellman_ford": 3758657.4051380157,
+        "percentage_diff": 68319.67551596081
     },
     "arena_100_0.3": {
         "none": 9.293692452566964,
         "incremental_bellman_ford": 24.98599886894226,
-        "percentage_diff": 168.8489962032368
+        "bellman_ford": 57.008981704711914,
+        "percentage_diff": 513.4158408584497
     },
     "arena_200_0.3": {
         "none": 15.08951187133789,
         "incremental_bellman_ford": 100.13669729232788,
-        "percentage_diff": 563.6178701216622
+        "bellman_ford": 364.2690181732178,
+        "percentage_diff": 2314.0543529783536
     },
     "arena_300_0.3": {
         "none": 30.611583164760045,
         "incremental_bellman_ford": 306.24085664749146,
-        "percentage_diff": 900.4084238283859
+        "bellman_ford": 1187.143087387085,
+        "percentage_diff": 3778.0845832035247
     },
     "arena_400_0.3": {
         "none": 55.513995034354075,
         "incremental_bellman_ford": 732.0228815078735,
-        "percentage_diff": 1218.627638048516
+        "bellman_ford": 2867.3107624053955,
+        "percentage_diff": 5065.023271394896
     },
     "arena_500_0.3": {
         "none": 76.7343384878976,
         "incremental_bellman_ford": 1387.5841200351715,
-        "percentage_diff": 1708.296190960216
+        "bellman_ford": 5601.935148239136,
+        "percentage_diff": 7200.428020400101
     },
     "arena_1000_0.3": {
         "none": 281.7713873726981,
         "incremental_bellman_ford": 10700.748085975647,
-        "percentage_diff": 3697.6702268288873
+        "bellman_ford": 44777.10795402527,
+        "percentage_diff": 15791.28987564615
     },
     "arena_2000_0.3": {
         "none": 1104.5808110918317,
         "incremental_bellman_ford": 87520.10476589203,
-        "percentage_diff": 7823.37725651617
+        "bellman_ford": 367170.5672740936,
+        "percentage_diff": 33140.715716504346
     },
     "arena_5000_0.3": {
         "none": 7334.852525166103,

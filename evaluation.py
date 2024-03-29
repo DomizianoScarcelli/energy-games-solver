@@ -27,6 +27,51 @@ def parse_arena_times():
     print(parsed_data)
     with open('parsed_arena_times.json', 'w') as f:
         json.dump(parsed_data, f, indent=4)
+    return parsed_data
+
+def parse_result_times():
+    parsed_data = {}
+    with open ('solve_results.json', 'r') as f:
+        data = json.load(f)
+
+    for arena_name in data: 
+        avg_optimized = 0
+        avg_naive = 0
+        # num_nodes = arena_name.split("_")[1]
+        # edge_p = arena_name.split("_")[2]
+        for run in data[arena_name]["not_applicable"]:
+            if run["optimized"]:
+                avg_optimized += run["time_to_complete"]
+            else:
+                avg_naive += run["time_to_complete"]
+        parsed_data[arena_name] = {
+            "naive": avg_naive / len(data[arena_name]["not_applicable"]),
+            "optimized": avg_optimized / len(data[arena_name]["not_applicable"]),
+        } 
+
+    with open('parsed_solved_results.json', 'w') as f:
+        json.dump(parsed_data, f, indent=4)
+    return parsed_data
+
+def generate_latex_table_result_times():
+    path = "parsed_solved_results.json"
+    result = ""
+    with open(path, 'r') as f:
+        data  = json.load(f)
+
+    sorted_data = sorted(data.items(), key=lambda x: (int(x[0].split("_")[1]), float(x[0].split("_")[2])))
+    prev_nodes = None
+    for item, eval in sorted_data:
+        num_nodes = item.split("_")[1]
+        edge_p = item.split("_")[2]
+        if prev_nodes is not None and prev_nodes != num_nodes:
+            result += "\\hline \n"
+        prev_nodes = num_nodes
+        result += f"{num_nodes} & {edge_p} & {parse_time(eval['naive'])} & {parse_time(eval['optimized'])}"
+        result += "\\\\ \n"
+    with open('latex_table_results.txt', 'w') as f:
+        f.write(result)
+    return result
 
 def parse_time(ms_time):
     if ms_time > 1000 * 60:
@@ -69,4 +114,7 @@ def generate_latex_table_arena_generation():
     return result
 
 if __name__ == '__main__':
+    parse_arena_times()
     generate_latex_table_arena_generation()
+    parse_result_times()
+    generate_latex_table_result_times()

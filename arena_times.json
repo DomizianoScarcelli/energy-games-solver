@@ -1270,6 +1270,13 @@
                 "num_nodes": 2000,
                 "num_edges": 0,
                 "edge_probability": 0.1
+            },
+            {
+                "time_to_generate": 130360.04090309143,
+                "strategy": "bellman_ford",
+                "num_nodes": 2000,
+                "num_edges": 0,
+                "edge_probability": 0.1
             }
         ]
     },
@@ -1394,6 +1401,15 @@
                 "strategy": "incremental_bellman_ford",
                 "num_nodes": 5000,
                 "num_edges": 1254993,
+                "edge_probability": 0.1
+            }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 2019062.1128082275,
+                "strategy": "bellman_ford",
+                "num_nodes": 5000,
+                "num_edges": 0,
                 "edge_probability": 0.1
             }
         ]
@@ -1525,6 +1541,15 @@
                 "num_edges": 1075,
                 "edge_probability": 0.2
             }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 41.810035705566406,
+                "strategy": "bellman_ford",
+                "num_nodes": 100,
+                "num_edges": 0,
+                "edge_probability": 0.2
+            }
         ]
     },
     "arena_200_0.2": {
@@ -1634,6 +1659,15 @@
                 "strategy": "incremental_bellman_ford",
                 "num_nodes": 200,
                 "num_edges": 4120,
+                "edge_probability": 0.2
+            }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 245.92304229736328,
+                "strategy": "bellman_ford",
+                "num_nodes": 200,
+                "num_edges": 0,
                 "edge_probability": 0.2
             }
         ]
@@ -1747,6 +1781,15 @@
                 "num_edges": 9399,
                 "edge_probability": 0.2
             }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 824.0361213684082,
+                "strategy": "bellman_ford",
+                "num_nodes": 300,
+                "num_edges": 0,
+                "edge_probability": 0.2
+            }
         ]
     },
     "arena_400_0.2": {
@@ -1856,6 +1899,15 @@
                 "strategy": "incremental_bellman_ford",
                 "num_nodes": 400,
                 "num_edges": 16480,
+                "edge_probability": 0.2
+            }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 1942.3820972442627,
+                "strategy": "bellman_ford",
+                "num_nodes": 400,
+                "num_edges": 0,
                 "edge_probability": 0.2
             }
         ]
@@ -1969,6 +2021,15 @@
                 "num_edges": 25557,
                 "edge_probability": 0.2
             }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 3766.075849533081,
+                "strategy": "bellman_ford",
+                "num_nodes": 500,
+                "num_edges": 0,
+                "edge_probability": 0.2
+            }
         ]
     },
     "arena_1000_0.2": {
@@ -2078,6 +2139,15 @@
                 "strategy": "incremental_bellman_ford",
                 "num_nodes": 1000,
                 "num_edges": 101391,
+                "edge_probability": 0.2
+            }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 29841.403245925903,
+                "strategy": "bellman_ford",
+                "num_nodes": 1000,
+                "num_edges": 0,
                 "edge_probability": 0.2
             }
         ]
@@ -2191,6 +2261,15 @@
                 "num_edges": 402376,
                 "edge_probability": 0.2
             }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 240597.15270996094,
+                "strategy": "bellman_ford",
+                "num_nodes": 2000,
+                "num_edges": 0,
+                "edge_probability": 0.2
+            }
         ]
     },
     "arena_5000_0.2": {
@@ -2300,6 +2379,15 @@
                 "strategy": "incremental_bellman_ford",
                 "num_nodes": 5000,
                 "num_edges": 2506364,
+                "edge_probability": 0.2
+            }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 3758657.4051380157,
+                "strategy": "bellman_ford",
+                "num_nodes": 5000,
+                "num_edges": 0,
                 "edge_probability": 0.2
             }
         ]
@@ -2413,6 +2501,15 @@
                 "num_edges": 1574,
                 "edge_probability": 0.3
             }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 57.008981704711914,
+                "strategy": "bellman_ford",
+                "num_nodes": 100,
+                "num_edges": 0,
+                "edge_probability": 0.3
+            }
         ]
     },
     "arena_200_0.3": {
@@ -2522,6 +2619,15 @@
                 "strategy": "incremental_bellman_ford",
                 "num_nodes": 200,
                 "num_edges": 6254,
+                "edge_probability": 0.3
+            }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 364.2690181732178,
+                "strategy": "bellman_ford",
+                "num_nodes": 200,
+                "num_edges": 0,
                 "edge_probability": 0.3
             }
         ]
@@ -2635,6 +2741,15 @@
                 "num_edges": 13829,
                 "edge_probability": 0.3
             }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 1187.143087387085,
+                "strategy": "bellman_ford",
+                "num_nodes": 300,
+                "num_edges": 0,
+                "edge_probability": 0.3
+            }
         ]
     },
     "arena_400_0.3": {
@@ -2744,6 +2859,15 @@
                 "strategy": "incremental_bellman_ford",
                 "num_nodes": 400,
                 "num_edges": 24320,
+                "edge_probability": 0.3
+            }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 2867.3107624053955,
+                "strategy": "bellman_ford",
+                "num_nodes": 400,
+                "num_edges": 0,
                 "edge_probability": 0.3
             }
         ]
@@ -2857,6 +2981,15 @@
                 "num_edges": 37952,
                 "edge_probability": 0.3
             }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 5601.935148239136,
+                "strategy": "bellman_ford",
+                "num_nodes": 500,
+                "num_edges": 0,
+                "edge_probability": 0.3
+            }
         ]
     },
     "arena_1000_0.3": {
@@ -2968,6 +3101,15 @@
                 "num_edges": 151003,
                 "edge_probability": 0.3
             }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 44777.10795402527,
+                "strategy": "bellman_ford",
+                "num_nodes": 1000,
+                "num_edges": 0,
+                "edge_probability": 0.3
+            }
         ]
     },
     "arena_2000_0.3": {
@@ -3077,6 +3219,15 @@
                 "strategy": "incremental_bellman_ford",
                 "num_nodes": 2000,
                 "num_edges": 602677,
+                "edge_probability": 0.3
+            }
+        ],
+        "bellman_ford": [
+            {
+                "time_to_generate": 367170.5672740936,
+                "strategy": "bellman_ford",
+                "num_nodes": 2000,
+                "num_edges": 0,
                 "edge_probability": 0.3
             }
         ]
