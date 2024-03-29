@@ -198,7 +198,7 @@ def update_json_results(arena_name: str, update_dict: Dict[str, any], file: str)
             else:
                 data[arena_name][update_dict["strategy"]].append(update_dict)
     with open(file, "w") as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=4)
 
     print("RESULTS UPDATED")
 

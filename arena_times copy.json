@@ -1,0 +1,874 @@
+{
+	"arena_100_0.1": {
+		"none": [
+			{ "time_to_generate": 11.753082275390625, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 6.588935852050781, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 6.510019302368164, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 11.411190032958984, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 8.270025253295898, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 8.244991302490234, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 8.18181037902832, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 8.153915405273438, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 8.473873138427734, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 10.383129119873047, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.1 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 11.656999588012695, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 605, "edge_probability": 0.1 },
+			{ "time_to_generate": 12.174844741821289, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 605, "edge_probability": 0.1 },
+			{ "time_to_generate": 14.938116073608398, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 605, "edge_probability": 0.1 },
+			{ "time_to_generate": 11.801004409790039, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 605, "edge_probability": 0.1 },
+			{ "time_to_generate": 13.92817497253418, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 605, "edge_probability": 0.1 },
+			{ "time_to_generate": 15.01011848449707, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 605, "edge_probability": 0.1 },
+			{ "time_to_generate": 14.992952346801758, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 605, "edge_probability": 0.1 },
+			{ "time_to_generate": 14.195919036865234, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 605, "edge_probability": 0.1 },
+			{ "time_to_generate": 14.832735061645508, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 605, "edge_probability": 0.1 },
+			{ "time_to_generate": 14.829874038696289, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 605, "edge_probability": 0.1 },
+			{ "time_to_generate": 14.44697380065918, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 605, "edge_probability": 0.1 }
+		],
+		"bellman_ford": [{ "time_to_generate": 27.609825134277344, "strategy": "bellman_ford", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.1 }]
+	},
+	"arena_200_0.1": {
+		"none": [
+			{ "time_to_generate": 10.469913482666016, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 10.766983032226562, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 10.590076446533203, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 10.522127151489258, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 10.31494140625, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 10.355949401855469, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 10.470867156982422, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 10.486125946044922, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 10.375738143920898, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 10.901927947998047, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.1 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 29.824018478393555, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 2225, "edge_probability": 0.1 },
+			{ "time_to_generate": 32.05728530883789, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 2225, "edge_probability": 0.1 },
+			{ "time_to_generate": 30.910015106201172, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 2225, "edge_probability": 0.1 },
+			{ "time_to_generate": 29.25896644592285, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 2225, "edge_probability": 0.1 },
+			{ "time_to_generate": 31.0060977935791, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 2225, "edge_probability": 0.1 },
+			{ "time_to_generate": 31.54897689819336, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 2225, "edge_probability": 0.1 },
+			{ "time_to_generate": 30.57098388671875, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 2225, "edge_probability": 0.1 },
+			{ "time_to_generate": 29.692888259887695, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 2225, "edge_probability": 0.1 },
+			{ "time_to_generate": 30.855178833007812, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 2225, "edge_probability": 0.1 },
+			{ "time_to_generate": 29.636859893798828, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 2225, "edge_probability": 0.1 },
+			{ "time_to_generate": 30.356168746948242, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 2225, "edge_probability": 0.1 }
+		],
+		"bellman_ford": [{ "time_to_generate": 130.60498237609863, "strategy": "bellman_ford", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.1 }]
+	},
+	"arena_300_0.1": {
+		"none": [
+			{ "time_to_generate": 27.438640594482422, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 17.39811897277832, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 17.447710037231445, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 17.222166061401367, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 17.698049545288086, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 17.80223846435547, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 17.63296127319336, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 17.54593849182129, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 17.367839813232422, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 17.817974090576172, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.1 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 75.6840705871582, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 4798, "edge_probability": 0.1 },
+			{ "time_to_generate": 77.8970718383789, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 4798, "edge_probability": 0.1 },
+			{ "time_to_generate": 76.39193534851074, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 4798, "edge_probability": 0.1 },
+			{ "time_to_generate": 85.36195755004883, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 4798, "edge_probability": 0.1 },
+			{ "time_to_generate": 120.68700790405273, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 4798, "edge_probability": 0.1 },
+			{ "time_to_generate": 87.84198760986328, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 4798, "edge_probability": 0.1 },
+			{ "time_to_generate": 83.54568481445312, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 4798, "edge_probability": 0.1 },
+			{ "time_to_generate": 77.31509208679199, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 4798, "edge_probability": 0.1 },
+			{ "time_to_generate": 82.33189582824707, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 4798, "edge_probability": 0.1 },
+			{ "time_to_generate": 78.81999015808105, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 4798, "edge_probability": 0.1 },
+			{ "time_to_generate": 89.10012245178223, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 4798, "edge_probability": 0.1 }
+		],
+		"bellman_ford": [{ "time_to_generate": 404.11901473999023, "strategy": "bellman_ford", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.1 }]
+	},
+	"arena_400_0.1": {
+		"none": [
+			{ "time_to_generate": 28.254032135009766, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 28.039216995239258, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 27.948856353759766, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 27.878999710083008, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 27.90069580078125, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 28.04088592529297, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 28.064966201782227, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 27.61387825012207, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 27.695894241333008, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 30.08103370666504, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.1 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 177.77705192565918, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 8459, "edge_probability": 0.1 },
+			{ "time_to_generate": 173.65121841430664, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 8459, "edge_probability": 0.1 },
+			{ "time_to_generate": 171.46992683410645, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 8459, "edge_probability": 0.1 },
+			{ "time_to_generate": 180.1321506500244, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 8459, "edge_probability": 0.1 },
+			{ "time_to_generate": 203.93991470336914, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 8459, "edge_probability": 0.1 },
+			{ "time_to_generate": 200.07801055908203, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 8459, "edge_probability": 0.1 },
+			{ "time_to_generate": 229.6140193939209, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 8459, "edge_probability": 0.1 },
+			{ "time_to_generate": 181.61797523498535, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 8459, "edge_probability": 0.1 },
+			{ "time_to_generate": 205.9040069580078, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 8459, "edge_probability": 0.1 },
+			{ "time_to_generate": 172.1811294555664, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 8459, "edge_probability": 0.1 },
+			{ "time_to_generate": 179.3537139892578, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 8459, "edge_probability": 0.1 }
+		],
+		"bellman_ford": [{ "time_to_generate": 1000.370979309082, "strategy": "bellman_ford", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.1 }]
+	},
+	"arena_500_0.1": {
+		"none": [
+			{ "time_to_generate": 39.89410400390625, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 44.550180435180664, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 48.15816879272461, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 40.08603096008301, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 40.03095626831055, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 41.20612144470215, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 39.742231369018555, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 40.437936782836914, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 40.014028549194336, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 43.905019760131836, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.1 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 344.44284439086914, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 12967, "edge_probability": 0.1 },
+			{ "time_to_generate": 336.18688583374023, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 12967, "edge_probability": 0.1 },
+			{ "time_to_generate": 321.807861328125, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 12967, "edge_probability": 0.1 },
+			{ "time_to_generate": 327.8040885925293, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 12967, "edge_probability": 0.1 },
+			{ "time_to_generate": 348.1738567352295, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 12967, "edge_probability": 0.1 },
+			{ "time_to_generate": 387.3400688171387, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 12967, "edge_probability": 0.1 },
+			{ "time_to_generate": 376.5881061553955, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 12967, "edge_probability": 0.1 },
+			{ "time_to_generate": 323.57025146484375, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 12967, "edge_probability": 0.1 },
+			{ "time_to_generate": 392.3468589782715, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 12967, "edge_probability": 0.1 },
+			{ "time_to_generate": 318.6628818511963, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 12967, "edge_probability": 0.1 },
+			{ "time_to_generate": 328.3729553222656, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 12967, "edge_probability": 0.1 }
+		],
+		"bellman_ford": [{ "time_to_generate": 2091.444969177246, "strategy": "bellman_ford", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.1 }]
+	},
+	"arena_1000_0.1": {
+		"none": [
+			{ "time_to_generate": 169.5859432220459, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 159.54995155334473, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 156.6159725189209, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 159.8968505859375, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 160.0048542022705, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 160.2480411529541, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 158.3690643310547, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 161.3922119140625, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 163.2711887359619, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 155.5173397064209, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 154.74987030029297, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 157.7012538909912, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 180.0858974456787, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.1 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 2530.8542251586914, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2497.8408813476562, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2493.8340187072754, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2478.951930999756, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2493.147850036621, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2495.396137237549, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2546.26202583313, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2706.3729763031006, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2694.941282272339, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2478.3761501312256, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2596.282958984375, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2474.6408462524414, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 },
+			{ "time_to_generate": 2453.310966491699, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 51146, "edge_probability": 0.1 }
+		]
+	},
+	"arena_2000_0.1": {
+		"none": [
+			{ "time_to_generate": 599.0879535675049, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 628.8199424743652, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 657.7341556549072, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 604.7391891479492, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 605.262279510498, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 604.7749519348145, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 624.3400573730469, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 605.9768199920654, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 611.7889881134033, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 623.22998046875, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.1 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 19602.389097213745, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 202656, "edge_probability": 0.1 },
+			{ "time_to_generate": 19707.058906555176, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 202656, "edge_probability": 0.1 },
+			{ "time_to_generate": 19433.804035186768, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 202656, "edge_probability": 0.1 },
+			{ "time_to_generate": 20018.291234970093, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 202656, "edge_probability": 0.1 },
+			{ "time_to_generate": 19707.30686187744, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 202656, "edge_probability": 0.1 },
+			{ "time_to_generate": 19375.2601146698, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 202656, "edge_probability": 0.1 },
+			{ "time_to_generate": 19417.27590560913, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 202656, "edge_probability": 0.1 },
+			{ "time_to_generate": 19310.410261154175, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 202656, "edge_probability": 0.1 },
+			{ "time_to_generate": 19600.317001342773, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 202656, "edge_probability": 0.1 }
+		]
+	},
+	"arena_5000_0.1": {
+		"none": [
+			{ "time_to_generate": 3947.409152984619, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 4047.1487045288086, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 3952.5911808013916, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 3948.982000350952, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 3915.782928466797, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 3942.3298835754395, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 3960.1879119873047, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 4099.078893661499, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 3979.6948432922363, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.1 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 308146.785736084, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 1254993, "edge_probability": 0.1 },
+			{ "time_to_generate": 301887.6316547394, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 1254993, "edge_probability": 0.1 },
+			{ "time_to_generate": 301814.670085907, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 1254993, "edge_probability": 0.1 },
+			{ "time_to_generate": 301452.7690410614, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 1254993, "edge_probability": 0.1 },
+			{ "time_to_generate": 301032.18817710876, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 1254993, "edge_probability": 0.1 },
+			{ "time_to_generate": 300541.4478778839, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 1254993, "edge_probability": 0.1 },
+			{ "time_to_generate": 300892.73023605347, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 1254993, "edge_probability": 0.1 },
+			{ "time_to_generate": 301330.1110267639, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 1254993, "edge_probability": 0.1 }
+		]
+	},
+	"arena_10000_0.1": {
+		"none": [
+			{ "time_to_generate": 16441.27893447876, "strategy": "none", "num_nodes": 10000, "num_edges": 0, "edge_probability": 0.1 },
+			{ "time_to_generate": 16022.898197174072, "strategy": "none", "num_nodes": 10000, "num_edges": 0, "edge_probability": 0.1 }
+		]
+	},
+	"arena_100_0.2": {
+		"none": [
+			{ "time_to_generate": 7.050037384033203, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 9.321928024291992, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 7.26318359375, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 6.822824478149414, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 7.205009460449219, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 7.074117660522461, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 7.021188735961914, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.2 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 20.296096801757812, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1075, "edge_probability": 0.2 },
+			{ "time_to_generate": 22.644996643066406, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1075, "edge_probability": 0.2 },
+			{ "time_to_generate": 20.799875259399414, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1075, "edge_probability": 0.2 },
+			{ "time_to_generate": 19.78921890258789, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1075, "edge_probability": 0.2 },
+			{ "time_to_generate": 18.17798614501953, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1075, "edge_probability": 0.2 },
+			{ "time_to_generate": 18.361806869506836, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1075, "edge_probability": 0.2 },
+			{ "time_to_generate": 16.581296920776367, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1075, "edge_probability": 0.2 },
+			{ "time_to_generate": 17.388105392456055, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1075, "edge_probability": 0.2 }
+		]
+	},
+	"arena_200_0.2": {
+		"none": [
+			{ "time_to_generate": 12.388229370117188, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 12.35198974609375, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 12.253999710083008, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 12.668848037719727, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 12.529850006103516, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 12.447118759155273, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 14.325857162475586, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.2 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 58.585166931152344, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 4120, "edge_probability": 0.2 },
+			{ "time_to_generate": 87.05615997314453, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 4120, "edge_probability": 0.2 },
+			{ "time_to_generate": 63.990116119384766, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 4120, "edge_probability": 0.2 },
+			{ "time_to_generate": 69.28396224975586, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 4120, "edge_probability": 0.2 },
+			{ "time_to_generate": 67.1229362487793, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 4120, "edge_probability": 0.2 },
+			{ "time_to_generate": 58.43400955200195, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 4120, "edge_probability": 0.2 },
+			{ "time_to_generate": 59.23199653625488, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 4120, "edge_probability": 0.2 },
+			{ "time_to_generate": 57.459115982055664, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 4120, "edge_probability": 0.2 }
+		]
+	},
+	"arena_300_0.2": {
+		"none": [
+			{ "time_to_generate": 22.327661514282227, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 22.65477180480957, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 22.14813232421875, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 24.899959564208984, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 22.59683609008789, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 22.451162338256836, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 22.058963775634766, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.2 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 188.4450912475586, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 9399, "edge_probability": 0.2 },
+			{ "time_to_generate": 196.02584838867188, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 9399, "edge_probability": 0.2 },
+			{ "time_to_generate": 196.64597511291504, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 9399, "edge_probability": 0.2 },
+			{ "time_to_generate": 199.09024238586426, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 9399, "edge_probability": 0.2 },
+			{ "time_to_generate": 168.9910888671875, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 9399, "edge_probability": 0.2 },
+			{ "time_to_generate": 172.19924926757812, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 9399, "edge_probability": 0.2 },
+			{ "time_to_generate": 169.80576515197754, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 9399, "edge_probability": 0.2 },
+			{ "time_to_generate": 177.52385139465332, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 9399, "edge_probability": 0.2 }
+		]
+	},
+	"arena_400_0.2": {
+		"none": [
+			{ "time_to_generate": 36.61990165710449, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 36.17405891418457, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 36.540985107421875, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 36.29803657531738, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 36.02719306945801, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 38.969993591308594, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 36.80825233459473, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.2 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 401.6110897064209, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 16480, "edge_probability": 0.2 },
+			{ "time_to_generate": 437.12425231933594, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 16480, "edge_probability": 0.2 },
+			{ "time_to_generate": 466.6738510131836, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 16480, "edge_probability": 0.2 },
+			{ "time_to_generate": 494.07410621643066, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 16480, "edge_probability": 0.2 },
+			{ "time_to_generate": 401.7941951751709, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 16480, "edge_probability": 0.2 },
+			{ "time_to_generate": 396.9380855560303, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 16480, "edge_probability": 0.2 },
+			{ "time_to_generate": 392.3487663269043, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 16480, "edge_probability": 0.2 },
+			{ "time_to_generate": 408.70022773742676, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 16480, "edge_probability": 0.2 }
+		]
+	},
+	"arena_500_0.2": {
+		"none": [
+			{ "time_to_generate": 60.69612503051758, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 60.52207946777344, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 61.782121658325195, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 60.80889701843262, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 75.06203651428223, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 61.398983001708984, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 59.601783752441406, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.2 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 951.171875, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 25557, "edge_probability": 0.2 },
+			{ "time_to_generate": 853.2190322875977, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 25557, "edge_probability": 0.2 },
+			{ "time_to_generate": 920.7580089569092, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 25557, "edge_probability": 0.2 },
+			{ "time_to_generate": 870.805025100708, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 25557, "edge_probability": 0.2 },
+			{ "time_to_generate": 773.4658718109131, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 25557, "edge_probability": 0.2 },
+			{ "time_to_generate": 784.0838432312012, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 25557, "edge_probability": 0.2 },
+			{ "time_to_generate": 773.1668949127197, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 25557, "edge_probability": 0.2 },
+			{ "time_to_generate": 763.4727954864502, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 25557, "edge_probability": 0.2 }
+		]
+	},
+	"arena_1000_0.2": {
+		"none": [
+			{ "time_to_generate": 211.38620376586914, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 219.52009201049805, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 214.93887901306152, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 214.80178833007812, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 218.77217292785645, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 207.59820938110352, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 216.0508632659912, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.2 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 6179.319858551025, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 101391, "edge_probability": 0.2 },
+			{ "time_to_generate": 6155.908823013306, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 101391, "edge_probability": 0.2 },
+			{ "time_to_generate": 6219.3920612335205, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 101391, "edge_probability": 0.2 },
+			{ "time_to_generate": 6186.395168304443, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 101391, "edge_probability": 0.2 },
+			{ "time_to_generate": 6001.710653305054, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 101391, "edge_probability": 0.2 },
+			{ "time_to_generate": 6040.6389236450195, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 101391, "edge_probability": 0.2 },
+			{ "time_to_generate": 5988.326072692871, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 101391, "edge_probability": 0.2 },
+			{ "time_to_generate": 6346.67706489563, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 101391, "edge_probability": 0.2 }
+		]
+	},
+	"arena_2000_0.2": {
+		"none": [
+			{ "time_to_generate": 874.9818801879883, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 863.5480403900146, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 863.0571365356445, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 870.607852935791, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 876.9240379333496, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 875.7870197296143, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 874.4397163391113, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.2 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 48886.27505302429, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 402376, "edge_probability": 0.2 },
+			{ "time_to_generate": 48145.11799812317, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 402376, "edge_probability": 0.2 },
+			{ "time_to_generate": 48581.15196228027, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 402376, "edge_probability": 0.2 },
+			{ "time_to_generate": 48360.085010528564, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 402376, "edge_probability": 0.2 },
+			{ "time_to_generate": 47932.40761756897, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 402376, "edge_probability": 0.2 },
+			{ "time_to_generate": 48052.14476585388, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 402376, "edge_probability": 0.2 },
+			{ "time_to_generate": 47858.85524749756, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 402376, "edge_probability": 0.2 },
+			{ "time_to_generate": 48248.172998428345, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 402376, "edge_probability": 0.2 }
+		]
+	},
+	"arena_5000_0.2": {
+		"none": [
+			{ "time_to_generate": 5593.173027038574, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 5506.876230239868, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 5336.935997009277, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 5443.603038787842, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 5525.122880935669, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 5460.222959518433, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.2 },
+			{ "time_to_generate": 5588.796377182007, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.2 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 772532.4420928955, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 2506364, "edge_probability": 0.2 },
+			{ "time_to_generate": 746747.3981380463, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 2506364, "edge_probability": 0.2 },
+			{ "time_to_generate": 745856.7380905151, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 2506364, "edge_probability": 0.2 },
+			{ "time_to_generate": 744340.4228687286, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 2506364, "edge_probability": 0.2 },
+			{ "time_to_generate": 746235.6040477753, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 2506364, "edge_probability": 0.2 },
+			{ "time_to_generate": 744205.659866333, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 2506364, "edge_probability": 0.2 },
+			{ "time_to_generate": 742912.1611118317, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 2506364, "edge_probability": 0.2 },
+			{ "time_to_generate": 741451.9097805023, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 2506364, "edge_probability": 0.2 }
+		]
+	},
+	"arena_100_0.3": {
+		"none": [
+			{ "time_to_generate": 10.684967041015625, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 7.730960845947266, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 7.215976715087891, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 7.385015487670898, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 7.507085800170898, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 16.81208610534668, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 7.719755172729492, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.3 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 23.622989654541016, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1574, "edge_probability": 0.3 },
+			{ "time_to_generate": 26.400089263916016, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1574, "edge_probability": 0.3 },
+			{ "time_to_generate": 26.55196189880371, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1574, "edge_probability": 0.3 },
+			{ "time_to_generate": 25.846004486083984, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1574, "edge_probability": 0.3 },
+			{ "time_to_generate": 25.9552001953125, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1574, "edge_probability": 0.3 },
+			{ "time_to_generate": 24.568796157836914, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1574, "edge_probability": 0.3 },
+			{ "time_to_generate": 24.19590950012207, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1574, "edge_probability": 0.3 },
+			{ "time_to_generate": 22.747039794921875, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 1574, "edge_probability": 0.3 }
+		]
+	},
+	"arena_200_0.3": {
+		"none": [
+			{ "time_to_generate": 17.798900604248047, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 14.188051223754883, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 14.306783676147461, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 14.453887939453125, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 15.992164611816406, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 14.828920364379883, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 14.05787467956543, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.3 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 109.2381477355957, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 6254, "edge_probability": 0.3 },
+			{ "time_to_generate": 107.73491859436035, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 6254, "edge_probability": 0.3 },
+			{ "time_to_generate": 99.14112091064453, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 6254, "edge_probability": 0.3 },
+			{ "time_to_generate": 103.32512855529785, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 6254, "edge_probability": 0.3 },
+			{ "time_to_generate": 95.77822685241699, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 6254, "edge_probability": 0.3 },
+			{ "time_to_generate": 96.63724899291992, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 6254, "edge_probability": 0.3 },
+			{ "time_to_generate": 93.97482872009277, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 6254, "edge_probability": 0.3 },
+			{ "time_to_generate": 95.26395797729492, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 6254, "edge_probability": 0.3 }
+		]
+	},
+	"arena_300_0.3": {
+		"none": [
+			{ "time_to_generate": 33.31303596496582, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 34.79504585266113, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 27.009010314941406, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 35.041093826293945, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 28.20873260498047, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 27.917146682739258, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 27.99701690673828, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.3 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 291.99790954589844, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 13829, "edge_probability": 0.3 },
+			{ "time_to_generate": 311.59496307373047, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 13829, "edge_probability": 0.3 },
+			{ "time_to_generate": 308.34102630615234, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 13829, "edge_probability": 0.3 },
+			{ "time_to_generate": 336.2879753112793, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 13829, "edge_probability": 0.3 },
+			{ "time_to_generate": 300.22692680358887, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 13829, "edge_probability": 0.3 },
+			{ "time_to_generate": 314.9738311767578, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 13829, "edge_probability": 0.3 },
+			{ "time_to_generate": 296.31996154785156, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 13829, "edge_probability": 0.3 },
+			{ "time_to_generate": 290.18425941467285, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 13829, "edge_probability": 0.3 }
+		]
+	},
+	"arena_400_0.3": {
+		"none": [
+			{ "time_to_generate": 61.98000907897949, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 53.88498306274414, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 50.276994705200195, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 55.27615547180176, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 58.65287780761719, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 57.93905258178711, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 50.58789253234863, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.3 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 723.764181137085, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 24320, "edge_probability": 0.3 },
+			{ "time_to_generate": 779.4680595397949, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 24320, "edge_probability": 0.3 },
+			{ "time_to_generate": 810.5289936065674, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 24320, "edge_probability": 0.3 },
+			{ "time_to_generate": 760.4949474334717, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 24320, "edge_probability": 0.3 },
+			{ "time_to_generate": 700.2201080322266, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 24320, "edge_probability": 0.3 },
+			{ "time_to_generate": 697.9598999023438, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 24320, "edge_probability": 0.3 },
+			{ "time_to_generate": 692.3658847808838, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 24320, "edge_probability": 0.3 },
+			{ "time_to_generate": 691.3809776306152, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 24320, "edge_probability": 0.3 }
+		]
+	},
+	"arena_500_0.3": {
+		"none": [
+			{ "time_to_generate": 87.36801147460938, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 79.45704460144043, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 71.67220115661621, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 78.03177833557129, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 73.71807098388672, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 75.8671760559082, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 71.02608680725098, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.3 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 1346.0032939910889, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 37952, "edge_probability": 0.3 },
+			{ "time_to_generate": 1435.3890419006348, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 37952, "edge_probability": 0.3 },
+			{ "time_to_generate": 1441.6680335998535, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 37952, "edge_probability": 0.3 },
+			{ "time_to_generate": 1457.9322338104248, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 37952, "edge_probability": 0.3 },
+			{ "time_to_generate": 1350.5032062530518, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 37952, "edge_probability": 0.3 },
+			{ "time_to_generate": 1350.5659103393555, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 37952, "edge_probability": 0.3 },
+			{ "time_to_generate": 1369.0321445465088, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 37952, "edge_probability": 0.3 },
+			{ "time_to_generate": 1349.579095840454, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 37952, "edge_probability": 0.3 }
+		]
+	},
+	"arena_1000_0.3": {
+		"none": [
+			{ "time_to_generate": 300.947904586792, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 318.1948661804199, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 261.9030475616455, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 265.15984535217285, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 269.67811584472656, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 278.7129878997803, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 277.8029441833496, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.3 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 10607.170104980469, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 151003, "edge_probability": 0.3 },
+			{ "time_to_generate": 10871.647119522095, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 151003, "edge_probability": 0.3 },
+			{ "time_to_generate": 10718.122005462646, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 151003, "edge_probability": 0.3 },
+			{ "time_to_generate": 10763.371706008911, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 151003, "edge_probability": 0.3 },
+			{ "time_to_generate": 10611.624956130981, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 151003, "edge_probability": 0.3 },
+			{ "time_to_generate": 10766.69979095459, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 151003, "edge_probability": 0.3 },
+			{ "time_to_generate": 10650.130987167358, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 151003, "edge_probability": 0.3 },
+			{ "time_to_generate": 10617.218017578125, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 151003, "edge_probability": 0.3 }
+		]
+	},
+	"arena_2000_0.3": {
+		"none": [
+			{ "time_to_generate": 1106.0481071472168, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 1100.132942199707, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 1069.7038173675537, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 1104.6772003173828, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 1130.0148963928223, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 1157.4997901916504, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 1063.9889240264893, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.3 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 90712.22591400146, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 602677, "edge_probability": 0.3 },
+			{ "time_to_generate": 86390.54012298584, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 602677, "edge_probability": 0.3 },
+			{ "time_to_generate": 90788.46287727356, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 602677, "edge_probability": 0.3 },
+			{ "time_to_generate": 86846.48609161377, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 602677, "edge_probability": 0.3 },
+			{ "time_to_generate": 86197.29208946228, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 602677, "edge_probability": 0.3 },
+			{ "time_to_generate": 86719.74802017212, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 602677, "edge_probability": 0.3 },
+			{ "time_to_generate": 86241.51110649109, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 602677, "edge_probability": 0.3 },
+			{ "time_to_generate": 86264.57190513611, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 602677, "edge_probability": 0.3 }
+		]
+	},
+	"arena_5000_0.3": {
+		"none": [
+			{ "time_to_generate": 7314.363956451416, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 7365.248918533325, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 7217.59295463562, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 7349.591016769409, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 7421.07892036438, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 7473.479986190796, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.3 },
+			{ "time_to_generate": 7202.611923217773, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.3 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 1348802.6490211487, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 3756514, "edge_probability": 0.3 },
+			{ "time_to_generate": 1355350.4979610443, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 3756514, "edge_probability": 0.3 },
+			{ "time_to_generate": 1359943.5789585114, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 3756514, "edge_probability": 0.3 },
+			{ "time_to_generate": 1356302.4578094482, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 3756514, "edge_probability": 0.3 },
+			{ "time_to_generate": 1359924.7291088104, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 3756514, "edge_probability": 0.3 },
+			{ "time_to_generate": 1349176.3458251953, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 3756514, "edge_probability": 0.3 },
+			{ "time_to_generate": 1355058.6490631104, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 3756514, "edge_probability": 0.3 }
+		]
+	},
+	"arena_100_0.4": {
+		"none": [
+			{ "time_to_generate": 8.089065551757812, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 7.940053939819336, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 8.585214614868164, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 8.219718933105469, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 8.87298583984375, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 8.581876754760742, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 7.898807525634766, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.4 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 30.686140060424805, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2126, "edge_probability": 0.4 },
+			{ "time_to_generate": 31.41474723815918, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2126, "edge_probability": 0.4 },
+			{ "time_to_generate": 33.966064453125, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2126, "edge_probability": 0.4 },
+			{ "time_to_generate": 31.032800674438477, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2126, "edge_probability": 0.4 },
+			{ "time_to_generate": 32.421112060546875, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2126, "edge_probability": 0.4 },
+			{ "time_to_generate": 32.22203254699707, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2126, "edge_probability": 0.4 },
+			{ "time_to_generate": 31.833887100219727, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2126, "edge_probability": 0.4 }
+		]
+	},
+	"arena_200_0.4": {
+		"none": [
+			{ "time_to_generate": 16.464948654174805, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 16.693830490112305, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 16.33906364440918, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 17.951011657714844, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 17.277956008911133, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 17.2421932220459, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 17.802953720092773, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.4 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 147.75514602661133, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 8261, "edge_probability": 0.4 },
+			{ "time_to_generate": 153.6729335784912, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 8261, "edge_probability": 0.4 },
+			{ "time_to_generate": 177.7048110961914, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 8261, "edge_probability": 0.4 },
+			{ "time_to_generate": 142.14015007019043, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 8261, "edge_probability": 0.4 },
+			{ "time_to_generate": 141.67404174804688, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 8261, "edge_probability": 0.4 },
+			{ "time_to_generate": 142.02380180358887, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 8261, "edge_probability": 0.4 },
+			{ "time_to_generate": 146.42786979675293, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 8261, "edge_probability": 0.4 }
+		]
+	},
+	"arena_300_0.4": {
+		"none": [
+			{ "time_to_generate": 30.759811401367188, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 32.289981842041016, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 31.03804588317871, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 32.04011917114258, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 31.6469669342041, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 32.396793365478516, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 33.87284278869629, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.4 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 504.28009033203125, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 18362, "edge_probability": 0.4 },
+			{ "time_to_generate": 513.5760307312012, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 18362, "edge_probability": 0.4 },
+			{ "time_to_generate": 537.0659828186035, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 18362, "edge_probability": 0.4 },
+			{ "time_to_generate": 461.5468978881836, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 18362, "edge_probability": 0.4 },
+			{ "time_to_generate": 453.77516746520996, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 18362, "edge_probability": 0.4 },
+			{ "time_to_generate": 452.94690132141113, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 18362, "edge_probability": 0.4 },
+			{ "time_to_generate": 462.540864944458, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 18362, "edge_probability": 0.4 }
+		]
+	},
+	"arena_400_0.4": {
+		"none": [
+			{ "time_to_generate": 57.639122009277344, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 63.65799903869629, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 57.12699890136719, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 59.85093116760254, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 58.59208106994629, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 58.680057525634766, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 57.78217315673828, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.4 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 1089.4896984100342, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 32496, "edge_probability": 0.4 },
+			{ "time_to_generate": 1207.2739601135254, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 32496, "edge_probability": 0.4 },
+			{ "time_to_generate": 1174.9260425567627, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 32496, "edge_probability": 0.4 },
+			{ "time_to_generate": 1100.999116897583, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 32496, "edge_probability": 0.4 },
+			{ "time_to_generate": 1086.0753059387207, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 32496, "edge_probability": 0.4 },
+			{ "time_to_generate": 1100.1007556915283, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 32496, "edge_probability": 0.4 },
+			{ "time_to_generate": 1066.770076751709, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 32496, "edge_probability": 0.4 }
+		]
+	},
+	"arena_500_0.4": {
+		"none": [
+			{ "time_to_generate": 85.57009696960449, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 97.8701114654541, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 84.91683006286621, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 84.84125137329102, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 88.93895149230957, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 83.7700366973877, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 87.54110336303711, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.4 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 2098.8900661468506, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 50464, "edge_probability": 0.4 },
+			{ "time_to_generate": 2193.6750411987305, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 50464, "edge_probability": 0.4 },
+			{ "time_to_generate": 2175.3768920898438, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 50464, "edge_probability": 0.4 },
+			{ "time_to_generate": 2096.2820053100586, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 50464, "edge_probability": 0.4 },
+			{ "time_to_generate": 2158.6711406707764, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 50464, "edge_probability": 0.4 },
+			{ "time_to_generate": 2074.748992919922, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 50464, "edge_probability": 0.4 },
+			{ "time_to_generate": 2090.261936187744, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 50464, "edge_probability": 0.4 }
+		]
+	},
+	"arena_1000_0.4": {
+		"none": [
+			{ "time_to_generate": 329.84089851379395, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 355.20100593566895, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 361.4017963409424, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 323.44508171081543, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 320.24693489074707, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 322.24202156066895, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 323.80008697509766, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.4 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 16809.26513671875, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 200990, "edge_probability": 0.4 },
+			{ "time_to_generate": 16904.037952423096, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 200990, "edge_probability": 0.4 },
+			{ "time_to_generate": 17153.230905532837, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 200990, "edge_probability": 0.4 },
+			{ "time_to_generate": 16840.02923965454, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 200990, "edge_probability": 0.4 },
+			{ "time_to_generate": 16917.509078979492, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 200990, "edge_probability": 0.4 },
+			{ "time_to_generate": 16801.233768463135, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 200990, "edge_probability": 0.4 },
+			{ "time_to_generate": 16748.46315383911, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 200990, "edge_probability": 0.4 }
+		]
+	},
+	"arena_2000_0.4": {
+		"none": [
+			{ "time_to_generate": 1333.3029747009277, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 1334.8431587219238, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 1300.0400066375732, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 1321.8941688537598, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 1317.3630237579346, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 1329.8637866973877, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 1311.4068508148193, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.4 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 143587.0180130005, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 802800, "edge_probability": 0.4 },
+			{ "time_to_generate": 134167.61803627014, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 802800, "edge_probability": 0.4 },
+			{ "time_to_generate": 133795.804977417, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 802800, "edge_probability": 0.4 },
+			{ "time_to_generate": 134337.975025177, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 802800, "edge_probability": 0.4 },
+			{ "time_to_generate": 134061.44165992737, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 802800, "edge_probability": 0.4 },
+			{ "time_to_generate": 133232.37299919128, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 802800, "edge_probability": 0.4 },
+			{ "time_to_generate": 133255.63097000122, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 802800, "edge_probability": 0.4 }
+		]
+	},
+	"arena_5000_0.4": {
+		"none": [
+			{ "time_to_generate": 8780.92908859253, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 8997.92194366455, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 8873.472213745117, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 8864.220142364502, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 9092.632055282593, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 8852.964162826538, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.4 },
+			{ "time_to_generate": 8803.064107894897, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.4 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 2225837.7480506897, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 5004065, "edge_probability": 0.4 },
+			{ "time_to_generate": 2239471.378803253, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 5004065, "edge_probability": 0.4 },
+			{ "time_to_generate": 2129694.0138339996, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 5004065, "edge_probability": 0.4 },
+			{ "time_to_generate": 2133830.458879471, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 5004065, "edge_probability": 0.4 },
+			{ "time_to_generate": 2130165.317058563, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 5004065, "edge_probability": 0.4 },
+			{ "time_to_generate": 2142806.393146515, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 5004065, "edge_probability": 0.4 }
+		]
+	},
+	"arena_100_0.5": {
+		"none": [
+			{ "time_to_generate": 11.544942855834961, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 11.130094528198242, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 10.081052780151367, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 12.012958526611328, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 10.767936706542969, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 10.04791259765625, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 15.413045883178711, "strategy": "none", "num_nodes": 100, "num_edges": 0, "edge_probability": 0.5 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 38.967132568359375, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2557, "edge_probability": 0.5 },
+			{ "time_to_generate": 37.757158279418945, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2557, "edge_probability": 0.5 },
+			{ "time_to_generate": 38.146018981933594, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2557, "edge_probability": 0.5 },
+			{ "time_to_generate": 40.30895233154297, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2557, "edge_probability": 0.5 },
+			{ "time_to_generate": 38.67912292480469, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2557, "edge_probability": 0.5 },
+			{ "time_to_generate": 38.22064399719238, "strategy": "incremental_bellman_ford", "num_nodes": 100, "num_edges": 2557, "edge_probability": 0.5 }
+		]
+	},
+	"arena_200_0.5": {
+		"none": [
+			{ "time_to_generate": 19.788742065429688, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 19.321918487548828, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 18.651962280273438, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 20.663976669311523, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 19.3941593170166, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 18.61715316772461, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 21.218061447143555, "strategy": "none", "num_nodes": 200, "num_edges": 0, "edge_probability": 0.5 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 244.54593658447266, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 10236, "edge_probability": 0.5 },
+			{ "time_to_generate": 209.39970016479492, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 10236, "edge_probability": 0.5 },
+			{ "time_to_generate": 216.0959243774414, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 10236, "edge_probability": 0.5 },
+			{ "time_to_generate": 214.28894996643066, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 10236, "edge_probability": 0.5 },
+			{ "time_to_generate": 197.9689598083496, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 10236, "edge_probability": 0.5 },
+			{ "time_to_generate": 196.99978828430176, "strategy": "incremental_bellman_ford", "num_nodes": 200, "num_edges": 10236, "edge_probability": 0.5 }
+		]
+	},
+	"arena_300_0.5": {
+		"none": [
+			{ "time_to_generate": 45.832157135009766, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 43.91980171203613, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 41.54491424560547, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 48.25401306152344, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 42.1450138092041, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 41.815996170043945, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 56.38289451599121, "strategy": "none", "num_nodes": 300, "num_edges": 0, "edge_probability": 0.5 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 813.6858940124512, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 22664, "edge_probability": 0.5 },
+			{ "time_to_generate": 705.3980827331543, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 22664, "edge_probability": 0.5 },
+			{ "time_to_generate": 725.3780364990234, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 22664, "edge_probability": 0.5 },
+			{ "time_to_generate": 632.6820850372314, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 22664, "edge_probability": 0.5 },
+			{ "time_to_generate": 644.5009708404541, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 22664, "edge_probability": 0.5 },
+			{ "time_to_generate": 652.0638465881348, "strategy": "incremental_bellman_ford", "num_nodes": 300, "num_edges": 22664, "edge_probability": 0.5 }
+		]
+	},
+	"arena_400_0.5": {
+		"none": [
+			{ "time_to_generate": 72.27277755737305, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 66.59507751464844, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 67.64531135559082, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 67.7337646484375, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 64.50414657592773, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 65.72794914245605, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 71.91085815429688, "strategy": "none", "num_nodes": 400, "num_edges": 0, "edge_probability": 0.5 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 1734.8113059997559, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 40498, "edge_probability": 0.5 },
+			{ "time_to_generate": 1838.9389514923096, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 40498, "edge_probability": 0.5 },
+			{ "time_to_generate": 1582.245111465454, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 40498, "edge_probability": 0.5 },
+			{ "time_to_generate": 1533.2469940185547, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 40498, "edge_probability": 0.5 },
+			{ "time_to_generate": 1509.7851753234863, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 40498, "edge_probability": 0.5 },
+			{ "time_to_generate": 1507.5173377990723, "strategy": "incremental_bellman_ford", "num_nodes": 400, "num_edges": 40498, "edge_probability": 0.5 }
+		]
+	},
+	"arena_500_0.5": {
+		"none": [
+			{ "time_to_generate": 97.11575508117676, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 97.47600555419922, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 96.03190422058105, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 101.6230583190918, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 97.32294082641602, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 103.26027870178223, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 99.66707229614258, "strategy": "none", "num_nodes": 500, "num_edges": 0, "edge_probability": 0.5 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 3268.1338787078857, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 62925, "edge_probability": 0.5 },
+			{ "time_to_generate": 3080.7900428771973, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 62925, "edge_probability": 0.5 },
+			{ "time_to_generate": 2984.4279289245605, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 62925, "edge_probability": 0.5 },
+			{ "time_to_generate": 2925.62198638916, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 62925, "edge_probability": 0.5 },
+			{ "time_to_generate": 2928.3409118652344, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 62925, "edge_probability": 0.5 },
+			{ "time_to_generate": 2952.744960784912, "strategy": "incremental_bellman_ford", "num_nodes": 500, "num_edges": 62925, "edge_probability": 0.5 }
+		]
+	},
+	"arena_1000_0.5": {
+		"none": [
+			{ "time_to_generate": 393.97597312927246, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 401.3388156890869, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 393.86701583862305, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 405.22313117980957, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 389.2242908477783, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 378.7670135498047, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 384.74392890930176, "strategy": "none", "num_nodes": 1000, "num_edges": 0, "edge_probability": 0.5 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 24993.135929107666, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 250496, "edge_probability": 0.5 },
+			{ "time_to_generate": 24003.000020980835, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 250496, "edge_probability": 0.5 },
+			{ "time_to_generate": 24001.962184906006, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 250496, "edge_probability": 0.5 },
+			{ "time_to_generate": 23868.85404586792, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 250496, "edge_probability": 0.5 },
+			{ "time_to_generate": 23881.611108779907, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 250496, "edge_probability": 0.5 },
+			{ "time_to_generate": 23821.253061294556, "strategy": "incremental_bellman_ford", "num_nodes": 1000, "num_edges": 250496, "edge_probability": 0.5 }
+		]
+	},
+	"arena_2000_0.5": {
+		"none": [
+			{ "time_to_generate": 1563.8549327850342, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 1572.3929405212402, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 1557.7061176300049, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 1593.9908027648926, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 1569.1649913787842, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 1590.1219844818115, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 1560.4586601257324, "strategy": "none", "num_nodes": 2000, "num_edges": 0, "edge_probability": 0.5 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 230275.28595924377, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 1002368, "edge_probability": 0.5 },
+			{ "time_to_generate": 190481.11295700073, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 1002368, "edge_probability": 0.5 },
+			{ "time_to_generate": 194683.04419517517, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 1002368, "edge_probability": 0.5 },
+			{ "time_to_generate": 188624.38297271729, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 1002368, "edge_probability": 0.5 },
+			{ "time_to_generate": 188590.1918411255, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 1002368, "edge_probability": 0.5 },
+			{ "time_to_generate": 188102.02193260193, "strategy": "incremental_bellman_ford", "num_nodes": 2000, "num_edges": 1002368, "edge_probability": 0.5 }
+		]
+	},
+	"arena_5000_0.5": {
+		"none": [
+			{ "time_to_generate": 10256.542205810547, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 10748.394966125488, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 10271.34394645691, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 10735.54515838623, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 10594.815969467163, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 14797.122716903687, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.5 },
+			{ "time_to_generate": 10605.295181274414, "strategy": "none", "num_nodes": 5000, "num_edges": 0, "edge_probability": 0.5 }
+		],
+		"incremental_bellman_ford": [
+			{ "time_to_generate": 3427232.740163803, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 6254681, "edge_probability": 0.5 },
+			{ "time_to_generate": 3085603.0461788177, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 6254681, "edge_probability": 0.5 },
+			{ "time_to_generate": 3065798.8271713257, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 6254681, "edge_probability": 0.5 },
+			{ "time_to_generate": 3064781.2881469727, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 6254681, "edge_probability": 0.5 },
+			{ "time_to_generate": 3058185.95290184, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 6254681, "edge_probability": 0.5 },
+			{ "time_to_generate": 3046404.8540592194, "strategy": "incremental_bellman_ford", "num_nodes": 5000, "num_edges": 6254681, "edge_probability": 0.5 }
+		]
+	}
+}
