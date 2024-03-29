@@ -49,13 +49,13 @@ def run_solver(num_nodes: Optional[int] = None,
         results = {
             "time_to_complete": time_in_ms,
             "steps": num_steps,
-            "strategy": strategy,
+            "strategy": "not_applicable",
             "min_energy_min": min_energy_dict[Player.MIN],
             "min_energy_max": min_energy_dict[Player.MAX],
             "num_edges": len(arena.edges),
             "num_nodes": arena.num_nodes,
             "edge_probability": arena.edge_probability,
-            "optimized": True
+            "optimized": optimize
         }
         update_json_results(
             arena_name=f"arena_{arena.num_nodes}_{arena.edge_probability}",

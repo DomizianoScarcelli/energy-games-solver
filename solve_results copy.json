@@ -1,0 +1,1588 @@
+{
+	"arena_1000_0.01": {
+		"not_applicable": [
+			{
+				"time_to_complete": 40.42220115661621,
+				"steps": 19,
+				"strategy": "not_applicable",
+				"min_energy_min": 26.49,
+				"min_energy_max": 79.61,
+				"num_edges": 5929,
+				"num_nodes": 1000,
+				"edge_probability": 0.01,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 23.478031158447266,
+				"steps": 21,
+				"strategy": "not_applicable",
+				"min_energy_min": 26.49,
+				"min_energy_max": 79.61,
+				"num_edges": 5929,
+				"num_nodes": 1000,
+				"edge_probability": 0.01,
+				"optimized": true
+			}
+		]
+	},
+	"arena_1000_0.05": {
+		"not_applicable": [
+			{
+				"time_to_complete": 215.51990509033203,
+				"steps": 36,
+				"strategy": "not_applicable",
+				"min_energy_min": 11.31,
+				"min_energy_max": 195.83,
+				"num_edges": 25944,
+				"num_nodes": 1000,
+				"edge_probability": 0.05,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 158.97393226623535,
+				"steps": 39,
+				"strategy": "not_applicable",
+				"min_energy_min": 11.31,
+				"min_energy_max": 195.83,
+				"num_edges": 25944,
+				"num_nodes": 1000,
+				"edge_probability": 0.05,
+				"optimized": true
+			}
+		]
+	},
+	"arena_1000_0.1": {
+		"not_applicable": [
+			{
+				"time_to_complete": 641.2386894226074,
+				"steps": 51,
+				"strategy": "not_applicable",
+				"min_energy_min": 11.64,
+				"min_energy_max": 300.17,
+				"num_edges": 51146,
+				"num_nodes": 1000,
+				"edge_probability": 0.1,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 401.4468193054199,
+				"steps": 47,
+				"strategy": "not_applicable",
+				"min_energy_min": 11.64,
+				"min_energy_max": 300.17,
+				"num_edges": 51146,
+				"num_nodes": 1000,
+				"edge_probability": 0.1,
+				"optimized": true
+			}
+		]
+	},
+	"arena_1000_0.2": {
+		"not_applicable": [
+			{
+				"time_to_complete": 2012.4602317810059,
+				"steps": 97,
+				"strategy": "not_applicable",
+				"min_energy_min": 11.87,
+				"min_energy_max": 528.83,
+				"num_edges": 101391,
+				"num_nodes": 1000,
+				"edge_probability": 0.2,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 1682.6651096343994,
+				"steps": 105,
+				"strategy": "not_applicable",
+				"min_energy_min": 11.87,
+				"min_energy_max": 528.83,
+				"num_edges": 101391,
+				"num_nodes": 1000,
+				"edge_probability": 0.2,
+				"optimized": true
+			}
+		]
+	},
+	"arena_1000_0.3": {
+		"not_applicable": [
+			{
+				"time_to_complete": 3885.5249881744385,
+				"steps": 118,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 684.86,
+				"num_edges": 151003,
+				"num_nodes": 1000,
+				"edge_probability": 0.3,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 2927.9298782348633,
+				"steps": 135,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 684.86,
+				"num_edges": 151003,
+				"num_nodes": 1000,
+				"edge_probability": 0.3,
+				"optimized": true
+			}
+		]
+	},
+	"arena_1000_0.4": {
+		"not_applicable": [
+			{
+				"time_to_complete": 8837.594032287598,
+				"steps": 154,
+				"strategy": "not_applicable",
+				"min_energy_min": 3.17,
+				"min_energy_max": 935.65,
+				"num_edges": 200990,
+				"num_nodes": 1000,
+				"edge_probability": 0.4,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 5503.959894180298,
+				"steps": 155,
+				"strategy": "not_applicable",
+				"min_energy_min": 3.17,
+				"min_energy_max": 935.65,
+				"num_edges": 200990,
+				"num_nodes": 1000,
+				"edge_probability": 0.4,
+				"optimized": true
+			}
+		]
+	},
+	"arena_1000_0.5": {
+		"not_applicable": [
+			{
+				"time_to_complete": 9975.296020507812,
+				"steps": 193,
+				"strategy": "not_applicable",
+				"min_energy_min": 5.32,
+				"min_energy_max": 1104.6,
+				"num_edges": 250496,
+				"num_nodes": 1000,
+				"edge_probability": 0.5,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 8490.716218948364,
+				"steps": 191,
+				"strategy": "not_applicable",
+				"min_energy_min": 5.32,
+				"min_energy_max": 1104.6,
+				"num_edges": 250496,
+				"num_nodes": 1000,
+				"edge_probability": 0.5,
+				"optimized": true
+			}
+		]
+	},
+	"arena_100_0.01": {
+		"not_applicable": [
+			{
+				"time_to_complete": 5.80906867980957,
+				"steps": 4,
+				"strategy": "not_applicable",
+				"min_energy_min": 10.91,
+				"min_energy_max": 11.63,
+				"num_edges": 89,
+				"num_nodes": 100,
+				"edge_probability": 0.01,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 5.766868591308594,
+				"steps": 3,
+				"strategy": "not_applicable",
+				"min_energy_min": 10.91,
+				"min_energy_max": 11.63,
+				"num_edges": 89,
+				"num_nodes": 100,
+				"edge_probability": 0.01,
+				"optimized": true
+			}
+		]
+	},
+	"arena_100_0.05": {
+		"not_applicable": [
+			{
+				"time_to_complete": 6.8569183349609375,
+				"steps": 6,
+				"strategy": "not_applicable",
+				"min_energy_min": 19.59,
+				"min_energy_max": 24.84,
+				"num_edges": 362,
+				"num_nodes": 100,
+				"edge_probability": 0.05,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 5.990028381347656,
+				"steps": 7,
+				"strategy": "not_applicable",
+				"min_energy_min": 19.59,
+				"min_energy_max": 24.84,
+				"num_edges": 362,
+				"num_nodes": 100,
+				"edge_probability": 0.05,
+				"optimized": true
+			}
+		]
+	},
+	"arena_100_0.1": {
+		"not_applicable": [
+			{
+				"time_to_complete": 7.630109786987305,
+				"steps": 6,
+				"strategy": "not_applicable",
+				"min_energy_min": 9.84,
+				"min_energy_max": 31.94,
+				"num_edges": 605,
+				"num_nodes": 100,
+				"edge_probability": 0.1,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 6.593942642211914,
+				"steps": 6,
+				"strategy": "not_applicable",
+				"min_energy_min": 7.4,
+				"min_energy_max": 31.94,
+				"num_edges": 605,
+				"num_nodes": 100,
+				"edge_probability": 0.1,
+				"optimized": true
+			}
+		]
+	},
+	"arena_100_0.2": {
+		"not_applicable": [
+			{
+				"time_to_complete": 8.40306282043457,
+				"steps": 12,
+				"strategy": "not_applicable",
+				"min_energy_min": 8.04,
+				"min_energy_max": 56.59,
+				"num_edges": 1075,
+				"num_nodes": 100,
+				"edge_probability": 0.2,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 9.495973587036133,
+				"steps": 11,
+				"strategy": "not_applicable",
+				"min_energy_min": 8.04,
+				"min_energy_max": 56.59,
+				"num_edges": 1075,
+				"num_nodes": 100,
+				"edge_probability": 0.2,
+				"optimized": true
+			}
+		]
+	},
+	"arena_100_0.3": {
+		"not_applicable": [
+			{
+				"time_to_complete": 13.105154037475586,
+				"steps": 16,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 79.93,
+				"num_edges": 1574,
+				"num_nodes": 100,
+				"edge_probability": 0.3,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 9.473085403442383,
+				"steps": 16,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 79.93,
+				"num_edges": 1574,
+				"num_nodes": 100,
+				"edge_probability": 0.3,
+				"optimized": true
+			}
+		]
+	},
+	"arena_100_0.4": {
+		"not_applicable": [
+			{
+				"time_to_complete": 13.857126235961914,
+				"steps": 18,
+				"strategy": "not_applicable",
+				"min_energy_min": 0.23,
+				"min_energy_max": 91.83,
+				"num_edges": 2126,
+				"num_nodes": 100,
+				"edge_probability": 0.4,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 14.274120330810547,
+				"steps": 17,
+				"strategy": "not_applicable",
+				"min_energy_min": 0.23,
+				"min_energy_max": 91.83,
+				"num_edges": 2126,
+				"num_nodes": 100,
+				"edge_probability": 0.4,
+				"optimized": true
+			}
+		]
+	},
+	"arena_100_0.5": {
+		"not_applicable": [
+			{
+				"time_to_complete": 17.345190048217773,
+				"steps": 19,
+				"strategy": "not_applicable",
+				"min_energy_min": 2.76,
+				"min_energy_max": 115.67,
+				"num_edges": 2557,
+				"num_nodes": 100,
+				"edge_probability": 0.5,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 13.304948806762695,
+				"steps": 18,
+				"strategy": "not_applicable",
+				"min_energy_min": 2.76,
+				"min_energy_max": 115.67,
+				"num_edges": 2557,
+				"num_nodes": 100,
+				"edge_probability": 0.5,
+				"optimized": true
+			}
+		]
+	},
+	"arena_10_0.01": {
+		"not_applicable": [
+			{
+				"time_to_complete": 4.755258560180664,
+				"steps": 1,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 0,
+				"num_edges": 0,
+				"num_nodes": 10,
+				"edge_probability": 0.01,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 5.706071853637695,
+				"steps": 1,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 0,
+				"num_edges": 0,
+				"num_nodes": 10,
+				"edge_probability": 0.01,
+				"optimized": true
+			}
+		]
+	},
+	"arena_10_0.05": {
+		"not_applicable": [
+			{
+				"time_to_complete": 5.172967910766602,
+				"steps": 3,
+				"strategy": "not_applicable",
+				"min_energy_min": 4.58,
+				"min_energy_max": 12.97,
+				"num_edges": 3,
+				"num_nodes": 10,
+				"edge_probability": 0.05,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 5.859851837158203,
+				"steps": 2,
+				"strategy": "not_applicable",
+				"min_energy_min": 4.58,
+				"min_energy_max": 12.97,
+				"num_edges": 3,
+				"num_nodes": 10,
+				"edge_probability": 0.05,
+				"optimized": true
+			}
+		]
+	},
+	"arena_10_0.1": {
+		"not_applicable": [
+			{
+				"time_to_complete": 6.088972091674805,
+				"steps": 2,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 8.4,
+				"num_edges": 11,
+				"num_nodes": 10,
+				"edge_probability": 0.1,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 4.996776580810547,
+				"steps": 2,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 8.4,
+				"num_edges": 11,
+				"num_nodes": 10,
+				"edge_probability": 0.1,
+				"optimized": true
+			}
+		]
+	},
+	"arena_10_0.2": {
+		"not_applicable": [
+			{
+				"time_to_complete": 5.3558349609375,
+				"steps": 3,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 9.68,
+				"num_edges": 19,
+				"num_nodes": 10,
+				"edge_probability": 0.2,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 4.692792892456055,
+				"steps": 2,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 9.68,
+				"num_edges": 19,
+				"num_nodes": 10,
+				"edge_probability": 0.2,
+				"optimized": true
+			}
+		]
+	},
+	"arena_10_0.5": {
+		"not_applicable": [
+			{
+				"time_to_complete": 4.438877105712891,
+				"steps": 2,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 5.7,
+				"num_edges": 34,
+				"num_nodes": 10,
+				"edge_probability": 0.5,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 6.206274032592773,
+				"steps": 2,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 5.7,
+				"num_edges": 34,
+				"num_nodes": 10,
+				"edge_probability": 0.5,
+				"optimized": true
+			}
+		]
+	},
+	"arena_2000_0.1": {
+		"not_applicable": [
+			{
+				"time_to_complete": 4725.39758682251,
+				"steps": 112,
+				"strategy": "not_applicable",
+				"min_energy_min": 9.16,
+				"min_energy_max": 589.43,
+				"num_edges": 202656,
+				"num_nodes": 2000,
+				"edge_probability": 0.1,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 3482.4719429016113,
+				"steps": 126,
+				"strategy": "not_applicable",
+				"min_energy_min": 9.16,
+				"min_energy_max": 589.43,
+				"num_edges": 202656,
+				"num_nodes": 2000,
+				"edge_probability": 0.1,
+				"optimized": true
+			}
+		]
+	},
+	"arena_2000_0.2": {
+		"not_applicable": [
+			{
+				"time_to_complete": 16921.57292366028,
+				"steps": 205,
+				"strategy": "not_applicable",
+				"min_energy_min": 7.58,
+				"min_energy_max": 1159.0,
+				"num_edges": 402376,
+				"num_nodes": 2000,
+				"edge_probability": 0.2,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 14271.92211151123,
+				"steps": 217,
+				"strategy": "not_applicable",
+				"min_energy_min": 7.58,
+				"min_energy_max": 1159.0,
+				"num_edges": 402376,
+				"num_nodes": 2000,
+				"edge_probability": 0.2,
+				"optimized": true
+			}
+		]
+	},
+	"arena_2000_0.3": {
+		"not_applicable": [
+			{
+				"time_to_complete": 31334.733724594116,
+				"steps": 253,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 1402.12,
+				"num_edges": 602677,
+				"num_nodes": 2000,
+				"edge_probability": 0.3,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 28918.490886688232,
+				"steps": 269,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 1402.12,
+				"num_edges": 602677,
+				"num_nodes": 2000,
+				"edge_probability": 0.3,
+				"optimized": true
+			}
+		]
+	},
+	"arena_2000_0.4": {
+		"not_applicable": [
+			{
+				"time_to_complete": 54420.72606086731,
+				"steps": 330,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 1944.01,
+				"num_edges": 802800,
+				"num_nodes": 2000,
+				"edge_probability": 0.4,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 48862.72692680359,
+				"steps": 350,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 1944.01,
+				"num_edges": 802800,
+				"num_nodes": 2000,
+				"edge_probability": 0.4,
+				"optimized": true
+			}
+		]
+	},
+	"arena_2000_0.5": {
+		"not_applicable": [
+			{
+				"time_to_complete": 76066.68591499329,
+				"steps": 366,
+				"strategy": "not_applicable",
+				"min_energy_min": 0.61,
+				"min_energy_max": 2140.47,
+				"num_edges": 1002368,
+				"num_nodes": 2000,
+				"edge_probability": 0.5,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 66718.33896636963,
+				"steps": 367,
+				"strategy": "not_applicable",
+				"min_energy_min": 0.61,
+				"min_energy_max": 2140.47,
+				"num_edges": 1002368,
+				"num_nodes": 2000,
+				"edge_probability": 0.5,
+				"optimized": true
+			}
+		]
+	},
+	"arena_200_0.01": {
+		"not_applicable": [
+			{
+				"time_to_complete": 8.738994598388672,
+				"steps": 7,
+				"strategy": "not_applicable",
+				"min_energy_min": 9.83,
+				"min_energy_max": 18.4,
+				"num_edges": 330,
+				"num_nodes": 200,
+				"edge_probability": 0.01,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 5.811929702758789,
+				"steps": 6,
+				"strategy": "not_applicable",
+				"min_energy_min": 9.83,
+				"min_energy_max": 18.4,
+				"num_edges": 330,
+				"num_nodes": 200,
+				"edge_probability": 0.01,
+				"optimized": true
+			}
+		]
+	},
+	"arena_200_0.05": {
+		"not_applicable": [
+			{
+				"time_to_complete": 12.070178985595703,
+				"steps": 17,
+				"strategy": "not_applicable",
+				"min_energy_min": 24.48,
+				"min_energy_max": 72.83,
+				"num_edges": 1253,
+				"num_nodes": 200,
+				"edge_probability": 0.05,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 9.247064590454102,
+				"steps": 17,
+				"strategy": "not_applicable",
+				"min_energy_min": 24.48,
+				"min_energy_max": 71.35,
+				"num_edges": 1253,
+				"num_nodes": 200,
+				"edge_probability": 0.05,
+				"optimized": true
+			}
+		]
+	},
+	"arena_200_0.1": {
+		"not_applicable": [
+			{
+				"time_to_complete": 14.75381851196289,
+				"steps": 15,
+				"strategy": "not_applicable",
+				"min_energy_min": 11.57,
+				"min_energy_max": 85.13,
+				"num_edges": 2225,
+				"num_nodes": 200,
+				"edge_probability": 0.1,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 10.828018188476562,
+				"steps": 15,
+				"strategy": "not_applicable",
+				"min_energy_min": 11.57,
+				"min_energy_max": 85.13,
+				"num_edges": 2225,
+				"num_nodes": 200,
+				"edge_probability": 0.1,
+				"optimized": true
+			}
+		]
+	},
+	"arena_200_0.2": {
+		"not_applicable": [
+			{
+				"time_to_complete": 23.546218872070312,
+				"steps": 20,
+				"strategy": "not_applicable",
+				"min_energy_min": 4.2,
+				"min_energy_max": 98.62,
+				"num_edges": 4120,
+				"num_nodes": 200,
+				"edge_probability": 0.2,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 20.045042037963867,
+				"steps": 21,
+				"strategy": "not_applicable",
+				"min_energy_min": 4.2,
+				"min_energy_max": 98.62,
+				"num_edges": 4120,
+				"num_nodes": 200,
+				"edge_probability": 0.2,
+				"optimized": true
+			}
+		]
+	},
+	"arena_200_0.3": {
+		"not_applicable": [
+			{
+				"time_to_complete": 40.512800216674805,
+				"steps": 27,
+				"strategy": "not_applicable",
+				"min_energy_min": 5.32,
+				"min_energy_max": 149.68,
+				"num_edges": 6254,
+				"num_nodes": 200,
+				"edge_probability": 0.3,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 27.148962020874023,
+				"steps": 26,
+				"strategy": "not_applicable",
+				"min_energy_min": 5.32,
+				"min_energy_max": 149.68,
+				"num_edges": 6254,
+				"num_nodes": 200,
+				"edge_probability": 0.3,
+				"optimized": true
+			}
+		]
+	},
+	"arena_200_0.4": {
+		"not_applicable": [
+			{
+				"time_to_complete": 62.37483024597168,
+				"steps": 33,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 188.66,
+				"num_edges": 8261,
+				"num_nodes": 200,
+				"edge_probability": 0.4,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 49.75581169128418,
+				"steps": 32,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 188.66,
+				"num_edges": 8261,
+				"num_nodes": 200,
+				"edge_probability": 0.4,
+				"optimized": true
+			}
+		]
+	},
+	"arena_200_0.5": {
+		"not_applicable": [
+			{
+				"time_to_complete": 77.37326622009277,
+				"steps": 35,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 208.63,
+				"num_edges": 10236,
+				"num_nodes": 200,
+				"edge_probability": 0.5,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 64.24593925476074,
+				"steps": 35,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 208.63,
+				"num_edges": 10236,
+				"num_nodes": 200,
+				"edge_probability": 0.5,
+				"optimized": true
+			}
+		]
+	},
+	"arena_300_0.1": {
+		"not_applicable": [
+			{
+				"time_to_complete": 33.45298767089844,
+				"steps": 20,
+				"strategy": "not_applicable",
+				"min_energy_min": 17.44,
+				"min_energy_max": 97.95,
+				"num_edges": 4798,
+				"num_nodes": 300,
+				"edge_probability": 0.1,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 23.192167282104492,
+				"steps": 18,
+				"strategy": "not_applicable",
+				"min_energy_min": 17.44,
+				"min_energy_max": 97.95,
+				"num_edges": 4798,
+				"num_nodes": 300,
+				"edge_probability": 0.1,
+				"optimized": true
+			}
+		]
+	},
+	"arena_300_0.2": {
+		"not_applicable": [
+			{
+				"time_to_complete": 60.239315032958984,
+				"steps": 27,
+				"strategy": "not_applicable",
+				"min_energy_min": 1.73,
+				"min_energy_max": 167.64,
+				"num_edges": 9399,
+				"num_nodes": 300,
+				"edge_probability": 0.2,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 45.98402976989746,
+				"steps": 26,
+				"strategy": "not_applicable",
+				"min_energy_min": 1.32,
+				"min_energy_max": 167.64,
+				"num_edges": 9399,
+				"num_nodes": 300,
+				"edge_probability": 0.2,
+				"optimized": true
+			}
+		]
+	},
+	"arena_300_0.3": {
+		"not_applicable": [
+			{
+				"time_to_complete": 108.12020301818848,
+				"steps": 35,
+				"strategy": "not_applicable",
+				"min_energy_min": 8.48,
+				"min_energy_max": 218.25,
+				"num_edges": 13829,
+				"num_nodes": 300,
+				"edge_probability": 0.3,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 90.87491035461426,
+				"steps": 34,
+				"strategy": "not_applicable",
+				"min_energy_min": 8.48,
+				"min_energy_max": 218.25,
+				"num_edges": 13829,
+				"num_nodes": 300,
+				"edge_probability": 0.3,
+				"optimized": true
+			}
+		]
+	},
+	"arena_300_0.4": {
+		"not_applicable": [
+			{
+				"time_to_complete": 193.79615783691406,
+				"steps": 48,
+				"strategy": "not_applicable",
+				"min_energy_min": 0.71,
+				"min_energy_max": 280.82,
+				"num_edges": 18362,
+				"num_nodes": 300,
+				"edge_probability": 0.4,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 142.56715774536133,
+				"steps": 48,
+				"strategy": "not_applicable",
+				"min_energy_min": 0.22,
+				"min_energy_max": 280.82,
+				"num_edges": 18362,
+				"num_nodes": 300,
+				"edge_probability": 0.4,
+				"optimized": true
+			}
+		]
+	},
+	"arena_300_0.5": {
+		"not_applicable": [
+			{
+				"time_to_complete": 302.16193199157715,
+				"steps": 64,
+				"strategy": "not_applicable",
+				"min_energy_min": 5.78,
+				"min_energy_max": 359.4,
+				"num_edges": 22664,
+				"num_nodes": 300,
+				"edge_probability": 0.5,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 222.37205505371094,
+				"steps": 63,
+				"strategy": "not_applicable",
+				"min_energy_min": 5.78,
+				"min_energy_max": 359.4,
+				"num_edges": 22664,
+				"num_nodes": 300,
+				"edge_probability": 0.5,
+				"optimized": true
+			}
+		]
+	},
+	"arena_400_0.1": {
+		"not_applicable": [
+			{
+				"time_to_complete": 64.62883949279785,
+				"steps": 30,
+				"strategy": "not_applicable",
+				"min_energy_min": 5.01,
+				"min_energy_max": 151.64,
+				"num_edges": 8459,
+				"num_nodes": 400,
+				"edge_probability": 0.1,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 46.65780067443848,
+				"steps": 28,
+				"strategy": "not_applicable",
+				"min_energy_min": 5.01,
+				"min_energy_max": 151.64,
+				"num_edges": 8459,
+				"num_nodes": 400,
+				"edge_probability": 0.1,
+				"optimized": true
+			}
+		]
+	},
+	"arena_400_0.2": {
+		"not_applicable": [
+			{
+				"time_to_complete": 161.2398624420166,
+				"steps": 44,
+				"strategy": "not_applicable",
+				"min_energy_min": 7.63,
+				"min_energy_max": 286.1,
+				"num_edges": 16480,
+				"num_nodes": 400,
+				"edge_probability": 0.2,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 116.26505851745605,
+				"steps": 45,
+				"strategy": "not_applicable",
+				"min_energy_min": 7.63,
+				"min_energy_max": 286.1,
+				"num_edges": 16480,
+				"num_nodes": 400,
+				"edge_probability": 0.2,
+				"optimized": true
+			}
+		]
+	},
+	"arena_400_0.3": {
+		"not_applicable": [
+			{
+				"time_to_complete": 295.0270175933838,
+				"steps": 55,
+				"strategy": "not_applicable",
+				"min_energy_min": 14.01,
+				"min_energy_max": 309.64,
+				"num_edges": 24320,
+				"num_nodes": 400,
+				"edge_probability": 0.3,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 211.05289459228516,
+				"steps": 60,
+				"strategy": "not_applicable",
+				"min_energy_min": 14.01,
+				"min_energy_max": 309.64,
+				"num_edges": 24320,
+				"num_nodes": 400,
+				"edge_probability": 0.3,
+				"optimized": true
+			}
+		]
+	},
+	"arena_400_0.4": {
+		"not_applicable": [
+			{
+				"time_to_complete": 461.3502025604248,
+				"steps": 63,
+				"strategy": "not_applicable",
+				"min_energy_min": 3.84,
+				"min_energy_max": 374.68,
+				"num_edges": 32496,
+				"num_nodes": 400,
+				"edge_probability": 0.4,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 320.0218677520752,
+				"steps": 62,
+				"strategy": "not_applicable",
+				"min_energy_min": 3.84,
+				"min_energy_max": 374.68,
+				"num_edges": 32496,
+				"num_nodes": 400,
+				"edge_probability": 0.4,
+				"optimized": true
+			}
+		]
+	},
+	"arena_400_0.5": {
+		"not_applicable": [
+			{
+				"time_to_complete": 709.8689079284668,
+				"steps": 83,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 480.7,
+				"num_edges": 40498,
+				"num_nodes": 400,
+				"edge_probability": 0.5,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 553.8768768310547,
+				"steps": 81,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 480.7,
+				"num_edges": 40498,
+				"num_nodes": 400,
+				"edge_probability": 0.5,
+				"optimized": true
+			}
+		]
+	},
+	"arena_5000_0.01": {
+		"not_applicable": [
+			{
+				"time_to_complete": 1709.4180583953857,
+				"steps": 56,
+				"strategy": "not_applicable",
+				"min_energy_min": 9.85,
+				"min_energy_max": 247.29,
+				"num_edges": 130494,
+				"num_nodes": 5000,
+				"edge_probability": 0.01,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 1200.322151184082,
+				"steps": 64,
+				"strategy": "not_applicable",
+				"min_energy_min": 9.85,
+				"min_energy_max": 247.29,
+				"num_edges": 130494,
+				"num_nodes": 5000,
+				"edge_probability": 0.01,
+				"optimized": true
+			}
+		]
+	},
+	"arena_5000_0.05": {
+		"not_applicable": [
+			{
+				"time_to_complete": 24367.530822753906,
+				"steps": 182,
+				"strategy": "not_applicable",
+				"min_energy_min": 12.21,
+				"min_energy_max": 919.03,
+				"num_edges": 630509,
+				"num_nodes": 5000,
+				"edge_probability": 0.05,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 20112.36000061035,
+				"steps": 209,
+				"strategy": "not_applicable",
+				"min_energy_min": 12.21,
+				"min_energy_max": 919.03,
+				"num_edges": 630509,
+				"num_nodes": 5000,
+				"edge_probability": 0.05,
+				"optimized": true
+			}
+		]
+	},
+	"arena_5000_0.1": {
+		"not_applicable": [
+			{
+				"time_to_complete": 81802.12020874023,
+				"steps": 299,
+				"strategy": "not_applicable",
+				"min_energy_min": 6.21,
+				"min_energy_max": 1595.21,
+				"num_edges": 1254993,
+				"num_nodes": 5000,
+				"edge_probability": 0.1,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 69611.75918579102,
+				"steps": 340,
+				"strategy": "not_applicable",
+				"min_energy_min": 5.18,
+				"min_energy_max": 1595.21,
+				"num_edges": 1254993,
+				"num_nodes": 5000,
+				"edge_probability": 0.1,
+				"optimized": true
+			}
+		]
+	},
+	"arena_5000_0.2": {
+		"not_applicable": [
+			{
+				"time_to_complete": 278638.56291770935,
+				"steps": 496,
+				"strategy": "not_applicable",
+				"min_energy_min": 4.72,
+				"min_energy_max": 2894.71,
+				"num_edges": 2506364,
+				"num_nodes": 5000,
+				"edge_probability": 0.2,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 274511.56401634216,
+				"steps": 540,
+				"strategy": "not_applicable",
+				"min_energy_min": 4.72,
+				"min_energy_max": 2894.71,
+				"num_edges": 2506364,
+				"num_nodes": 5000,
+				"edge_probability": 0.2,
+				"optimized": true
+			}
+		]
+	},
+	"arena_5000_0.3": {
+		"not_applicable": [
+			{
+				"time_to_complete": 565231.9481372833,
+				"steps": 648,
+				"strategy": "not_applicable",
+				"min_energy_min": 2.93,
+				"min_energy_max": 3786.87,
+				"num_edges": 3756514,
+				"num_nodes": 5000,
+				"edge_probability": 0.3,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 551571.8908309937,
+				"steps": 666,
+				"strategy": "not_applicable",
+				"min_energy_min": 2.93,
+				"min_energy_max": 3786.87,
+				"num_edges": 3756514,
+				"num_nodes": 5000,
+				"edge_probability": 0.3,
+				"optimized": true
+			}
+		]
+	},
+	"arena_5000_0.4": {
+		"not_applicable": [
+			{
+				"time_to_complete": 1184691.4341449738,
+				"steps": 748,
+				"strategy": "not_applicable",
+				"min_energy_min": 7.12,
+				"min_energy_max": 4470.87,
+				"num_edges": 5004065,
+				"num_nodes": 5000,
+				"edge_probability": 0.4,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 996805.0730228424,
+				"steps": 794,
+				"strategy": "not_applicable",
+				"min_energy_min": 7.12,
+				"min_energy_max": 4470.87,
+				"num_edges": 5004065,
+				"num_nodes": 5000,
+				"edge_probability": 0.4,
+				"optimized": true
+			}
+		]
+	},
+	"arena_5000_0.5": {
+		"not_applicable": [
+			{
+				"time_to_complete": 1877248.0239868164,
+				"steps": 901,
+				"strategy": "not_applicable",
+				"min_energy_min": 1.8,
+				"min_energy_max": 5121.91,
+				"num_edges": 6254681,
+				"num_nodes": 5000,
+				"edge_probability": 0.5,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 1343850.406885147,
+				"steps": 924,
+				"strategy": "not_applicable",
+				"min_energy_min": 1.8,
+				"min_energy_max": 5121.91,
+				"num_edges": 6254681,
+				"num_nodes": 5000,
+				"edge_probability": 0.5,
+				"optimized": true
+			}
+		]
+	},
+	"arena_500_0.01": {
+		"not_applicable": [
+			{
+				"time_to_complete": 16.242027282714844,
+				"steps": 10,
+				"strategy": "not_applicable",
+				"min_energy_min": 22.77,
+				"min_energy_max": 37.22,
+				"num_edges": 1700,
+				"num_nodes": 500,
+				"edge_probability": 0.01,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 11.434078216552734,
+				"steps": 11,
+				"strategy": "not_applicable",
+				"min_energy_min": 22.77,
+				"min_energy_max": 37.22,
+				"num_edges": 1700,
+				"num_nodes": 500,
+				"edge_probability": 0.01,
+				"optimized": true
+			}
+		]
+	},
+	"arena_500_0.05": {
+		"not_applicable": [
+			{
+				"time_to_complete": 45.18580436706543,
+				"steps": 22,
+				"strategy": "not_applicable",
+				"min_energy_min": 10.13,
+				"min_energy_max": 83.3,
+				"num_edges": 6710,
+				"num_nodes": 500,
+				"edge_probability": 0.05,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 28.17511558532715,
+				"steps": 22,
+				"strategy": "not_applicable",
+				"min_energy_min": 10.13,
+				"min_energy_max": 83.3,
+				"num_edges": 6710,
+				"num_nodes": 500,
+				"edge_probability": 0.05,
+				"optimized": true
+			}
+		]
+	},
+	"arena_500_0.1": {
+		"not_applicable": [
+			{
+				"time_to_complete": 114.81904983520508,
+				"steps": 36,
+				"strategy": "not_applicable",
+				"min_energy_min": 6.25,
+				"min_energy_max": 176.5,
+				"num_edges": 12967,
+				"num_nodes": 500,
+				"edge_probability": 0.1,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 85.85405349731445,
+				"steps": 34,
+				"strategy": "not_applicable",
+				"min_energy_min": 6.25,
+				"min_energy_max": 176.5,
+				"num_edges": 12967,
+				"num_nodes": 500,
+				"edge_probability": 0.1,
+				"optimized": true
+			}
+		]
+	},
+	"arena_500_0.2": {
+		"not_applicable": [
+			{
+				"time_to_complete": 269.37294006347656,
+				"steps": 48,
+				"strategy": "not_applicable",
+				"min_energy_min": 4.82,
+				"min_energy_max": 273.26,
+				"num_edges": 25557,
+				"num_nodes": 500,
+				"edge_probability": 0.2,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 212.76116371154785,
+				"steps": 50,
+				"strategy": "not_applicable",
+				"min_energy_min": 4.82,
+				"min_energy_max": 273.26,
+				"num_edges": 25557,
+				"num_nodes": 500,
+				"edge_probability": 0.2,
+				"optimized": true
+			}
+		]
+	},
+	"arena_500_0.3": {
+		"not_applicable": [
+			{
+				"time_to_complete": 700.120210647583,
+				"steps": 88,
+				"strategy": "not_applicable",
+				"min_energy_min": 17.02,
+				"min_energy_max": 461.66,
+				"num_edges": 37952,
+				"num_nodes": 500,
+				"edge_probability": 0.3,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 530.066967010498,
+				"steps": 91,
+				"strategy": "not_applicable",
+				"min_energy_min": 17.02,
+				"min_energy_max": 461.66,
+				"num_edges": 37952,
+				"num_nodes": 500,
+				"edge_probability": 0.3,
+				"optimized": true
+			}
+		]
+	},
+	"arena_500_0.4": {
+		"not_applicable": [
+			{
+				"time_to_complete": 958.5232734680176,
+				"steps": 91,
+				"strategy": "not_applicable",
+				"min_energy_min": 5.88,
+				"min_energy_max": 465.13,
+				"num_edges": 50464,
+				"num_nodes": 500,
+				"edge_probability": 0.4,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 703.434944152832,
+				"steps": 96,
+				"strategy": "not_applicable",
+				"min_energy_min": 5.88,
+				"min_energy_max": 465.13,
+				"num_edges": 50464,
+				"num_nodes": 500,
+				"edge_probability": 0.4,
+				"optimized": true
+			}
+		]
+	},
+	"arena_500_0.5": {
+		"not_applicable": [
+			{
+				"time_to_complete": 1188.316822052002,
+				"steps": 91,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 540.75,
+				"num_edges": 62925,
+				"num_nodes": 500,
+				"edge_probability": 0.5,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 889.2519474029541,
+				"steps": 93,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 540.75,
+				"num_edges": 62925,
+				"num_nodes": 500,
+				"edge_probability": 0.5,
+				"optimized": true
+			}
+		]
+	},
+	"arena_500_1.0": {
+		"not_applicable": [
+			{
+				"time_to_complete": 3560.887098312378,
+				"steps": 139,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 826.52,
+				"num_edges": 125336,
+				"num_nodes": 500,
+				"edge_probability": 1.0,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 2616.392135620117,
+				"steps": 137,
+				"strategy": "not_applicable",
+				"min_energy_min": 0,
+				"min_energy_max": 826.52,
+				"num_edges": 125336,
+				"num_nodes": 500,
+				"edge_probability": 1.0,
+				"optimized": true
+			}
+		]
+	},
+	"arena_50_0.01": {
+		"not_applicable": [
+			{
+				"time_to_complete": 4.821062088012695,
+				"steps": 4,
+				"strategy": "not_applicable",
+				"min_energy_min": 14.52,
+				"min_energy_max": 14.79,
+				"num_edges": 27,
+				"num_nodes": 50,
+				"edge_probability": 0.01,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 4.778146743774414,
+				"steps": 3,
+				"strategy": "not_applicable",
+				"min_energy_min": 14.52,
+				"min_energy_max": 14.79,
+				"num_edges": 27,
+				"num_nodes": 50,
+				"edge_probability": 0.01,
+				"optimized": true
+			}
+		]
+	},
+	"arena_50_0.05": {
+		"not_applicable": [
+			{
+				"time_to_complete": 4.7149658203125,
+				"steps": 3,
+				"strategy": "not_applicable",
+				"min_energy_min": 12.52,
+				"min_energy_max": 11.53,
+				"num_edges": 91,
+				"num_nodes": 50,
+				"edge_probability": 0.05,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 4.775047302246094,
+				"steps": 2,
+				"strategy": "not_applicable",
+				"min_energy_min": 12.52,
+				"min_energy_max": 11.53,
+				"num_edges": 91,
+				"num_nodes": 50,
+				"edge_probability": 0.05,
+				"optimized": true
+			}
+		]
+	},
+	"arena_50_0.1": {
+		"not_applicable": [
+			{
+				"time_to_complete": 5.77998161315918,
+				"steps": 6,
+				"strategy": "not_applicable",
+				"min_energy_min": 11.7,
+				"min_energy_max": 25.34,
+				"num_edges": 160,
+				"num_nodes": 50,
+				"edge_probability": 0.1,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 5.595207214355469,
+				"steps": 7,
+				"strategy": "not_applicable",
+				"min_energy_min": 11.7,
+				"min_energy_max": 25.34,
+				"num_edges": 160,
+				"num_nodes": 50,
+				"edge_probability": 0.1,
+				"optimized": true
+			}
+		]
+	},
+	"arena_50_0.2": {
+		"not_applicable": [
+			{
+				"time_to_complete": 5.887031555175781,
+				"steps": 11,
+				"strategy": "not_applicable",
+				"min_energy_min": 4.68,
+				"min_energy_max": 37.87,
+				"num_edges": 302,
+				"num_nodes": 50,
+				"edge_probability": 0.2,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 5.656719207763672,
+				"steps": 10,
+				"strategy": "not_applicable",
+				"min_energy_min": 4.68,
+				"min_energy_max": 37.87,
+				"num_edges": 302,
+				"num_nodes": 50,
+				"edge_probability": 0.2,
+				"optimized": true
+			}
+		]
+	},
+	"arena_50_0.5": {
+		"not_applicable": [
+			{
+				"time_to_complete": 6.892681121826172,
+				"steps": 13,
+				"strategy": "not_applicable",
+				"min_energy_min": 0.95,
+				"min_energy_max": 84.23,
+				"num_edges": 671,
+				"num_nodes": 50,
+				"edge_probability": 0.5,
+				"optimized": false
+			},
+			{
+				"time_to_complete": 6.873846054077148,
+				"steps": 12,
+				"strategy": "not_applicable",
+				"min_energy_min": 0.95,
+				"min_energy_max": 84.23,
+				"num_edges": 671,
+				"num_nodes": 50,
+				"edge_probability": 0.5,
+				"optimized": true
+			}
+		]
+	}
+}
