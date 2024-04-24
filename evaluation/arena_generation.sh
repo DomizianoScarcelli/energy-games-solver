@@ -1,9 +1,9 @@
 #!/bin/bash
 
-STRATEGY="bellman_ford" #none, bellman_ford, incremental_bellman_ford
+STRATEGY="incremental_bellman_ford" #none, bellman_ford, incremental_bellman_ford
 PROBABILITIES=(0.1 0.2 0.3 0.4 0.5)
 NUM_NODES=(100 200 300 400 500 1000 2000 5000)
-REPEATS=1
+REPEATS=3
 SAVE_ARENA=false
 
 for i in $(seq 1 $REPEATS)
