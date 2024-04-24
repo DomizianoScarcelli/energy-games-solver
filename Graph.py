@@ -130,7 +130,6 @@ class Arena:
         self.edges.add(new_edge)
         self.fast_edges[new_edge[0]][new_edge[1]] = new_edge[2]
 
-
         new_distance_0 = self.distances.get(new_edge[0], 0) + new_edge[2]
         new_distance_1 = self.distances.get(new_edge[1], float('inf'))
 
@@ -138,10 +137,8 @@ class Arena:
         previous_distance_1 = self.distances.get(new_edge[1], None)
 
         # Relax edges related to the new edge
-        # TODO: in the bellman ford we should relax all edges, I think this doesn't provide the same result but it's faster and creates a valid graph anyways
-        for _ in range(len(self.nodes) - 1):
-            if new_distance_0 < new_distance_1:
-                new_distance_1 = new_distance_0
+        if new_distance_0 < new_distance_1:
+            new_distance_1 = new_distance_0
 
         self.distances[new_edge[1]] = new_distance_1
 

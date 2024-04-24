@@ -5921,6 +5921,13 @@
                 "num_nodes": 20,
                 "num_edges": 47,
                 "edge_probability": 0.2
+            },
+            {
+                "time_to_generate": 9.68170166015625,
+                "strategy": "incremental_bellman_ford",
+                "num_nodes": 20,
+                "num_edges": 47,
+                "edge_probability": 0.2
             }
         ]
     }
