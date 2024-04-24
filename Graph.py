@@ -2,7 +2,7 @@ from __future__ import annotations
 from enum import Enum
 from itertools import product
 import math
-from typing import Dict, List, Set, Tuple
+from typing import Dict, Set, Tuple, Optional
 from tqdm import tqdm
 import random
 import logging
@@ -29,7 +29,7 @@ class GenerationStrategy(Enum):
 
 class Arena:
     def __init__(self, 
-                 num_nodes: float = 10, 
+                 num_nodes: int = 10, 
                  edge_probability: float = 0.01, 
                  seed: int | None = None):
         self.nodes = set(range(num_nodes))
@@ -41,11 +41,11 @@ class Arena:
         self.edge_probability = edge_probability
         self.max_weight = 10
         self.weight_range = (-self.max_weight, self.max_weight)
-        self.distances = {node: 0 for node in self.nodes}
+        self.distances: Dict[int, Optional[float]] = {node: 0 for node in self.nodes}
         self.considered: Set[Tuple[int, Tuple[int, int, float]]]= set()
         self.considered_edges_bf: Set[Tuple[int, int, float]] = set()
         self.fast_edges: Dict[int, Dict[int, float]] = {i: {} for i in range(num_nodes)}
-        self.player_mapping: Dict[int, int] = self._assign_players(equal=True) 
+        self.player_mapping: Dict[int, Player] = self._assign_players(equal=True) 
         self.ingoing_edges: Dict[int, Set[Tuple[int, int, float]]] = {i: set() for i in range(num_nodes)}
 
     def __repr__(self):
@@ -64,7 +64,7 @@ class Arena:
             arena = pickle.load(f)
         return arena
 
-    def _assign_players(self, equal: bool = False):
+    def _assign_players(self, equal: bool = False) -> Dict[int, Player]:
         """
         Assign players to the nodes.
         """
@@ -125,9 +125,11 @@ class Arena:
         """
         #TODO: this creates a valid graph, but sometimes it has some false positives
 
+
         # Add the new edge
         self.edges.add(new_edge)
         self.fast_edges[new_edge[0]][new_edge[1]] = new_edge[2]
+
 
         new_distance_0 = self.distances.get(new_edge[0], 0) + new_edge[2]
         new_distance_1 = self.distances.get(new_edge[1], float('inf'))
@@ -146,6 +148,7 @@ class Arena:
         origin_to = self.fast_edges[new_edge[0]] #this is a dict that maps the destination to the weight
         dest_to = self.fast_edges[new_edge[1]] #this is a dict that maps the origin to the weight
 
+
         edges = {(new_edge[0], dest, weight) for dest, weight in origin_to.items()} | {(new_edge[1], origin, weight) for origin, weight in dest_to.items()}
         for edge in edges:
             if self.distances[edge[0]] + edge[2] < self.distances.get(edge[1], float('inf')):
@@ -157,8 +160,8 @@ class Arena:
         return False  # No negative cycle found
 
     def bellman_ford(self, 
-                    nodes: List[int] = None, 
-                    edges: List[Tuple[int, int, float]] = None) -> bool:
+                    nodes: Optional[Set[int]] = None, 
+                    edges: Optional[Set[Tuple[int, int, float]]] = None) -> bool:
         """
         Detect negative cycles using Bellman-Ford algorithm.
         """
@@ -167,7 +170,7 @@ class Arena:
         if edges is None:
             edges = self.edges
 
-        distances = {node: 0 for node in nodes}
+        distances: Dict[int, float] = {node: 0 for node in nodes}
 
         # Relax edges repeatedly
         for _ in range(len(nodes) - 1):

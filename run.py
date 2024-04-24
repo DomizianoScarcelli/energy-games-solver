@@ -156,11 +156,12 @@ def generate_arenas(nodes_space: Optional[List[int]] = None,
 
             pbar.update(1)
 
-def generate_arena(num_nodes: int = None, 
-                edge_probability: float = None,
-                seed: int | None = None,
-                strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD, 
-                save_arena: bool = False):
+def generate_arena(num_nodes: Optional[int] = None, 
+                   edge_probability: Optional[float] = None,
+                   seed: Optional[int] = None,
+                   strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD, 
+                   save_arena: bool = False, 
+                   plot: bool = False):
 
     arena = Arena(num_nodes=num_nodes, edge_probability=edge_probability, seed=seed)
     start = time.time()
@@ -170,6 +171,8 @@ def generate_arena(num_nodes: int = None,
     arena_name = f"arena_{num_nodes}_{edge_probability}"
     if save_arena:
         arena.save(f"arenas/{arena_name}.pkl")
+    if plot:
+        plot_graph(arena)
     
     update_json_results(arena_name=arena_name,
                        update_dict={"time_to_generate": time_to_generate,
@@ -237,13 +240,13 @@ if __name__ == "__main__":
                                 strategy=args.strategy)
         else:
             result = run_solver(num_nodes=args.num_nodes, 
-                        edge_probability=args.edge_probability, 
-                        save_results=args.save_results,
-                        seed=args.seed, 
-                        plot=args.plot, 
-                        save_arena=args.save_arena, 
-                        optimize=args.optimize, 
-                        strategy=args.strategy)
+                                edge_probability=args.edge_probability, 
+                                save_results=args.save_results,
+                                seed=args.seed, 
+                                plot=args.plot, 
+                                save_arena=args.save_arena, 
+                                optimize=args.optimize, 
+                                strategy=args.strategy)
         print(result)
     elif args.batch_generate:
         generate_arenas(nodes_space=args.node_space, 
@@ -252,10 +255,11 @@ if __name__ == "__main__":
                         strategy=args.strategy)
     elif args.generate:
         generate_arena(seed=args.seed, 
-                    num_nodes=args.num_nodes,
-                    edge_probability=args.edge_probability,
-                    strategy=args.strategy,
-                    save_arena=args.save_arena)
+                       num_nodes=args.num_nodes,
+                       edge_probability=args.edge_probability,
+                       strategy=args.strategy,
+                       save_arena=args.save_arena,
+                       plot=args.plot)
     elif args.profile:
         profile(seed=args.seed, 
                 plot=args.plot, 
