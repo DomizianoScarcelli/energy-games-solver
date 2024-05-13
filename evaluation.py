@@ -17,6 +17,8 @@ def parse_arena_times():
     print(parsed_data)
     # Compute percentage difference
     for arena_name in parsed_data.copy():
+        if "none" not in parsed_data:
+            continue
         baseline = parsed_data[arena_name]["none"]
         for strategy, avg_time in parsed_data[arena_name].copy().items():
             if strategy == "none":
@@ -116,5 +118,5 @@ def generate_latex_table_arena_generation():
 if __name__ == '__main__':
     parse_arena_times()
     generate_latex_table_arena_generation()
-    parse_result_times()
-    generate_latex_table_result_times()
+    # parse_result_times()
+    # generate_latex_table_result_times()
