@@ -2,3 +2,5 @@
 __pycache__
 temp-plot.html
 arenas/**
+not_to_evaluate/**
+results/**

@@ -1,9 +1,12 @@
+import cProfile
+import logging
 import os
 import pickle
+import pstats
 import time
-from typing import List, Optional
+from typing import Dict, List, Optional
 from tqdm import tqdm
-from Graph import Arena, Player
+from Graph import Arena, Player, GenerationStrategy
 from Solver import Solver
 from plot_graph import plot_graph
 import json
@@ -16,7 +19,8 @@ def run_solver(num_nodes: Optional[int] = None,
             seed: int | None = None,
             plot: bool = False, 
             optimize: bool = False, 
-            arena: Optional[Arena] = None):
+            arena: Optional[Arena] = None,
+            strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD):
 
     if arena and (num_nodes or edge_probability):
         raise ValueError("You must provide either an arena or the number of nodes and edge probability")
@@ -25,81 +29,90 @@ def run_solver(num_nodes: Optional[int] = None,
         arena = Arena(num_nodes=num_nodes,
                     edge_probability=edge_probability, 
                     seed=seed) 
-        arena.generate()
+        arena.generate(strategy)
     if plot:
         plot_graph(arena)
     if save_arena:
         arena.save(f"arena_{arena.num_nodes}_{arena.edge_probability}.pkl")
 
     solver = Solver(arena)
+    start = time.time()
     if optimize:
-        start = time.time()
         num_steps = solver.optimized_value_iteration()
-        end = time.time()
-        
-        time_in_ms = (end - start) * 1000
-        min_energy_dict = solver.get_min_energy()
-        if save_results:
-            save_results_json(arena=arena, 
-                         time_to_complete=time_in_ms, 
-                         steps=num_steps, 
-                         min_energy_dict=min_energy_dict,
-                         file=f"{arena.num_nodes}_{arena.edge_probability}_optimized.json")
     else:
-        start = time.time()
         num_steps = solver.value_iteration()
-        end = time.time()
-
-        time_in_ms = (end - start) * 1000
-        min_energy_dict = solver.get_min_energy()
-        if save_results:
-            save_results_json(arena=arena, 
-                         time_to_complete=time_in_ms, 
-                         steps=num_steps, 
-                         min_energy_dict=min_energy_dict,
-                         file=f"{arena.num_nodes}_{arena.edge_probability}_naive.json")
+    end = time.time()
+    
+    time_in_ms = (end - start) * 1000
+    min_energy_dict = solver.get_min_energy()
+    if save_results:
+        results = {
+            "time_to_complete": time_in_ms,
+            "steps": num_steps,
+            "strategy": "not_applicable",
+            "min_energy_min": min_energy_dict[Player.MIN],
+            "min_energy_max": min_energy_dict[Player.MAX],
+            "num_edges": len(arena.edges),
+            "num_nodes": arena.num_nodes,
+            "edge_probability": arena.edge_probability,
+            "optimized": optimize
+        }
+        update_json_results(
+            arena_name=f"arena_{arena.num_nodes}_{arena.edge_probability}",
+            update_dict=results,
+            file="solve_results.json")
 
     return min_energy_dict
 
-def save_results_json(arena: Arena, 
-                 min_energy_dict: dict,
-                 time_to_complete: float, 
-                 steps:int, 
-                 file: str) -> None:
+# def save_results_json(arena: Arena, 
+#                  min_energy_dict: dict,
+#                  time_to_complete: float, 
+#                  steps:int, 
+#                  file: str,
+#                  optimized: bool = False) -> None:
 
 
-    min_energy_dict.update({"time_to_complete_ms": time_to_complete})
-    min_energy_dict.update({"converged_in_steps": steps})
-    min_energy_dict.update({"num_nodes": arena.num_nodes})
-    min_energy_dict.update({"edge_probability": arena.edge_probability})
-    min_energy_dict.update({"MAX_nodes": len([node for node, player in arena.player_mapping.items() if player == Player.MIN])}) 
-    min_energy_dict.update({"MIN_nodes": len([node for node, player in arena.player_mapping.items() if player == Player.MAX])})
-    min_energy_dict.update({"edges": len(arena.edges)})
-    min_energy_dict.update({"sum_player_MAX_weights": sum([arena.value_mapping[node] for node, player in arena.player_mapping.items() if player == Player.MAX])})
-    min_energy_dict.update({"sum_player_MIN_weights": sum([arena.value_mapping[node] for node, player in arena.player_mapping.items() if player == Player.MIN])})
-    min_energy_dict.update({"min_energy_MAX": min_energy_dict[Player.MAX]})
-    min_energy_dict.update({"min_energy_MIN": min_energy_dict[Player.MIN]})
-    del min_energy_dict[Player.MAX]
-    del min_energy_dict[Player.MIN]
+#     min_energy_dict.update({"time_to_complete_ms": time_to_complete})
+#     min_energy_dict.update({"converged_in_steps": steps})
+#     min_energy_dict.update({"num_nodes": arena.num_nodes})
+#     min_energy_dict.update({"edge_probability": arena.edge_probability})
+#     min_energy_dict.update({"MAX_nodes": len([node for node, player in arena.player_mapping.items() if player == Player.MIN])}) 
+#     min_energy_dict.update({"MIN_nodes": len([node for node, player in arena.player_mapping.items() if player == Player.MAX])})
+#     min_energy_dict.update({"edges": len(arena.edges)})
+#     min_energy_dict.update({"sum_player_MAX_weights": sum([arena.value_mapping[node] for node, player in arena.player_mapping.items() if player == Player.MAX])})
+#     min_energy_dict.update({"sum_player_MIN_weights": sum([arena.value_mapping[node] for node, player in arena.player_mapping.items() if player == Player.MIN])})
+#     min_energy_dict.update({"min_energy_MAX": min_energy_dict[Player.MAX]})
+#     min_energy_dict.update({"min_energy_MIN": min_energy_dict[Player.MIN]})
+#     min_energy_dict.update({"optimized": optimized})
+#     del min_energy_dict[Player.MAX]
+#     del min_energy_dict[Player.MIN]
 
-    base_path = "results"    
-    with open(os.path.join(base_path, file), "w") as f:
-        json.dump(min_energy_dict, f)
+#     base_path = "results"    
+#     with open(os.path.join(base_path, file), "w") as f:
+#         json.dump(min_energy_dict, f)
 
-# def profile(seed: int = 0, plot: bool = False, save: bool = False):
-#     profiler = cProfile.Profile()
-#     profiler.enable()
+def new_save_results(update_dict: Dict[str, any], file: str) -> None:
+    pass
 
-#     # Run your function
-#     solution = run_solver(num_nodes=5000, edge_probability=0.2, seed=seed, plot=plot, save=save)    
-#     logging.info(f"Solution: {solution}")
-#     profiler.disable()
-#     stats = pstats.Stats(profiler).sort_stats('cumtime')
-#     stats.print_stats()
+def profile(seed: int = 0, 
+            plot: bool = False, 
+            save: bool = False,
+            optimize: bool = False, 
+            strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD):
+    profiler = cProfile.Profile()
+    profiler.enable()
+    # Run your function
+    arena = Arena().load("arenas/arena_1000_0.1.pkl")
+    solution = run_solver(seed=seed, plot=plot, save_arena=save, arena=arena, optimize=optimize, strategy=strategy)    
+    logging.info(f"Solution: {solution}")
+    profiler.disable()
+    stats = pstats.Stats(profiler).sort_stats('cumtime')
+    stats.print_stats()
 
 def generate_arenas(nodes_space: Optional[List[int]] = None, 
-                             probability_space: Optional[List[float]] = None,
-                             seed: int | None = None):
+                    probability_space: Optional[List[float]] = None,
+                    seed: int | None = None,
+                    strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD):
     if not nodes_space:
         nodes_space = [10, 100, 500, 1000, 5000, 10_000]
     if not probability_space:
@@ -113,7 +126,7 @@ def generate_arenas(nodes_space: Optional[List[int]] = None,
                 continue
             arena = Arena(num_nodes=n, edge_probability=p, seed=seed)
             start = time.time()
-            arena.generate()
+            arena.generate(strategy)
             end = time.time()
             time_to_generate = (end - start) * 1000
             arena_name = f"arena_{n}_{p}"
@@ -122,23 +135,86 @@ def generate_arenas(nodes_space: Optional[List[int]] = None,
             if not os.path.exists("arena_times.json"):
                 print(f"Creating arena_times.json for the first time")
                 with open("arena_times.json", "w") as f:
-                    json.dump({arena_name: time_to_generate}, f)
+                    json.dump({}, f)
 
             with open("arena_times.json", "r") as f:
                 data = json.load(f) 
-                data.update({arena_name: time_to_generate})
+                if arena_name not in data:
+                    data[arena_name] = [{"time_to_generate": time_to_generate,
+                                        "strategy": strategy.value,
+                                        "num_nodes": n,
+                                        "num_edges": len(arena.edges),
+                                        "edge_probability": p}]
+                else:
+                    data[arena_name].append({"time_to_generate": time_to_generate,
+                                        "strategy": strategy.value,
+                                        "num_nodes": n,
+                                        "num_edges": len(arena.edges),
+                                        "edge_probability": p})
             with open("arena_times.json", "w") as f:
                 json.dump(data, f)
 
             pbar.update(1)
 
+def generate_arena(num_nodes: Optional[int] = None, 
+                   edge_probability: Optional[float] = None,
+                   seed: Optional[int] = None,
+                   strategy: GenerationStrategy = GenerationStrategy.INCREMENTAL_BELLMAN_FORD, 
+                   save_arena: bool = False, 
+                   plot: bool = False):
+
+    arena = Arena(num_nodes=num_nodes, edge_probability=edge_probability, seed=seed)
+    start = time.time()
+    arena.generate(strategy)
+    end = time.time()
+    time_to_generate = (end - start) * 1000
+    arena_name = f"arena_{num_nodes}_{edge_probability}"
+    if save_arena:
+        arena.save(f"arenas/{arena_name}.pkl")
+    if plot:
+        plot_graph(arena)
+    
+    update_json_results(arena_name=arena_name,
+                       update_dict={"time_to_generate": time_to_generate,
+                                    "strategy": strategy,
+                                    "num_nodes": num_nodes,
+                                    "num_edges": len(arena.edges),
+                                    "edge_probability": edge_probability},
+                        file="arena_times.json")  
+
+
+def update_json_results(arena_name: str, update_dict: Dict[str, any], file: str) -> None:
+    if "strategy" not in update_dict:
+        raise ValueError("You must provide a strategy in the update_dict")
+
+    if not os.path.exists(file):
+        print(f"Creating arena_times.json for the first time")
+        with open(file, "w") as f:
+            json.dump({}, f)
+    with open(file, "r") as f:
+        data = json.load(f) 
+        if arena_name not in data:
+            data[arena_name] = {update_dict["strategy"]: [update_dict]}
+        else:
+            if update_dict["strategy"] not in data[arena_name]:
+                data[arena_name][update_dict["strategy"]] = [update_dict]
+            else:
+                data[arena_name][update_dict["strategy"]].append(update_dict)
+    with open(file, "w") as f:
+        json.dump(data, f, indent=4)
+
+    print("RESULTS UPDATED")
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()
+    # Generate 
+    parser.add_argument("--batch-generate", action="store_true")
     parser.add_argument("--generate", action="store_true")
     parser.add_argument("--node-space", dest="node_space", type=int, nargs="+") 
     parser.add_argument("--probability-space", dest="probability_space", type=float, nargs="+")
-
+    parser.add_argument("--strategy", dest="strategy", type=str, default="incremental_bellman_ford") #possible strategies defined in Graph.GenerationStrategy
+    # Solve
     parser.add_argument("--solve", action="store_true")
     parser.add_argument("--num-nodes", dest="num_nodes", type=int, default=100)
     parser.add_argument("--edge-probability", dest="edge_probability", type=float, default=0.4)
@@ -148,25 +224,47 @@ if __name__ == "__main__":
     parser.add_argument("--save-results", dest="save_results", action="store_true")
     parser.add_argument("--optimize", dest="optimize", action="store_true")
     parser.add_argument("--arena-path", dest="arena_path", type=str, default=None)
+    # Profile (for debug)
+    parser.add_argument("--profile", action="store_true")
     args = parser.parse_args()
 
     if args.solve:
         if args.arena_path:
             with open(args.arena_path, "rb") as f:
                 arena = pickle.load(f)
-            result = run_solver(arena=arena, plot=args.plot, save_arena=args.save_arena, optimize=args.optimize, save_results=args.save_results)
+            result = run_solver(arena=arena, 
+                                plot=args.plot, 
+                                save_arena=args.save_arena, 
+                                optimize=args.optimize, 
+                                save_results=args.save_results, 
+                                strategy=args.strategy)
         else:
             result = run_solver(num_nodes=args.num_nodes, 
-                        edge_probability=args.edge_probability, 
-                        save_results=args.save_results,
-                        seed=args.seed, 
-                        plot=args.plot, 
-                        save_arena=args.save_arena, 
-                        optimize=args.optimize)
+                                edge_probability=args.edge_probability, 
+                                save_results=args.save_results,
+                                seed=args.seed, 
+                                plot=args.plot, 
+                                save_arena=args.save_arena, 
+                                optimize=args.optimize, 
+                                strategy=args.strategy)
         print(result)
-    elif args.generate:
+    elif args.batch_generate:
         generate_arenas(nodes_space=args.node_space, 
                         probability_space=args.probability_space, 
-                        seed=args.seed)
+                        seed=args.seed, 
+                        strategy=args.strategy)
+    elif args.generate:
+        generate_arena(seed=args.seed, 
+                       num_nodes=args.num_nodes,
+                       edge_probability=args.edge_probability,
+                       strategy=args.strategy,
+                       save_arena=args.save_arena,
+                       plot=args.plot)
+    elif args.profile:
+        profile(seed=args.seed, 
+                plot=args.plot, 
+                save=args.save_results, 
+                optimize=args.optimize, 
+                strategy=args.strategy)
     else:
         raise ValueError("You must provide either --generate or --solve")

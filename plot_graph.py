@@ -1,7 +1,6 @@
 from __future__ import annotations
-import pprint
 import gravis as gv
-import networkx as nx
+from Graph import Player
 
 
 class EnergyGameArena:
@@ -12,21 +11,11 @@ class EnergyGameArena:
         self._init_config()
 
     def _nodes_dict(self):
-        if self.player_mapping:
-            return {node: {'metadata': {'color': 'red' if self.player_mapping[node] == 1 else 'blue', 'label_color':'red' if self.player_mapping[node] == 1 else 'blue'  }} for node in self.nodes}
-        return {node.name: {'metadata': {'color': 'red' if node.player.name == 1 else 'blue', 'label_color':'red' if node.player.name == 1 else 'blue'  }} for node in self.nodes}
+        return {node: {'metadata': {'color': 'red' if self.player_mapping[node] == Player.MIN else 'blue', 'label_color':'red' if self.player_mapping[node] == Player.MIN else 'blue'  }} for node in self.nodes}
 
     def _edges_dict_list(self):
         default_color = 'black'
         highlight_size = 1.5
-        if hasattr(list(self.edges)[0], "node1"):
-            return [{'source': edge.node1.name, 'target': edge.node2.name, 'label': round(edge.weight, 2), 'metadata': {
-                        'color': default_color,
-                        'opacity': 1.0,
-                        'size': highlight_size,
-                        'label_color': "black",
-                        'label_size': 12,
-                    },} for edge in self.edges]
         return [{'source': edge[0], 'target': edge[1], 'label': round(edge[2], 2), 'metadata': {
                     'color': default_color,
                     'opacity': 1.0,
@@ -48,11 +37,14 @@ class EnergyGameArena:
 
     def create_plot(self):
         self.fig = gv.d3(self.config, 
-                         edge_label_data_source='label', 
-                         show_edge_label=True, 
-                         use_edge_size_normalization=True,
-                            node_drag_fix=True, 
-                            node_hover_neighborhood=True, show_edge_label_border=True, use_many_body_force=True, many_body_force_strength=-1000)
+                        edge_label_data_source='label', 
+                        show_edge_label=True, 
+                        use_edge_size_normalization=True,
+                        node_drag_fix=True, 
+                        node_hover_neighborhood=True,
+                        show_edge_label_border=True, 
+                        use_many_body_force=True, 
+                        many_body_force_strength=-1000)
         return self.fig
     
 # def save_graph(graph, filename):
