@@ -1,0 +1,24 @@
+.no-scrollbar ::-webkit-scrollbar {
+	display: none;
+}
+
+.slidev-layout {
+	background-color: #1e1e2e;
+}
+
+.slidev-code {
+	background-color: #181825;
+}
+.slidev-layout :not(pre) > code {
+	background-color: #181825;
+}
+
+/* h1,
+h2,
+h3 {
+	color: #cdd6f4;
+} */
+
+/* p {
+	color: #cdd6f4;
+} */
